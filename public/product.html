@@ -1,36 +1,86 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>Our Products — Dory's Bakehouse</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-    --bg: rgba(255, 243, 207, 0.45);  /* SAME AS INDEX PAGE */
-    --accent: #563e30;
-    --text: #563e30;
-    --muted: #6e5a52;
-    --card: rgba(253,239,193,0.45);
+  /* MATCH INDEX PAGE BACKGROUND */
+  --bg: rgba(255, 243, 207, 0.45);
+  --accent:#563e30;
+  --text:#563e30;
+  --muted:#6e5a52;
+  --card: rgba(253,239,193,0.45);
 }
-
-*{box-sizing:border-box} body{margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text)}
-header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:12px 20px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:1000}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+header{
+  width:100%;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
+}
 .header-left{position:absolute;left:18px;display:flex;align-items:center;gap:12px}
-.home-btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 3px 8px rgba(0,0,0,0.12)}
+.home-btn{
+  background:var(--accent);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 3px 8px rgba(0,0,0,0.12);
+}
 .logo-img{height:64px;width:auto;border-radius:8px}
 .header-actions{position:absolute;right:28px}
-.contact-btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,0.12);cursor:pointer}
-.filter-bar{max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;justify-content:center;gap:10px;align-items:center}
-.filter-btn{background:#fff;border:1px solid rgba(86,62,48,0.08);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--accent);box-shadow:0 6px 18px rgba(0,0,0,0.03)}
+.contact-btn{
+  background:var(--accent);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,0.12);
+  cursor:pointer;
+}
+
+/* filter centered under header */
+.filter-bar{
+  max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;justify-content:center;gap:10px;align-items:center;
+}
+.filter-btn{
+  background:#fff;border:1px solid rgba(86,62,48,0.08);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--accent);
+  box-shadow:0 6px 18px rgba(0,0,0,0.03);
+}
 .filter-btn.active{background:var(--accent);color:#fff;box-shadow:0 8px 26px rgba(86,62,48,0.12)}
+
+/* search & sort */
+.search-bar{max-width:1100px;margin:6px auto;display:flex;gap:8px;justify-content:center;padding:0 16px}
+.search-bar input{width:60%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+.search-bar select{padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+
+/* page title */
 .title{font-family:'Great Vibes',cursive;text-align:center;font-size:36px;margin:10px 0;color:var(--text)}
+
+/* container & grid */
 .container{max-width:1200px;margin:12px auto;padding:0 16px}
 .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:14px}
 @media(max-width:880px){ .products-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))} }
-.card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible}
+
+/* product card (clean, no rating, no add-to-cart) */
+.card{
+  background:var(--card);
+  padding:12px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible;
+}
 .img-wrap{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
 .card img{width:100%;height:100%;object-fit:cover}
 .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
@@ -38,30 +88,52 @@ header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:
 .cat{font-size:13px;color:var(--muted);background:rgba(86,62,48,0.06);padding:6px 10px;border-radius:999px}
 .price{font-weight:700;color:var(--accent)}
 .desc{font-size:14px;color:#5e4e46;min-height:36px}
-.stars{display:flex;gap:4px;align-items:center}
-.star{color:#e6b422;font-size:16px}
-.star.gray{color:#ddd}
-.enquire-overlay{position:absolute;left:12px;right:12px;bottom:14px;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,235,227,0.95));display:flex;justify-content:center;align-items:center;opacity:0;transform:translateY(8px);transition:all .18s;pointer-events:none}
-.card:hover .enquire-overlay, .card.enquire-active .enquire-overlay{opacity:1;transform:translateY(0);pointer-events:auto}
-.enquire-btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:999px;border:0;cursor:pointer;font-weight:700}
-.enquire-popup{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 12px);z-index:500;width:280px;max-width:calc(100% - 24px);background:#fff;border-radius:10px;padding:10px;box-shadow:0 12px 36px rgba(0,0,0,0.25);display:none}
-.enquire-popup.active{display:block}
+
+/* Enquire overlay (visible on hover or tap) */
+.enquire-overlay{
+  position:absolute;left:12px;right:12px;bottom:14px;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,235,227,0.95));display:flex;justify-content:center;align-items:center;opacity:0;transform:translateY(8px);transition:all .18s;
+  pointer-events:none;
+}
+.card:hover .enquire-overlay, .card.enquire-active .enquire-overlay{ opacity:1; transform:translateY(0); pointer-events:auto; }
+.enquire-btn{
+  background:var(--accent);color:#fff;padding:8px 12px;border-radius:999px;border:0;cursor:pointer;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.12)
+}
+
+/* mini popup above card */
+.enquire-popup{
+  position:absolute; left:50%; transform:translateX(-50%); bottom:calc(100% + 12px); z-index:500; width:280px; max-width:calc(100% - 24px);
+  background:#fff;border-radius:10px;padding:10px;box-shadow:0 12px 36px rgba(0,0,0,0.25); display:none;
+}
+.enquire-popup.active{ display:block; }
 .enquire-popup .thumb{height:72px;width:72px;object-fit:cover;border-radius:8px}
 .enquire-popup textarea{width:100%;min-height:70px;padding:8px;border-radius:8px;border:1px solid #eee}
-.floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:4000}
+
+/* floating buttons */
+.floating {
+  position:fixed; right:18px; bottom:18px; display:flex;flex-direction:column;gap:12px; z-index:4000;
+}
 .btn-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.18);cursor:pointer;border:0}
 .whatsapp{background:#25D366}
 .chat{background:#ff7f7f}
 .floating img{width:28px;height:28px}
-.manage-floating{position:fixed;left:18px;bottom:18px;z-index:4000}
-.manage-floating .manage-btn{background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.18)}
+
+/* Manage products floating (bottom-left) */
+.manage-floating{
+  position:fixed; left:18px; bottom:18px; z-index:4000;
+}
+.manage-floating .manage-btn{
+  background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.18)
+}
+
+/* contact popup (same as index) */
 .popup-overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:3000;padding:20px;box-sizing:border-box}
 .popup-box{background:#faebe3;padding:22px;border-radius:14px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 34px rgba(0,0,0,0.18)}
 .popup-box h3{margin:0;font-size:20px;color:var(--accent)}
+.popup-box p{margin:10px 0;color:#444;font-weight:600}
 .close-btn{margin-top:12px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer}
-.search-bar{max-width:1100px;margin:6px auto;display:flex;gap:8px;justify-content:center;padding:0 16px}
-.search-bar input{width:60%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
-.add-to-cart{background:#ffd9d9;color:#563e30;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
+
+/* small text helper */
+.small-muted{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -71,13 +143,15 @@ header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:
     <a class="home-btn" href="/">Home</a>
   </div>
 
-  <img src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" class="logo-img" alt="Dory's Bakehouse">
+  <!-- logo centered (user selected path) -->
+  <img src="/logo/dorys.PNG" class="logo-img" alt="Dory's Bakehouse">
 
   <div class="header-actions">
     <a class="contact-btn" id="openContact">Contact</a>
   </div>
 </header>
 
+<!-- filters -->
 <div class="filter-bar" role="tablist" aria-label="category filters">
   <button class="filter-btn active" data-cat="All">All</button>
   <button class="filter-btn" data-cat="Cakes">Cakes</button>
@@ -85,13 +159,13 @@ header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:
   <button class="filter-btn" data-cat="Pastries">Pastries</button>
 </div>
 
+<!-- search & sort -->
 <div class="search-bar">
   <input id="searchInput" type="search" placeholder="Search products by name...">
-  <select id="sortSelect" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)">
+  <select id="sortSelect">
     <option value="newest">Newest</option>
     <option value="price-asc">Price: Low → High</option>
     <option value="price-desc">Price: High → Low</option>
-    <option value="rating-desc">Rating</option>
   </select>
 </div>
 
@@ -104,20 +178,21 @@ header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:
 
 <!-- Floating WhatsApp & Chat -->
 <div class="floating" aria-hidden="false">
-  <button class="btn-circle chat" id="chatBtn" title="Chat with us">
+  <button class="btn-circle chat" id="chatBtn" title="Chat with us" aria-label="Chat">
     <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="chat">
   </button>
-  <a class="btn-circle whatsapp" id="waBtn" title="WhatsApp" target="_blank" rel="noreferrer">
+
+  <a class="btn-circle whatsapp" id="waBtn" title="WhatsApp" target="_blank" rel="noreferrer" aria-label="WhatsApp">
     <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whatsapp">
   </a>
 </div>
 
-<!-- Manage floating (shown only for admin) -->
+<!-- Manage Products floating (bottom-left) - visible only for admin cookie -->
 <div class="manage-floating" id="manageFloating" style="display:none">
   <button class="manage-btn" id="manageBtn">Manage Products</button>
 </div>
 
-<!-- Contact popup -->
+<!-- Contact popup identical to index -->
 <div id="contactPopup" class="popup-overlay" aria-hidden="true">
   <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
     <h3 id="contactTitle">Contact Us</h3>
@@ -128,38 +203,54 @@ header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:
 </div>
 
 <script>
-/* CONFIG */
-const WA_NUMBER = '919168445014';
+/* Configuration */
+const WA_NUMBER = '919168445014'; // country code + number
 const WA_BASE = `https://wa.me/${WA_NUMBER}`;
+const WA_DEFAULT_TEXT = encodeURIComponent('Hi, I want to order');
+const WA_URL_DEFAULT = `${WA_BASE}?text=${WA_DEFAULT_TEXT}`;
 
-/* ADMIN VISIBILITY: show manage button only when admin cookie present */
-function readCookie(name){ const c = document.cookie.split('; ').find(x => x.startsWith(name + '=')); return c ? decodeURIComponent(c.split('=')[1]) : null; }
-if (readCookie('admin') === '4321') { document.getElementById('manageFloating').style.display = 'block'; }
+/* Admin visibility: show manage button only when admin cookie present */
+function readCookie(name){
+  const c = document.cookie.split('; ').find(x => x.trim().startsWith(name + '='));
+  return c ? decodeURIComponent(c.split('=')[1]) : null;
+}
+if (readCookie('admin') === '4321') {
+  document.getElementById('manageFloating').style.display = 'block';
+}
 
-/* contact popup */
+/* OPEN / CLOSE Contact popup */
 const contactPopup = document.getElementById('contactPopup');
-document.getElementById('openContact').addEventListener('click', ()=> { contactPopup.style.display='flex'; contactPopup.setAttribute('aria-hidden','false'); });
-document.getElementById('closeContact').addEventListener('click', ()=> { contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); });
+document.getElementById('openContact').addEventListener('click', ()=> {
+  contactPopup.style.display = 'flex';
+  contactPopup.setAttribute('aria-hidden','false');
+});
+document.getElementById('closeContact').addEventListener('click', ()=> {
+  contactPopup.style.display = 'none';
+  contactPopup.setAttribute('aria-hidden','true');
+});
 contactPopup.addEventListener('click', (e)=> { if (e.target === contactPopup) { contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); } });
 
-/* floating buttons */
-document.getElementById('waBtn').href = `${WA_BASE}?text=${encodeURIComponent('Hi, I want to order')}`;
-document.getElementById('chatBtn').addEventListener('click', ()=> window.open(`${WA_BASE}?text=${encodeURIComponent('Hi, I want to order')}`, '_blank'));
+/* Floating buttons */
+document.getElementById('waBtn').href = WA_URL_DEFAULT;
+document.getElementById('chatBtn').addEventListener('click', ()=> { window.open(WA_URL_DEFAULT, '_blank'); });
 
-/* manage button */
-document.getElementById('manageBtn').addEventListener('click', ()=> location.href = '/admin-products.html');
+/* Manage button click */
+document.getElementById('manageBtn').addEventListener('click', ()=> { location.href = '/admin-products.html'; });
 
-/* products loading/rendering/search/sort/filter */
-let products = [], activeCategory = 'All';
-const grid = document.getElementById('grid'), countInfo = document.getElementById('countInfo');
+/* Products loading/rendering/search/sort/filter */
+const grid = document.getElementById('grid');
+const countInfo = document.getElementById('countInfo');
+let products = [];
+let activeCategory = 'All';
 
 async function loadProducts(){
   try {
-    const res = await fetch('/products/list', { cache:'no-cache' });
-    if (!res.ok) throw new Error('fetch failed');
+    const res = await fetch('/products/list', { cache: 'no-cache' });
+    if (!res.ok) throw new Error('Failed to fetch products');
     products = await res.json();
   } catch (err) {
-    console.error(err); products = [];
+    console.error(err);
+    products = [];
   }
   render();
 }
@@ -169,34 +260,34 @@ function sortProducts(arr){
   const copy = arr.slice();
   if (mode === 'price-asc') copy.sort((a,b)=> (Number(a.price)||0) - (Number(b.price)||0));
   else if (mode === 'price-desc') copy.sort((a,b)=> (Number(b.price)||0) - (Number(a.price)||0));
-  else if (mode === 'rating-desc') copy.sort((a,b)=> (Number(b.rating)||0) - (Number(a.rating)||0));
   else copy.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
   return copy;
 }
 
-function renderStars(v){
-  const val = Math.max(0, Math.min(5, Number(v) || 0));
-  const full = Math.floor(val);
-  let out = '';
-  for (let i=0;i<full;i++) out += '<span class="star">★</span>';
-  for (let i=full;i<5;i++) out += '<span class="star gray">★</span>';
-  out += ` <span style="font-size:13px;color:var(--muted);margin-left:6px">${val.toFixed(1)}</span>`;
-  return out;
-}
-
 function render(){
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
-  const filtered = products.filter(p => (activeCategory === 'All' || (p.category || '').toLowerCase() === activeCategory.toLowerCase()) && (p.name||'').toLowerCase().includes(q));
+  const filtered = products.filter(p => 
+    (activeCategory === 'All' || (p.category || '').toLowerCase() === activeCategory.toLowerCase()) &&
+    (p.name || '').toLowerCase().includes(q)
+  );
   const sorted = sortProducts(filtered);
   grid.innerHTML = '';
   countInfo.textContent = `${sorted.length} product${sorted.length===1?'':'s'} shown`;
-  if (!sorted.length) { grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No products found.</div>`; return; }
+
+  if (!sorted.length) {
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No products found.</div>`;
+    return;
+  }
 
   sorted.forEach(p => {
-    const name = p.name || 'Untitled', desc = p.description || '', price = p.price ? `₹ ${p.price}` : '—', category = p.category || 'Uncategorized', rating = Number(p.rating || 0);
-    const img = p.image || '/images/products/default-sample.png';
+    const name = p.name || 'Untitled';
+    const desc = p.description || '';
+    const price = p.price ? `₹ ${p.price}` : '—';
+    const category = p.category || 'Uncategorized';
+    const img = (p.image && p.image.startsWith('/')) ? p.image : (p.image || '/images/products/default-sample.png');
 
-    const card = document.createElement('div'); card.className = 'card';
+    const card = document.createElement('div');
+    card.className = 'card';
     card.innerHTML = `
       <div class="img-wrap"><img src="${img}" alt="${escapeHtml(name)}" loading="lazy"></div>
       <div class="meta">
@@ -207,12 +298,6 @@ function render(){
         <div style="text-align:right">
           <div class="cat">${escapeHtml(category)}</div>
           <div style="margin-top:6px" class="price">${escapeHtml(price)}</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div class="stars">${renderStars(rating)}</div>
-        <div>
-          <button class="add-to-cart">Add to Cart</button>
         </div>
       </div>
 
@@ -238,7 +323,7 @@ function render(){
       </div>
     `;
 
-    // enquire interactions
+    // Enquire interactions
     const enquireBtn = card.querySelector('.enquire-btn');
     const enquirePopup = card.querySelector('.enquire-popup');
     const enquireSend = card.querySelector('.enquire-send');
@@ -251,40 +336,51 @@ function render(){
       enquirePopup.classList.add('active');
       enquirePopup.setAttribute('aria-hidden','false');
       card.classList.add('enquire-active');
+      // focus textarea on open for convenience
+      setTimeout(()=> enquireText.focus(), 120);
     });
+
     enquireCancel.addEventListener('click', (ev) => {
       ev.stopPropagation();
       enquirePopup.classList.remove('active');
       enquirePopup.setAttribute('aria-hidden','true');
       card.classList.remove('enquire-active');
     });
+
     enquireSend.addEventListener('click', (ev) => {
       ev.stopPropagation();
       const userMsg = (enquireText.value || '').trim();
-      let fullMsg = `Product Enquiry:%0AName: ${name}%0ACategory: ${category}%0APrice: ${price}%0A`;
-      if (userMsg) fullMsg += `%0AUser Message:%0A${encodeURIComponent(userMsg)}`;
-      window.open(`${WA_BASE}?text=${encodeURIComponent(decodeURIComponent(fullMsg))}`, '_blank');
-      enquirePopup.classList.remove('active'); enquirePopup.setAttribute('aria-hidden','true'); card.classList.remove('enquire-active'); enquireText.value = '';
+      let message = `Product Enquiry:%0AName: ${name}%0ACategory: ${category}%0APrice: ${price}%0A`;
+      if (userMsg) message += `%0AUser Message:%0A${encodeURIComponent(userMsg)}`;
+      // open WhatsApp with prefilled message
+      window.open(`${WA_BASE}?text=${message}`, '_blank');
+      enquirePopup.classList.remove('active');
+      enquirePopup.setAttribute('aria-hidden','true');
+      card.classList.remove('enquire-active');
+      enquireText.value = '';
     });
 
-    // add-to-cart placeholder
-    card.querySelector('.add-to-cart').addEventListener('click', ()=> alert('Add to cart (demo) — this is non-functional.'));
-
-    // click outside to close
-    document.addEventListener('click', (e) => { if (!card.contains(e.target)) { enquirePopup.classList.remove('active'); card.classList.remove('enquire-active'); } });
+    // close enquiry when clicking outside card
+    document.addEventListener('click', (e) => {
+      if (!card.contains(e.target)) {
+        enquirePopup.classList.remove('active');
+        enquirePopup.setAttribute('aria-hidden','true');
+        card.classList.remove('enquire-active');
+      }
+    });
 
     grid.appendChild(card);
   });
 }
 
+/* Helpers */
+function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 function closeAllEnquires(){
   document.querySelectorAll('.enquire-popup.active').forEach(p => { p.classList.remove('active'); p.setAttribute('aria-hidden','true'); });
   document.querySelectorAll('.card.enquire-active').forEach(c => c.classList.remove('enquire-active'));
 }
 
-function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* filters/search/sort event handlers */
+/* Filters & events */
 document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -294,9 +390,9 @@ document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('cl
 document.getElementById('searchInput').addEventListener('input', ()=> render());
 document.getElementById('sortSelect').addEventListener('change', ()=> render());
 
-/* initial load */
+/* Initial load + auto refresh */
 loadProducts();
-setInterval(loadProducts, 90_000);
+setInterval(loadProducts, 90000);
 </script>
 </body>
 </html>
