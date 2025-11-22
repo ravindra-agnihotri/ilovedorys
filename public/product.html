@@ -3,511 +3,386 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Dory's Bakehouse – Our Products</title>
+<title>Dory's Bakehouse — Products</title>
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
-/* ================================
-   THEME (matching index page)
-================================ */
 :root{
-    --bg: rgba(255, 243, 207, 0.45);
-    --accent: #563e30;
-    --text: #563e30;
-    --muted: #6e5a52;
-    --card: rgba(253,239,193,0.45);
+  --bg: rgba(255, 243, 207, 0.45);
+  --accent: #563e30;
+  --accent-2: #ff7f7f;
+  --text: #563e30;
+  --muted: #6e5a52;
+  --card: rgba(253,239,193,0.45);
 }
 
-body{
-    margin:0;
-    font-family:Poppins, system-ui;
-    background:var(--bg);
-    overflow-x:hidden;
-}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);}
 
-/* ================================
-   HEADER
-================================ */
+/* Header */
 header{
-    width:100%;
-    background:#fff;
-    padding:14px 20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-    position:sticky;
-    top:0;
-    z-index:1000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
+  width:100%;
+  background:#fff;
+  padding:14px 20px;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  position:sticky;
+  top:0;z-index:1000;
+  display:flex;align-items:center;justify-content:center;
+  position:relative;
 }
-
-header img.logo{
-    height:64px;
-    width:auto;
-}
-
 .home-btn{
-    position:absolute;
-    left:20px;
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    text-decoration:none;
-    font-size:14px;
+  position:absolute;left:18px;
+  background:var(--accent);color:#fff;
+  padding:8px 12px;border-radius:10px;
+  text-decoration:none;font-weight:600;
 }
-
+.logo-img{height:64px;width:auto;border-radius:8px}
 .contact-btn{
-    position:absolute;
-    right:20px;
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    text-decoration:none;
-    font-size:14px;
+  background:var(--accent);color:#fff;
+  padding:8px 12px;border-radius:8px;
+  text-decoration:none;font-weight:600;
+  cursor:pointer;
+  position:absolute;right:18px;
 }
 
-/* ================================
-   TITLE
-================================ */
-h2{
-    text-align:center;
-    font-family:'Great Vibes', cursive;
-    font-size:42px;
-    margin:20px 0 10px;
-    color:var(--text);
+/* Title */
+h1.page-title{
+  margin:18px 0 8px;
+  text-align:center;font-family:'Great Vibes',cursive;
+  font-size:42px;color:var(--text);
 }
 
-/* ================================
-   FILTER BUTTONS
-================================ */
-.filter-bar{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    margin:10px 0 20px;
-    flex-wrap:wrap;
+/* Filters */
+.filters {
+  max-width:1200px;margin:8px auto;padding:0 16px;
+  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
 }
-
 .filter-btn{
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    font-size:14px;
-    cursor:pointer;
-    border:0;
+  background:#fff;border:1px solid rgba(86,62,48,0.06);
+  padding:8px 14px;border-radius:999px;
+  cursor:pointer;font-weight:600;color:var(--accent);
 }
-
 .filter-btn.active{
-    background:#ff7f7f;
+  background:var(--accent-2);color:#fff;
+  box-shadow:0 6px 18px rgba(86,62,48,0.12);
 }
 
-/* ================================
-   PRODUCT GRID
-================================ */
+/* Search bar */
+.search-wrap{
+  max-width:1200px;margin:12px auto;padding:0 16px;
+}
+.search-box{
+  display:flex;gap:10px;align-items:center;
+}
+.search-input{
+  flex:1;padding:12px 14px;border-radius:10px;
+  border:1px solid rgba(0,0,0,0.06);font-size:15px;background:#fff;
+}
+.sort-select{
+  padding:10px 12px;border-radius:10px;
+  border:1px solid rgba(0,0,0,0.06);background:#fff;
+}
+
+/* Grid */
 .grid{
-    max-width:1300px;
-    margin:0 auto;
-    padding:10px 16px 40px;
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
-    gap:18px;
+  max-width:1300px;margin:18px auto 80px;padding:0 16px;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:18px;
 }
 
+/* Card */
 .card{
-    background:var(--card);
-    padding:10px;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-    overflow:hidden;
-    position:relative;
-    transition:0.25s;
+  background:var(--card);border-radius:12px;padding:10px;
+  box-shadow:0 6px 18px rgba(0,0,0,0.06);
+  position:relative;overflow:hidden;
 }
-
+.card .img-wrap{
+  height:180px;border-radius:10px;overflow:hidden;
+  background:#fff;display:flex;align-items:center;justify-content:center;
+}
 .card img{
-    width:100%;
-    height:180px;
-    object-fit:cover;
-    border-radius:10px;
-    user-select:none;
+  width:100%;height:100%;object-fit:cover;
+}
+.card .meta{margin-top:10px;}
+.card .name{font-weight:700;font-size:16px;}
+.card .cat{color:var(--muted);font-size:13px;margin-top:4px}
+.card .price{font-weight:700;margin-top:6px;color:#222}
+
+/* Overlay */
+.card .overlay{
+  position:absolute;inset:0;
+  display:flex;align-items:flex-end;justify-content:center;
+  pointer-events:none;
+}
+.card .cta{
+  margin:14px;background:linear-gradient(180deg, rgba(255,127,127,0.98), rgba(86,62,48,0.95));
+  color:#fff;padding:10px 14px;border-radius:999px;
+  border:0;cursor:pointer;pointer-events:auto;
+  box-shadow:0 12px 28px rgba(0,0,0,0.18);
+  transform:translateY(10px);opacity:0;transition:all .18s;
+}
+.card:hover .cta{transform:translateY(0);opacity:1}
+
+/* Enquiry popup */
+.enq-popup{
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:92%;max-width:420px;background:#fff;border-radius:12px;
+  box-shadow:0 18px 48px rgba(0,0,0,0.35);z-index:4000;
+  display:none;padding:16px;
+}
+.enq-popup .close-x{position:absolute;right:10px;top:8px;font-size:20px;cursor:pointer}
+.enq-popup .row{display:flex;gap:12px;align-items:center}
+.enq-popup img{width:96px;height:96px;object-fit:cover;border-radius:8px}
+.enq-popup textarea{width:100%;height:80px;margin-top:8px;border-radius:8px;padding:8px;border:1px solid #ddd}
+.enq-popup .send{background:#25D366;color:#fff;padding:10px;border-radius:8px;width:100%;cursor:pointer;margin-top:10px}
+
+/* Floating buttons */
+.floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:3000;}
+.floating .btn{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.14);cursor:pointer;border:0}
+.chat{background:var(--accent-2);}
+.wh{background:#25D366}
+
+/* ALWAYS VISIBLE Admin Login Button */
+#adminLoginBtn{
+  position:fixed;
+  left:18px;
+  bottom:80px;
+  width:50px;
+  height:50px;
+  border-radius:12px;
+  background:#fff;
+  border:2px solid var(--accent);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+  cursor:pointer;
+  z-index:3000;
+}
+#adminLoginBtn img{
+  width:26px;height:26px;
 }
 
-/* Hover overlay for "Enquire" */
-.card .hover-overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    opacity:0;
-    transition:0.25s;
-}
-
-.card:hover .hover-overlay{
-    opacity:1;
-}
-
-.enquire-btn{
-    background:#ff7f7f;
-    color:#fff;
-    padding:10px 16px;
-    border-radius:8px;
-    font-size:14px;
-    cursor:pointer;
-    border:0;
-}
-
-/* Product text */
-.card-title{
-    font-size:16px;
-    font-weight:600;
-    color:var(--text);
-    margin-top:8px;
-}
-
-.card-cat{
-    font-size:13px;
-    color:var(--muted);
-    margin-top:2px;
-}
-
-.card-price{
-    font-size:15px;
-    font-weight:600;
-    margin-top:4px;
-    color:#272727;
-}
-
-/* ================================
-   MINI POPUP (Enquiry)
-================================ */
-.enquiry-popup{
-    position:fixed;
-    z-index:3000;
-    background:#fff;
-    padding:18px;
-    border-radius:12px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.3);
-    width:90%;
-    max-width:360px;
-    display:none;
-}
-
-.enquiry-popup img{
-    width:100px;
-    height:100px;
-    object-fit:cover;
-    border-radius:10px;
-}
-
-.enquiry-popup h3{
-    margin:10px 0 4px;
-    color:var(--text);
-    font-size:18px;
-}
-
-.enquiry-popup p{
-    margin:4px 0;
-    font-size:14px;
-}
-
-.popup-row{
-    display:flex;
-    gap:14px;
-}
-
-textarea{
-    width:100%;
-    height:70px;
-    margin-top:10px;
-    border-radius:8px;
-    padding:8px;
-    border:1px solid #ccc;
-}
-
-.send-btn{
-    background:#25D366;
-    color:#fff;
-    padding:10px 16px;
-    border-radius:8px;
-    width:100%;
-    border:0;
-    margin-top:12px;
-    font-size:15px;
-}
-
-.close-mini{
-    position:absolute;
-    top:8px;
-    right:12px;
-    font-size:20px;
-    cursor:pointer;
-}
-
-/* ================================
-   FLOATING BUTTONS
-================================ */
-.floating-buttons{
-    position:fixed;
-    right:25px;
-    bottom:25px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    z-index:2000;
-}
-
-.whatsapp-btn,.chat-btn{
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    box-shadow:0 6px 18px rgba(0,0,0,0.25);
-    cursor:pointer;
-}
-
-.whatsapp-btn{background:#25D366;}
-.chat-btn{background:#ff7f7f;}
-
-.floating-buttons img{width:28px;height:28px;}
-
-/* ================================
-   MANAGE PRODUCTS BUTTON
-================================ */
+/* MANAGE button (shown after login) */
 #manageFloating{
-    position:fixed;
-    left:20px;
-    bottom:30px;
-    background:var(--accent);
-    color:#fff;
-    padding:10px 18px;
-    border-radius:10px;
-    text-decoration:none;
-    font-size:14px;
-    display:none; /* admin only */
-    z-index:2000;
+  position:fixed;
+  left:18px;
+  bottom:18px;
+  background:var(--accent);
+  color:#fff;
+  padding:12px 16px;
+  border-radius:10px;
+  display:none;
+  text-decoration:none;
+  font-weight:700;
+  box-shadow:0 8px 24px rgba(0,0,0,0.14);
+  z-index:3000;
 }
 
-/* ================================
-   CONTACT POPUP (same as index)
-================================ */
+/* Contact popup */
 .popup-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:5000;
+  position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:5000;padding:20px;
 }
-
-.popup-box{
-    background:#faebe3;
-    padding:22px;
-    border-radius:14px;
-    text-align:center;
-    width:90%;
-    max-width:320px;
-}
-
-.popup-box h3{
-    margin:0;
-    font-size:20px;
-    color:var(--text);
-}
-
-.close-btn{
-    margin-top:14px;
-    background:var(--accent);
-    color:#fff;
-    padding:10px 18px;
-    border-radius:8px;
-    cursor:pointer;
-}
+.popup-box{background:#faebe3;padding:22px;border-radius:14px;text-align:center;}
+.close-btn{margin-top:14px;background:var(--accent);color:#fff;padding:10px;border-radius:8px;cursor:pointer;}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
-    <a class="home-btn" href="/index.html">Home</a>
-    <img class="logo" src="/logo/dorys.PNG">
-    <a class="contact-btn" onclick="openContact()">Contact</a>
+  <a class="home-btn" href="/index.html">Home</a>
+  <img class="logo-img" src="/logo/dorys.PNG" alt="logo">
+  <button class="contact-btn" onclick="openContact()">Contact</button>
 </header>
 
-<h2>Our Products</h2>
+<h1 class="page-title">Our Products</h1>
 
-<!-- FILTER BAR -->
-<div class="filter-bar">
-    <button class="filter-btn active" data-cat="all">All</button>
-    <button class="filter-btn" data-cat="Cakes">Cakes</button>
-    <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
-    <button class="filter-btn" data-cat="Pastries">Pastries</button>
+<!-- FILTERS -->
+<div class="filters">
+  <button class="filter-btn active" data-cat="all">All</button>
+  <button class="filter-btn" data-cat="Cakes">Cakes</button>
+  <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
+  <button class="filter-btn" data-cat="Pastries">Pastries</button>
 </div>
 
-<!-- PRODUCTS GRID -->
-<div class="grid" id="grid"></div>
-
-<!-- FLOATING BUTTONS -->
-<div class="floating-buttons">
-    <div class="chat-btn" onclick="openContact()">
-        <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png">
-    </div>
-    <a class="whatsapp-btn" target="_blank" href="https://wa.me/9168445014">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
-    </a>
+<!-- SEARCH BAR -->
+<div class="search-wrap">
+  <div class="search-box">
+    <input id="searchInput" class="search-input" placeholder="Search products..." />
+    <select id="sortSelect" class="sort-select">
+      <option value="newest">Newest</option>
+      <option value="price-asc">Price (Low → High)</option>
+      <option value="price-desc">Price (High → Low)</option>
+    </select>
+  </div>
 </div>
 
-<!-- MANAGE PRODUCTS BUTTON -->
+<!-- GRID -->
+<div id="grid" class="grid"></div>
+
+<!-- FLOATING CHAT + WA -->
+<div class="floating">
+  <button class="btn chat" onclick="openContact()">
+    <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png">
+  </button>
+  <a class="btn wh" id="waFloat" target="_blank">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+  </a>
+</div>
+
+<!-- ALWAYS VISIBLE ADMIN BUTTON -->
+<div id="adminLoginBtn" onclick="openAdminLogin()">
+  <img src="https://cdn-icons-png.flaticon.com/512/753/753244.png">
+</div>
+
+<!-- MANAGE BUTTON (after login) -->
 <a id="manageFloating" href="/admin-products.html">Manage Products</a>
 
-<!-- ENQUIRY MINI POPUP -->
-<div class="enquiry-popup" id="enqBox">
-    <span class="close-mini" onclick="closeEnq()">×</span>
-    <div class="popup-row">
-        <img id="enqImg">
-        <div>
-            <h3 id="enqName"></h3>
-            <p id="enqCat"></p>
-            <p id="enqPrice"></p>
-        </div>
+<!-- ENQUIRY POPUP -->
+<div id="enqPopup" class="enq-popup">
+  <span class="close-x" onclick="closeEnq()">×</span>
+  <div class="row">
+    <img id="enqImg">
+    <div>
+      <h3 id="enqName"></h3>
+      <p id="enqCat"></p>
+      <p id="enqPrice"></p>
     </div>
-    <textarea id="enqMsg" placeholder="Your message..."></textarea>
-    <button class="send-btn" onclick="sendEnquiry()">Send on WhatsApp</button>
+  </div>
+  <textarea id="enqMsg" placeholder="Your message..."></textarea>
+  <button class="send" onclick="sendEnquiry()">Send on WhatsApp</button>
 </div>
 
 <!-- CONTACT POPUP -->
-<div class="popup-overlay" id="contactPopup">
-    <div class="popup-box">
-        <h3>Contact Us</h3>
-        <p>📞 <a href="tel:+917972032790" style="text-decoration:none;color:var(--text);font-weight:700">+91 7972032790</a></p>
-        <p>📍 Dory's Bakehouse, Pune</p>
-        <div class="close-btn" onclick="closeContact()">Close</div>
-    </div>
+<div id="contactPopup" class="popup-overlay">
+  <div class="popup-box">
+    <h3>Contact Us</h3>
+    <p>📞 <a href="tel:+917972032790">+91 7972032790</a></p>
+    <p>📍 Dory's Bakehouse, Pune</p>
+    <div class="close-btn" onclick="closeContact()">Close</div>
+  </div>
 </div>
 
 <script>
-/* ==========================
-   LOAD PRODUCTS
-========================== */
-async function loadProducts(){
-    const res = await fetch('/products/list', {cache:'no-cache'});
-    const list = await res.json();
-    window.allProducts = list;
-    renderProducts('all');
-}
+/* WHATSAPP */
+const WA_NUMBER = "919168445014";
+document.getElementById("waFloat").href = "https://wa.me/" + WA_NUMBER;
 
-/* ==========================
-   RENDER PRODUCTS
-========================== */
-function renderProducts(cat){
-    const grid = document.getElementById('grid');
-    grid.innerHTML = '';
-
-    window.allProducts
-        .filter(p => cat === 'all' || p.category === cat)
-        .forEach(p => {
-
-            const div = document.createElement('div');
-            div.className = 'card';
-
-            div.innerHTML = `
-                <img src="${p.image}">
-                <div class="hover-overlay">
-                    <button class="enquire-btn" onclick="openEnq('${p.id}')">Enquire Now</button>
-                </div>
-                <div class="card-title">${p.name}</div>
-                <div class="card-cat">${p.category}</div>
-                <div class="card-price">₹ ${p.price}</div>
-            `;
-            grid.appendChild(div);
-        });
-}
-
-/* ==========================
-   FILTERS
-========================== */
-document.querySelectorAll('.filter-btn').forEach(btn=>{
-    btn.onclick = ()=>{
-        document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
-        btn.classList.add('active');
-        renderProducts(btn.dataset.cat);
-    };
-});
-
-/* ==========================
-   ENQUIRY POPUP
-========================== */
-function openEnq(id){
-    const p = window.allProducts.find(x=>x.id===id);
-    document.getElementById('enqImg').src = p.image;
-    document.getElementById('enqName').textContent = p.name;
-    document.getElementById('enqCat').textContent = "Category: " + p.category;
-    document.getElementById('enqPrice').textContent = "₹ " + p.price;
-    document.getElementById('enqBox').style.display = 'block';
-
-    window.currentProduct = p;
-}
-
-function closeEnq(){
-    document.getElementById('enqBox').style.display = 'none';
-}
-
-function sendEnquiry(){
-    const msg = document.getElementById('enqMsg').value;
-    const p = window.currentProduct;
-
-    const text = `
-Product Enquiry:
-Name: ${p.name}
-Category: ${p.category}
-Price: ₹ ${p.price}
-
-User Message:
-${msg}
-    `;
-
-    const url = "https://wa.me/9168445014?text=" + encodeURIComponent(text);
-    window.open(url, '_blank');
-}
-
-/* ==========================
-   CONTACT POPUP
-========================== */
-function openContact(){
-    document.getElementById('contactPopup').style.display='flex';
-}
-function closeContact(){
-    document.getElementById('contactPopup').style.display='none';
-}
-
-/* ==========================
-   ADMIN CHECK
-========================== */
+/* COOKIE READER */
 function readCookie(name){
-    const c=document.cookie.split('; ').find(r=>r.startsWith(name+'='));
-    return c?c.split('=')[1]:null;
+  const c = document.cookie.split('; ').find(r=>r.startsWith(name+'='));
+  return c ? c.split('=')[1] : null;
 }
 
-window.addEventListener('DOMContentLoaded', ()=>{
-    if(readCookie('admin')==='4321'){
-        document.getElementById('manageFloating').style.display='block';
-    }
+/* ADMIN LOGIN BUTTON LOGIC */
+function openAdminLogin(){
+  const pin = prompt("Enter Admin PIN:");
+  if(pin === "4321"){
+    document.cookie = "admin=4321; path=/; max-age=86400;";
+    alert("Admin logged in!");
+    showManageBtn();
+  }
+}
+function showManageBtn(){
+  document.getElementById("manageFloating").style.display = "block";
+  document.getElementById("adminLoginBtn").style.display = "none";
+}
+
+/* ON LOAD: check cookie */
+window.addEventListener("DOMContentLoaded", ()=>{
+  if(readCookie("admin") === "4321"){
+    showManageBtn();
+  }
+  loadProducts();
 });
 
-/* ==========================
-   INIT
-========================== */
-loadProducts();
+/* Contact popup */
+function openContact(){document.getElementById("contactPopup").style.display="flex";}
+function closeContact(){document.getElementById("contactPopup").style.display="none";}
 
+/* Products */
+let products=[];
+async function loadProducts(){
+  const res = await fetch("/products/list");
+  products = await res.json();
+  render();
+}
+
+function escapeHtml(s){
+  return (s||"").toString().replace(/[&<>"']/g,c=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[c]));
+}
+
+let activeCategory="all";
+document.querySelectorAll(".filter-btn").forEach(btn=>{
+  btn.onclick = ()=>{
+    document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    activeCategory = btn.dataset.cat;
+    render();
+  };
+});
+
+document.getElementById("searchInput").oninput = render;
+document.getElementById("sortSelect").onchange = render;
+
+function render(){
+  const grid = document.getElementById("grid");
+  const q = document.getElementById("searchInput").value.toLowerCase();
+  const sortMode = document.getElementById("sortSelect").value;
+
+  let list = products.filter(p=>{
+    const catOK = activeCategory==="all" || (p.category||"").toLowerCase() === activeCategory.toLowerCase();
+    const text = (p.name+" "+p.category+" "+p.description).toLowerCase();
+    return catOK && (!q || text.includes(q));
+  });
+
+  if(sortMode==="price-asc"){list.sort((a,b)=>a.price-b.price);}
+  if(sortMode==="price-desc"){list.sort((a,b)=>b.price-a.price);}
+  if(sortMode==="newest"){list.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));}
+
+  grid.innerHTML="";
+
+  list.forEach(p=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.innerHTML=`
+      <div class="img-wrap"><img src="${p.image}" alt=""></div>
+      <div class="meta">
+        <div class="name">${escapeHtml(p.name)}</div>
+        <div class="cat">${escapeHtml(p.category)}</div>
+        <div class="price">₹ ${escapeHtml(p.price)}</div>
+      </div>
+      <div class="overlay">
+        <button class="cta">Enquire Now</button>
+      </div>`;
+    card.querySelector(".cta").onclick = ()=>openEnquiry(p);
+    grid.appendChild(card);
+  });
+}
+
+/* Enquiry Popup */
+let currentProduct=null;
+function openEnquiry(p){
+  currentProduct=p;
+  document.getElementById("enqImg").src=p.image;
+  document.getElementById("enqName").textContent=p.name;
+  document.getElementById("enqCat").textContent=p.category;
+  document.getElementById("enqPrice").textContent="₹ "+p.price;
+  document.getElementById("enqMsg").value="";
+  document.getElementById("enqPopup").style.display="block";
+}
+function closeEnq(){
+  document.getElementById("enqPopup").style.display="none";
+}
+function sendEnquiry(){
+  const msg=document.getElementById("enqMsg").value;
+  const url=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Enquiry for ${currentProduct.name} (${currentProduct.category}) | Price: ₹${currentProduct.price} \n\nMessage: ${msg}`)}`;
+  window.open(url,"_blank");
+  closeEnq();
+}
 </script>
 </body>
 </html>
