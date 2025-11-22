@@ -18,141 +18,196 @@
 }
 
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);}
+body{
+  margin:0;
+  font-family:'Poppins',system-ui;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+}
 
-/* Header */
+/* HEADER */
 header{
   width:100%;
   background:#fff;
   padding:14px 20px;
   box-shadow:0 2px 8px rgba(0,0,0,0.08);
   position:sticky;
-  top:0;z-index:1000;
-  display:flex;align-items:center;justify-content:center;
+  top:0; z-index:1000;
+  display:flex; align-items:center; justify-content:center;
   position:relative;
 }
 .home-btn{
-  position:absolute;left:18px;
-  background:var(--accent);color:#fff;
-  padding:8px 12px;border-radius:10px;
-  text-decoration:none;font-weight:600;
+  position:absolute; left:18px;
+  background:var(--accent); color:#fff;
+  padding:8px 12px; border-radius:10px;
+  text-decoration:none; font-weight:600;
 }
-.logo-img{height:64px;width:auto;border-radius:8px}
+.logo-img{
+  height:64px; width:auto; border-radius:8px;
+}
 .contact-btn{
-  background:var(--accent);color:#fff;
-  padding:8px 12px;border-radius:8px;
-  text-decoration:none;font-weight:600;
-  cursor:pointer;
-  position:absolute;right:18px;
+  position:absolute; right:18px;
+  background:var(--accent); color:#fff;
+  padding:8px 12px; border-radius:8px;
+  font-weight:600; cursor:pointer;
 }
 
-/* Title */
+/* TITLE */
 h1.page-title{
-  margin:18px 0 8px;
-  text-align:center;font-family:'Great Vibes',cursive;
-  font-size:42px;color:var(--text);
+  text-align:center;
+  margin:20px 0 10px;
+  font-family:'Great Vibes',cursive;
+  font-size:42px;
 }
 
-/* Filters */
-.filters {
-  max-width:1200px;margin:8px auto;padding:0 16px;
-  display:flex;gap:8px;justify-content:center;flex-wrap:wrap;
+/* FILTERS */
+.filters{
+  max-width:1200px;
+  margin:8px auto;
+  padding:0 16px;
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
 }
 .filter-btn{
-  background:#fff;border:1px solid rgba(86,62,48,0.06);
-  padding:8px 14px;border-radius:999px;
-  cursor:pointer;font-weight:600;color:var(--accent);
+  background:#fff;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,0.06);
+  font-weight:600;
+  cursor:pointer;
 }
 .filter-btn.active{
-  background:var(--accent-2);color:#fff;
-  box-shadow:0 6px 18px rgba(86,62,48,0.12);
+  background:var(--accent-2);
+  color:#fff;
 }
 
-/* Search bar */
+/* SEARCH */
 .search-wrap{
-  max-width:1200px;margin:12px auto;padding:0 16px;
+  max-width:1200px;
+  margin:12px auto;
+  padding:0 16px;
 }
 .search-box{
-  display:flex;gap:10px;align-items:center;
+  display:flex;
+  gap:10px;
 }
 .search-input{
-  flex:1;padding:12px 14px;border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06);font-size:15px;background:#fff;
+  flex:1;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1px solid rgba(0,0,0,0.06);
+  background:#fff;
 }
 .sort-select{
-  padding:10px 12px;border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06);background:#fff;
+  padding:10px 12px;
+  border-radius:10px;
+  background:#fff;
+  border:1px solid rgba(0,0,0,0.06);
 }
 
-/* Grid */
+/* GRID */
 .grid{
-  max-width:1300px;margin:18px auto 80px;padding:0 16px;
-  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  max-width:1300px;
+  margin:18px auto 80px;
+  padding:0 16px;
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
   gap:18px;
 }
 
-/* Card */
+/* PRODUCT CARD */
 .card{
-  background:var(--card);border-radius:12px;padding:10px;
+  background:var(--card);
+  padding:10px;
+  border-radius:12px;
   box-shadow:0 6px 18px rgba(0,0,0,0.06);
-  position:relative;overflow:hidden;
+  position:relative;
 }
 .card .img-wrap{
-  height:180px;border-radius:10px;overflow:hidden;
-  background:#fff;display:flex;align-items:center;justify-content:center;
+  height:180px;
+  background:#fff;
+  border-radius:10px;
+  overflow:hidden;
 }
 .card img{
-  width:100%;height:100%;object-fit:cover;
+  width:100%; height:100%;
+  object-fit:cover;
 }
-.card .meta{margin-top:10px;}
-.card .name{font-weight:700;font-size:16px;}
-.card .cat{color:var(--muted);font-size:13px;margin-top:4px}
-.card .price{font-weight:700;margin-top:6px;color:#222}
+.name{font-weight:700; margin-top:10px;}
+.cat{color:var(--muted); font-size:13px;}
+.price{font-weight:700; margin-top:6px;}
 
-/* Overlay */
-.card .overlay{
-  position:absolute;inset:0;
-  display:flex;align-items:flex-end;justify-content:center;
+/* ENQUIRE OVERLAY */
+.overlay{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:flex-end;
+  justify-content:center;
   pointer-events:none;
 }
-.card .cta{
-  margin:14px;background:linear-gradient(180deg, rgba(255,127,127,0.98), rgba(86,62,48,0.95));
-  color:#fff;padding:10px 14px;border-radius:999px;
-  border:0;cursor:pointer;pointer-events:auto;
-  box-shadow:0 12px 28px rgba(0,0,0,0.18);
-  transform:translateY(10px);opacity:0;transition:all .18s;
+.overlay .cta{
+  pointer-events:auto;
+  background:linear-gradient(180deg, rgba(255,127,127,0.98), rgba(86,62,48,0.95));
+  color:#fff;
+  padding:10px 14px;
+  border-radius:999px;
+  border:none;
+  margin:14px;
+  opacity:0;
+  transform:translateY(10px);
+  transition:all .18s;
 }
-.card:hover .cta{transform:translateY(0);opacity:1}
+.card:hover .cta{
+  opacity:1;
+  transform:translateY(0);
+}
 
-/* Enquiry popup */
+/* ENQUIRE POPUP */
 .enq-popup{
-  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:92%;max-width:420px;background:#fff;border-radius:12px;
-  box-shadow:0 18px 48px rgba(0,0,0,0.35);z-index:4000;
-  display:none;padding:16px;
+  position:fixed; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  background:#fff;
+  width:92%; max-width:420px;
+  border-radius:12px;
+  padding:16px;
+  box-shadow:0 18px 48px rgba(0,0,0,0.35);
+  display:none;
+  z-index:5000;
 }
-.enq-popup .close-x{position:absolute;right:10px;top:8px;font-size:20px;cursor:pointer}
-.enq-popup .row{display:flex;gap:12px;align-items:center}
-.enq-popup img{width:96px;height:96px;object-fit:cover;border-radius:8px}
-.enq-popup textarea{width:100%;height:80px;margin-top:8px;border-radius:8px;padding:8px;border:1px solid #ddd}
-.enq-popup .send{background:#25D366;color:#fff;padding:10px;border-radius:8px;width:100%;cursor:pointer;margin-top:10px}
+.enq-popup .close-x{
+  position:absolute; right:10px; top:10px;
+  cursor:pointer; font-size:22px;
+}
 
-/* Floating buttons */
-.floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:3000;}
-.floating .btn{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.14);cursor:pointer;border:0}
+/* FLOATING BUTTONS (CHAT/WA) */
+.floating{
+  position:fixed; right:18px; bottom:18px;
+  display:flex; flex-direction:column;
+  gap:12px; z-index:2000;
+}
+.floating .btn{
+  width:56px; height:56px;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 6px 18px rgba(0,0,0,0.15);
+}
+.wh{background:#25D366;}
 .chat{background:var(--accent-2);}
-.wh{background:#25D366}
 
-/* ALWAYS VISIBLE Admin Login Button */
+/* ALWAYS VISIBLE ADMIN BUTTON */
 #adminLoginBtn{
   position:fixed;
   left:18px;
   bottom:80px;
   width:50px;
   height:50px;
-  border-radius:12px;
   background:#fff;
   border:2px solid var(--accent);
+  border-radius:12px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -161,10 +216,10 @@ h1.page-title{
   z-index:3000;
 }
 #adminLoginBtn img{
-  width:26px;height:26px;
+  width:26px; height:26px;
 }
 
-/* MANAGE button (shown after login) */
+/* MANAGE BUTTON (after login) */
 #manageFloating{
   position:fixed;
   left:18px;
@@ -173,27 +228,36 @@ h1.page-title{
   color:#fff;
   padding:12px 16px;
   border-radius:10px;
-  display:none;
-  text-decoration:none;
   font-weight:700;
+  text-decoration:none;
+  display:none;
   box-shadow:0 8px 24px rgba(0,0,0,0.14);
   z-index:3000;
 }
 
-/* Contact popup */
+/* CONTACT POPUP */
 .popup-overlay{
-  position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:5000;padding:20px;
+  position:fixed; inset:0;
+  background:rgba(0,0,0,0.45);
+  display:none;
+  justify-content:center;
+  align-items:center;
+  z-index:6000;
 }
-.popup-box{background:#faebe3;padding:22px;border-radius:14px;text-align:center;}
-.close-btn{margin-top:14px;background:var(--accent);color:#fff;padding:10px;border-radius:8px;cursor:pointer;}
+.popup-box{
+  background:#faebe3;
+  padding:22px;
+  border-radius:14px;
+  text-align:center;
+}
 </style>
 </head>
 <body>
 
 <header>
   <a class="home-btn" href="/index.html">Home</a>
-  <img class="logo-img" src="/logo/dorys.PNG" alt="logo">
-  <button class="contact-btn" onclick="openContact()">Contact</button>
+  <img class="logo-img" src="/logo/dorys.PNG">
+  <div class="contact-btn" onclick="openContact()">Contact</div>
 </header>
 
 <h1 class="page-title">Our Products</h1>
@@ -209,11 +273,11 @@ h1.page-title{
 <!-- SEARCH BAR -->
 <div class="search-wrap">
   <div class="search-box">
-    <input id="searchInput" class="search-input" placeholder="Search products..." />
+    <input id="searchInput" class="search-input" placeholder="Search products...">
     <select id="sortSelect" class="sort-select">
       <option value="newest">Newest</option>
-      <option value="price-asc">Price (Low → High)</option>
-      <option value="price-desc">Price (High → Low)</option>
+      <option value="price-asc">Price: Low → High</option>
+      <option value="price-desc">Price: High → Low</option>
     </select>
   </div>
 </div>
@@ -221,37 +285,39 @@ h1.page-title{
 <!-- GRID -->
 <div id="grid" class="grid"></div>
 
-<!-- FLOATING CHAT + WA -->
+<!-- FLOATING BUTTONS -->
 <div class="floating">
   <button class="btn chat" onclick="openContact()">
-    <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png">
+    <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png" width="26">
   </button>
   <a class="btn wh" id="waFloat" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="26">
   </a>
 </div>
 
-<!-- ALWAYS VISIBLE ADMIN BUTTON -->
+<!-- ALWAYS VISIBLE HAMMER ADMIN BUTTON -->
 <div id="adminLoginBtn" onclick="openAdminLogin()">
   <img src="https://cdn-icons-png.flaticon.com/512/753/753244.png">
 </div>
 
-<!-- MANAGE BUTTON (after login) -->
+<!-- MANAGE BUTTON -->
 <a id="manageFloating" href="/admin-products.html">Manage Products</a>
 
-<!-- ENQUIRY POPUP -->
+<!-- ENQUIRE POPUP -->
 <div id="enqPopup" class="enq-popup">
   <span class="close-x" onclick="closeEnq()">×</span>
-  <div class="row">
-    <img id="enqImg">
+  <div style="display:flex;gap:12px;align-items:center">
+    <img id="enqImg" style="width:90px;height:90px;border-radius:10px;">
     <div>
-      <h3 id="enqName"></h3>
+      <h3 id="enqName" style="margin:0"></h3>
       <p id="enqCat"></p>
       <p id="enqPrice"></p>
     </div>
   </div>
   <textarea id="enqMsg" placeholder="Your message..."></textarea>
-  <button class="send" onclick="sendEnquiry()">Send on WhatsApp</button>
+  <button class="send" onclick="sendEnquiry()" style="margin-top:10px;background:#25D366;color:#fff;border:0;padding:10px;width:100%;border-radius:8px;cursor:pointer;">
+    Send on WhatsApp
+  </button>
 </div>
 
 <!-- CONTACT POPUP -->
@@ -260,7 +326,7 @@ h1.page-title{
     <h3>Contact Us</h3>
     <p>📞 <a href="tel:+917972032790">+91 7972032790</a></p>
     <p>📍 Dory's Bakehouse, Pune</p>
-    <div class="close-btn" onclick="closeContact()">Close</div>
+    <div class="close-btn" onclick="closeContact()" style="background:var(--accent);color:#fff;padding:10px;border-radius:8px;cursor:pointer;">Close</div>
   </div>
 </div>
 
@@ -269,27 +335,37 @@ h1.page-title{
 const WA_NUMBER = "919168445014";
 document.getElementById("waFloat").href = "https://wa.me/" + WA_NUMBER;
 
-/* COOKIE READER */
+/* COOKIE */
 function readCookie(name){
   const c = document.cookie.split('; ').find(r=>r.startsWith(name+'='));
   return c ? c.split('=')[1] : null;
 }
 
-/* ADMIN LOGIN BUTTON LOGIC */
+/* SHOW MANAGE BUTTON */
+function showManageBtn(){
+  document.getElementById("manageFloating").style.display="block";
+  document.getElementById("adminLoginBtn").style.display="none";
+}
+
+/* HAMMER BUTTON BEHAVIOR */
 function openAdminLogin(){
+  // Already logged in -> go directly to Upload Page
+  if(readCookie("admin") === "4321"){
+    window.location.href = "/upload.html";
+    return;
+  }
+
   const pin = prompt("Enter Admin PIN:");
   if(pin === "4321"){
     document.cookie = "admin=4321; path=/; max-age=86400;";
-    alert("Admin logged in!");
     showManageBtn();
+    window.location.href = "/upload.html"; // AUTO redirect after login
+  } else if(pin !== null){
+    alert("Incorrect PIN");
   }
 }
-function showManageBtn(){
-  document.getElementById("manageFloating").style.display = "block";
-  document.getElementById("adminLoginBtn").style.display = "none";
-}
 
-/* ON LOAD: check cookie */
+/* ON LOAD */
 window.addEventListener("DOMContentLoaded", ()=>{
   if(readCookie("admin") === "4321"){
     showManageBtn();
@@ -297,22 +373,20 @@ window.addEventListener("DOMContentLoaded", ()=>{
   loadProducts();
 });
 
-/* Contact popup */
+/* CONTACT POPUP */
 function openContact(){document.getElementById("contactPopup").style.display="flex";}
 function closeContact(){document.getElementById("contactPopup").style.display="none";}
 
-/* Products */
+/* PRODUCTS */
 let products=[];
 async function loadProducts(){
-  const res = await fetch("/products/list");
-  products = await res.json();
+  const r = await fetch("/products/list");
+  products = await r.json();
   render();
 }
 
 function escapeHtml(s){
-  return (s||"").toString().replace(/[&<>"']/g,c=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[c]));
+  return (s||"").toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
 let activeCategory="all";
@@ -329,20 +403,20 @@ document.getElementById("searchInput").oninput = render;
 document.getElementById("sortSelect").onchange = render;
 
 function render(){
-  const grid = document.getElementById("grid");
   const q = document.getElementById("searchInput").value.toLowerCase();
   const sortMode = document.getElementById("sortSelect").value;
 
   let list = products.filter(p=>{
-    const catOK = activeCategory==="all" || (p.category||"").toLowerCase() === activeCategory.toLowerCase();
+    const catOK = activeCategory==="all" || (p.category||"").toLowerCase()===activeCategory.toLowerCase();
     const text = (p.name+" "+p.category+" "+p.description).toLowerCase();
     return catOK && (!q || text.includes(q));
   });
 
-  if(sortMode==="price-asc"){list.sort((a,b)=>a.price-b.price);}
-  if(sortMode==="price-desc"){list.sort((a,b)=>b.price-a.price);}
-  if(sortMode==="newest"){list.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));}
+  if(sortMode==="price-asc") list.sort((a,b)=>a.price-b.price);
+  if(sortMode==="price-desc") list.sort((a,b)=>b.price-a.price);
+  if(sortMode==="newest") list.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
 
+  const grid = document.getElementById("grid");
   grid.innerHTML="";
 
   list.forEach(p=>{
@@ -350,20 +424,17 @@ function render(){
     card.className="card";
     card.innerHTML=`
       <div class="img-wrap"><img src="${p.image}" alt=""></div>
-      <div class="meta">
-        <div class="name">${escapeHtml(p.name)}</div>
-        <div class="cat">${escapeHtml(p.category)}</div>
-        <div class="price">₹ ${escapeHtml(p.price)}</div>
-      </div>
-      <div class="overlay">
-        <button class="cta">Enquire Now</button>
-      </div>`;
+      <div class="name">${escapeHtml(p.name)}</div>
+      <div class="cat">${escapeHtml(p.category)}</div>
+      <div class="price">₹ ${escapeHtml(p.price)}</div>
+      <div class="overlay"><button class="cta">Enquire Now</button></div>
+    `;
     card.querySelector(".cta").onclick = ()=>openEnquiry(p);
     grid.appendChild(card);
   });
 }
 
-/* Enquiry Popup */
+/* ENQUIRY */
 let currentProduct=null;
 function openEnquiry(p){
   currentProduct=p;
@@ -379,10 +450,13 @@ function closeEnq(){
 }
 function sendEnquiry(){
   const msg=document.getElementById("enqMsg").value;
-  const url=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(`Enquiry for ${currentProduct.name} (${currentProduct.category}) | Price: ₹${currentProduct.price} \n\nMessage: ${msg}`)}`;
+  const url=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
+    `Enquiry for ${currentProduct.name} (${currentProduct.category})\nPrice: ₹${currentProduct.price}\n\n${msg}`
+  )}`;
   window.open(url,"_blank");
   closeEnq();
 }
 </script>
+
 </body>
 </html>
