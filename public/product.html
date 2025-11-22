@@ -1,272 +1,204 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Products – Dory's Bakehouse</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Our Products – Dory's Bakehouse</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
 
-    <style>
-        :root {
-            --bg: #FAF0DE;
-            --accent: #563e30;
-            --text: #563e30;
-        }
+<style>
+:root{
+    --bg:#faebe3;
+    --accent:#563e30;
+    --text:#563e30;
+    --card:rgba(253,239,193,0.45);
+}
 
-        body {
-            margin: 0;
-            background: var(--bg);
-            font-family: system-ui;
-            overflow-x: hidden;
-        }
+/* Page */
+body{
+    margin:0;
+    font-family:'Poppins',system-ui;
+    background:var(--bg);
+    color:var(--text);
+}
 
-        /* HEADER */
-        header {
-            width: 100%;
-            background: #fff;
-            padding: 14px 20px;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            position: relative;
-        }
+/* Header */
+header{
+    width:100%;
+    background:#fff;
+    padding:14px 20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+header img.logo{
+    height:64px;
+}
+.contact-btn{
+    position:absolute;
+    right:30px;
+    background:var(--accent);
+    color:#fff;
+    padding:10px 15px;
+    border-radius:8px;
+    text-decoration:none;
+    cursor:pointer;
+    font-weight:500;
+}
 
-        header img.logo {
-            height: 64px;
-        }
+/* Contact popup */
+.popup-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:2000;
+}
+.popup-box{
+    background:#faebe3;
+    padding:22px;
+    width:90%;
+    max-width:380px;
+    border-radius:14px;
+    text-align:center;
+    box-shadow:0 6px 22px rgba(0,0,0,0.14);
+}
+.popup-box h3{
+    margin:0;
+    font-size:22px;
+    color:var(--text);
+}
+.popup-box p{
+    font-size:18px;
+    margin:10px 0;
+}
+.close-btn{
+    margin-top:14px;
+    background:var(--accent);
+    color:#fff;
+    padding:10px 18px;
+    border-radius:8px;
+    display:inline-block;
+    cursor:pointer;
+}
 
-        .left-btn,
-        .right-btn,
-        .manage-btn {
-            position: absolute;
-            background: var(--accent);
-            color: #fff;
-            padding: 10px 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-size: 15px;
-            font-weight: 500;
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-        }
+/* Products Grid */
+.products-container{
+    max-width:1000px;
+    margin:40px auto;
+    padding:16px;
+}
+.products-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+    gap:18px;
+}
+.product-card{
+    background:var(--card);
+    padding:14px;
+    border-radius:12px;
+    box-shadow:0 6px 16px rgba(0,0,0,0.06);
+    text-align:center;
+}
+.product-card img{
+    width:100%;
+    height:200px;
+    object-fit:cover;
+    border-radius:10px;
+}
+.product-card h4{
+    margin:12px 0 6px;
+    font-size:18px;
+    color:var(--text);
+}
+.product-card p{
+    font-size:14px;
+    color:#6e5a52;
+}
 
-        .left-btn { left: 25px; }
-        .right-btn { right: 25px; }
-
-        /* TITLE */
-        h2 {
-            text-align: center;
-            font-family: 'Great Vibes', cursive;
-            color: var(--text);
-            font-size: 42px;
-            margin: 20px 0;
-        }
-
-        /* PRODUCT GRID */
-        .products-grid {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-            display: grid;
-            gap: 18px;
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        }
-
-        .product-card {
-            background: #ffffffd5;
-            border-radius: 12px;
-            box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-            overflow: hidden;
-            padding-bottom: 12px;
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 190px;
-            object-fit: cover;
-            background: #eee;
-        }
-
-        .product-info {
-            padding: 12px;
-            text-align: center;
-        }
-        .product-info h3 {
-            margin: 6px 0;
-            color: var(--text);
-            font-size: 18px;
-        }
-        .product-info p {
-            margin: 5px 0;
-            font-size: 14px;
-            color: #444;
-        }
-        .price {
-            margin-top: 6px;
-            color: var(--accent);
-            font-weight: bold;
-            font-size: 16px;
-        }
-
-        /* MANAGE BUTTON CENTER */
-        .manage-btn {
-            margin: 20px auto;
-            display: block;
-            width: fit-content;
-        }
-
-        /* ADMIN POPUP */
-        #adminPopup {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.45);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 5000;
-        }
-        #adminPopup .box {
-            background: #faebe3;
-            padding: 25px;
-            border-radius: 12px;
-            width: 90%;
-            max-width: 330px;
-            text-align: center;
-            box-shadow: 0 6px 22px rgba(0,0,0,0.14);
-        }
-        #adminError {
-            color: red;
-            font-size: 14px;
-            margin-top: 8px;
-            display: none;
-        }
-    </style>
+/* Manage Button */
+.manage-btn{
+    position:fixed;
+    bottom:20px;
+    left:20px;
+    background:var(--accent);
+    color:#fff;
+    padding:12px 20px;
+    border-radius:10px;
+    text-decoration:none;
+    font-weight:600;
+    box-shadow:0 4px 12px rgba(0,0,0,0.14);
+}
+</style>
 </head>
 
 <body>
 
 <header>
-    <!-- Left button -->
-    <a class="left-btn" href="/index.html">Home</a>
-
-    <!-- Logo -->
-    <img class="logo" src="logo/dorys.PNG" alt="Dory’s Bakehouse Logo">
-
-    <!-- Right button -->
-    <a class="right-btn" onclick="openContactPopup()">Contact</a>
+    <img src="logo/dorys.PNG" class="logo" alt="">
+    <a class="contact-btn" onclick="openPopup()">Contact</a>
 </header>
 
-<h2>Baked fresh with love and sugar</h2>
+<h2 style="text-align:center;font-family:'Great Vibes';font-size:40px;margin:20px 0">
+    Our Products
+</h2>
 
-<!-- PRODUCT LIST GRID -->
-<div class="products-grid" id="productsGrid">
-    Loading products...
+<div class="products-container">
+    <div class="products-grid" id="productsGrid">
+        <!-- JS Loads Products -->
+    </div>
 </div>
 
-<!-- MANAGE PRODUCTS BUTTON -->
-<a class="manage-btn" onclick="openAdminLogin()">Manage Products</a>
+<a href="/admin-products.html" class="manage-btn">Manage Products</a>
 
-<!-- ADMIN LOGIN POPUP -->
-<div id="adminPopup">
-    <div class="box">
-        <h3 style="margin:0;color:#563e30">Enter Admin PIN</h3>
-
-        <input id="adminPinInput" type="password" maxlength="6"
-               style="margin-top:14px;width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:16px;text-align:center;">
-
-        <button onclick="checkAdminPin()" style="
-            margin-top:14px;background:#563e30;color:#fff;border:none;
-            padding:10px 18px;border-radius:8px;cursor:pointer;">Submit</button>
-
-        <div id="adminError">Incorrect PIN</div>
+<!-- CONTACT POPUP -->
+<div id="contactPopup" class="popup-overlay">
+    <div class="popup-box">
+        <h3>Contact Us</h3>
+        <p>📞 <a href="tel:+917972932790 style="text-decoration:none;color:#563e30;font-weight:700">
+            +91 9168445014
+        </a></p>
+        <p>📍 Dory's Bakehouse, Pune</p>
+        <span class="close-btn" onclick="closePopup()">Close</span>
     </div>
 </div>
 
 <script>
-    /* -----------------------------
-       Load Product List from Server
-    ------------------------------ */
-    async function loadProducts() {
-        const grid = document.getElementById("productsGrid");
+/* Load products */
+async function loadProducts(){
+    const res = await fetch('/products/list');
+    const arr = await res.json();
+    const box = document.getElementById('productsGrid');
 
-        try {
-            const res = await fetch("/products/list", { cache: "no-cache" });
-            const products = await res.json();
-
-            if (!products.length) {
-                grid.innerHTML = "<p style='text-align:center;color:#666;'>No products added yet.</p>";
-                return;
-            }
-
-            grid.innerHTML = "";
-
-            products.forEach(p => {
-                const card = document.createElement("div");
-                card.className = "product-card";
-
-                const img = document.createElement("img");
-                img.src = p.image;
-                img.onerror = () => img.src = "/images/products/default-sample.png";
-
-                const info = document.createElement("div");
-                info.className = "product-info";
-
-                info.innerHTML = `
-                <h3>${p.name}</h3>
-                <p>${p.description || ""}</p>
-                <div class="price">₹ ${p.price || ""}</div>
-            `;
-
-                card.appendChild(img);
-                card.appendChild(info);
-                grid.appendChild(card);
-            });
-
-        } catch (err) {
-            console.error(err);
-            document.getElementById("productsGrid").innerHTML =
-                "<p style='color:red;text-align:center;'>Unable to load products.</p>";
-        }
+    if(!arr.length){
+        box.innerHTML = `<p style="text-align:center;font-size:18px;">No products added yet.</p>`;
+        return;
     }
 
-    loadProducts();
+    box.innerHTML = arr.map(p => `
+        <div class="product-card">
+            <img src="${p.image}">
+            <h4>${p.name}</h4>
+            <p>${p.description}</p>
+        </div>
+    `).join('');
+}
+loadProducts();
 
-    /* -----------------------------
-       Admin PIN Popup
-    ------------------------------ */
-    function openAdminLogin() {
-        document.getElementById("adminPopup").style.display = "flex";
-        document.getElementById("adminPinInput").value = "";
-        document.getElementById("adminError").style.display = "none";
-    }
-
-    function checkAdminPin() {
-        const pin = document.getElementById("adminPinInput").value;
-
-        if (pin === "4321") {
-            window.location.href = "/admin-products.html";
-        } else {
-            document.getElementById("adminError").style.display = "block";
-        }
-    }
-
-    document.getElementById("adminPopup").addEventListener("click", e => {
-        if (e.target.id === "adminPopup") {
-            document.getElementById("adminPopup").style.display = "none";
-        }
-    });
-
-    /* -----------------------------
-       Contact Button (from index)
-    ------------------------------ */
-    function openContactPopup() {
-        alert("Contact Us \n 📞 Contact: +91 9168445014\n📍 Dory's Bakehouse, Pune");
-    }
+/* CONTACT POPUP */
+function openPopup(){
+    document.getElementById('contactPopup').style.display = 'flex';
+}
+function closePopup(){
+    document.getElementById('contactPopup').style.display = 'none';
+}
 </script>
 
 </body>
