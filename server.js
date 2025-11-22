@@ -1,11 +1,11 @@
 /**
  * server.js (updated)
- * - Includes endpoints:
- *    GET /images/list       -> array of filenames (existing)
- *    GET /images/history    -> [{ file, mtime, size }]
- *    GET /admin/disk-info   -> { totalBytes, usedBytes, usedPct, fileCount }
+ * - All previous functionality (uploads, products, history, disk-info)
+ * - Adds BOTH:
+ *     POST /images/delete    -> accepts { filename } or { files: [ ... ] } (requires admin)
+ *     DELETE /images/delete/:filename  -> single delete via URL (requires admin)
  *
- * Disk size (GB) set from admin input (user gave 5)
+ * PLEASE replace your existing server.js with this file.
  */
 
 const express = require("express");
@@ -20,10 +20,7 @@ const cors = require("cors");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-/* ----------------- CONFIG ----------------- */
-// disk size in GB (user provided)
-const DISK_SIZE_GB = 5;
-
+/* -------------------- Paths -------------------- */
 const PUBLIC_DIR = path.join(__dirname, "public");
 const IMAGES_DIR = path.join(PUBLIC_DIR, "images");
 const TMP_DIR = path.join(__dirname, "tmp_uploads");
@@ -32,20 +29,24 @@ const DATA_DIR = path.join(PUBLIC_DIR, "data");
 const PRODUCTS_JSON = path.join(DATA_DIR, "products.json");
 
 const ALLOWED = /\.(jpg|jpeg|png|gif|webp|svg|heic|heif)$/i;
+const DISK_SIZE_GB = 5; // keep consistent with what you configured
 
-/* ----------------- MIDDLEWARE ----------------- */
+/* -------------------- Middleware -------------------- */
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(PUBLIC_DIR));
 app.use("/images", express.static(IMAGES_DIR));
 
 function requireAdmin(req, res, next) {
-  const cookie = req.headers.cookie || "";
+  const cookie = (req.headers.cookie || "");
   if (cookie.includes("admin=4321")) return next();
+  // Also allow X-Admin header for programmatic calls (optional)
+  if (req.headers['x-admin-pin'] === '4321') return next();
   return res.status(403).json({ error: "Admin authentication required" });
 }
 
-/* ----------------- INIT FOLDERS ----------------- */
+/* -------------------- Ensure folders -------------------- */
 async function ensureFolders() {
   await fsp.mkdir(IMAGES_DIR, { recursive: true });
   await fsp.mkdir(TMP_DIR, { recursive: true });
@@ -57,29 +58,38 @@ async function ensureFolders() {
     await fsp.writeFile(PRODUCTS_JSON, JSON.stringify([], null, 2));
   }
 }
-ensureFolders();
+ensureFolders().catch(console.error);
 
-/* ----------------- MULTER ----------------- */
+/* -------------------- Multer -------------------- */
 const upload = multer({
   storage: multer.diskStorage({
     destination: TMP_DIR,
     filename: (req, f, cb) => cb(null, Date.now() + "-" + f.originalname)
   })
 });
-const uploadProducts = multer({
-  storage: multer.diskStorage({
-    destination: TMP_DIR,
-    filename: (req, f, cb) => cb(null, Date.now() + "-" + f.originalname)
-  })
-});
+const uploadProducts = upload; // reuse same config
 
-/* ----------------- HELPERS ----------------- */
+/* -------------------- Helpers -------------------- */
 
-// Recursively walk directory and sum sizes; return array of {file, size, mtime}
+// sanitize file name (prevent traversal)
+function safeFilename(name) {
+  if (!name) return null;
+  // remove any path parts
+  name = path.basename(name);
+  // disallow suspicious chars
+  if (name.includes("..") || name.includes("/") || name.includes("\\")) return null;
+  return name;
+}
+
 async function walkImages(dir) {
   const results = [];
   async function walk(d) {
-    const items = await fsp.readdir(d, { withFileTypes: true });
+    let items;
+    try {
+      items = await fsp.readdir(d, { withFileTypes: true });
+    } catch (e) {
+      return;
+    }
     for (const it of items) {
       const full = path.join(d, it.name);
       if (it.isDirectory()) {
@@ -87,33 +97,24 @@ async function walkImages(dir) {
       } else {
         if (ALLOWED.test(it.name.toLowerCase())) {
           const s = await fsp.stat(full);
-          // relative filename to IMAGES_DIR root
           const rel = path.relative(IMAGES_DIR, full).replace(/\\/g, "/");
           results.push({ file: rel, size: s.size, mtime: s.mtime.toISOString() });
         }
       }
     }
   }
-  try {
-    await walk(dir);
-  } catch (e) {
-    // if directory doesn't exist, return empty
-  }
+  await walk(dir);
   return results;
 }
 
-/* ----------------- ROUTES ----------------- */
+/* -------------------- Routes -------------------- */
 
-/**
- * GET /images/list
- * Returns filenames (newest first) — kept for backward compatibility
- */
+/* GET /images/list  -- top-level files (keeps compatibility) */
 app.get("/images/list", async (req, res) => {
   res.set("Cache-Control", "no-store");
   try {
     const files = await fsp.readdir(IMAGES_DIR);
     const filtered = files.filter(f => ALLOWED.test(f));
-    // only top-level; sort by mtime
     const detailed = await Promise.all(
       filtered.map(async file => {
         const s = await fsp.stat(path.join(IMAGES_DIR, file));
@@ -123,86 +124,134 @@ app.get("/images/list", async (req, res) => {
     detailed.sort((a, b) => b.mtime - a.mtime);
     res.json(detailed.map(i => i.file));
   } catch (err) {
-    res.status(500).json({ error: "Cannot read images" });
+    console.error("/images/list error", err);
+    res.status(500).json({ error: "Could not read images" });
   }
 });
 
-/**
- * GET /images/history
- * Returns a detailed list of images (recursive) with sizes & timestamps — newest first
- */
+/* GET /images/history  -- recursive details (admin) */
 app.get("/images/history", requireAdmin, async (req, res) => {
   try {
     const arr = await walkImages(IMAGES_DIR);
     arr.sort((a, b) => new Date(b.mtime) - new Date(a.mtime));
-    res.json(arr.slice(0, 500)); // limit to 500 entries
+    res.json(arr.slice(0, 1000));
   } catch (err) {
-    console.error("history error", err);
+    console.error("/images/history error", err);
     res.status(500).json({ error: "Failed" });
   }
 });
 
-/**
- * GET /admin/disk-info
- * Returns disk usage info (based on sum of files in public/images and configured disk size)
- */
+/* GET /admin/disk-info (admin) */
 app.get("/admin/disk-info", requireAdmin, async (req, res) => {
   try {
     const files = await walkImages(IMAGES_DIR);
     const usedBytes = files.reduce((s, f) => s + (f.size || 0), 0);
-    const totalBytes = Number(DISK_SIZE_GB) * 1024 * 1024 * 1024; // GB -> bytes
+    const totalBytes = Number(DISK_SIZE_GB) * 1024 * 1024 * 1024;
     const usedPct = totalBytes > 0 ? Math.round((usedBytes / totalBytes) * 100) : 0;
     res.json({
       totalBytes,
       usedBytes,
       usedPct,
-      fileCount: files.length
+      fileCount: files.length,
+      totalGB: DISK_SIZE_GB,
+      usedMB: usedBytes / (1024 * 1024)
     });
   } catch (err) {
-    console.error('disk-info error', err);
-    res.status(500).json({ error: 'Failed' });
+    console.error("/admin/disk-info error", err);
+    res.status(500).json({ error: "Failed" });
   }
 });
 
-/* ----------------- UPLOAD / DELETE / PRODUCTS (existing handlers) ----------------- */
-
-/* Upload images (Sharp handles everything on server) */
-app.post("/upload", requireAdmin, upload.array("images", 20), async (req, res) => {
+/* Upload images (admin) */
+app.post("/upload", requireAdmin, upload.array("images", 50), async (req, res) => {
   if (!req.files?.length) return res.status(400).json({ error: "No files" });
   const results = [];
   for (const file of req.files) {
     try {
       const tmp = file.path;
       const buffer = await fsp.readFile(tmp);
-      const safe = path.basename(file.originalname, path.extname(file.originalname))
+      const base = path.basename(file.originalname, path.extname(file.originalname))
         .replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-_]/g, "");
       const id = uuidv4().slice(0, 8);
-      const finalName = `${safe}-${id}.jpg`;
+      const finalName = `${base}-${id}.jpg`;
       const finalPath = path.join(IMAGES_DIR, finalName);
-      await sharp(buffer).jpeg({ quality: 85 }).resize({ width: 1600, withoutEnlargement: true }).toFile(finalPath);
-      await fsp.unlink(tmp);
+
+      await sharp(buffer)
+        .jpeg({ quality: 85 })
+        .resize({ width: 1600, withoutEnlargement: true })
+        .toFile(finalPath);
+
+      await fsp.unlink(tmp).catch(() => {});
       results.push({ savedAs: finalName });
+
     } catch (err) {
-      console.error('upload error', err);
+      console.error("upload processing error", err);
       results.push({ error: err.message });
     }
   }
   res.json({ uploaded: results });
 });
 
-/* Delete image (gallery only) */
-app.post("/images/delete", requireAdmin, async (req, res) => {
-  const { filename } = req.body;
-  if (!filename || filename.includes("/") || filename.includes("..")) return res.status(400).json({ error: "Invalid filename" });
+/* ------------------ DELETE ROUTES ------------------ */
+
+/**
+ * POST /images/delete
+ * Accepts either:
+ *  - { filename: "..." }        (single)
+ *  - { files: ["a.jpg","b.png"] }  (batch)
+ *
+ * Requires admin.
+ */
+app.post("/images/delete", requireAdmin, express.json(), async (req, res) => {
+  const { filename, files } = req.body || {};
+  const toDelete = [];
+
+  if (filename) toDelete.push(filename);
+  if (Array.isArray(files)) toDelete.push(...files);
+
+  if (toDelete.length === 0) {
+    return res.status(400).json({ error: "No filename(s) provided" });
+  }
+
+  const results = { deleted: [], errors: [] };
+
+  for (const raw of toDelete) {
+    const safe = safeFilename(raw);
+    if (!safe) {
+      results.errors.push({ file: raw, error: "Invalid filename" });
+      continue;
+    }
+    const full = path.join(IMAGES_DIR, safe);
+    try {
+      await fsp.unlink(full);
+      results.deleted.push(safe);
+    } catch (err) {
+      results.errors.push({ file: safe, error: err.code || err.message });
+    }
+  }
+
+  res.json(results);
+});
+
+/**
+ * DELETE /images/delete/:filename
+ * Single-file delete via URL (admin)
+ */
+app.delete("/images/delete/:filename", requireAdmin, async (req, res) => {
+  const raw = req.params.filename;
+  const safe = safeFilename(raw);
+  if (!safe) return res.status(400).json({ error: "Invalid filename" });
+  const full = path.join(IMAGES_DIR, safe);
   try {
-    await fsp.unlink(path.join(IMAGES_DIR, filename));
-    res.json({ success: true });
-  } catch {
-    res.status(404).json({ error: "File not found" });
+    await fsp.unlink(full);
+    res.json({ success: true, deleted: safe });
+  } catch (err) {
+    res.status(404).json({ error: "Not found", details: err.message });
   }
 });
 
-/* Products helpers (same as before) */
+/* ------------------ PRODUCTS (unchanged) ------------------ */
+
 async function readProducts() {
   try { return JSON.parse(await fsp.readFile(PRODUCTS_JSON, "utf8")); } catch { return []; }
 }
@@ -218,31 +267,56 @@ app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (r
   try {
     const { name, description, price } = req.body;
     if (!name?.trim()) return res.status(400).json({ error: "Name required" });
+
     let imageUrl = "/images/products/default-sample.png";
     if (req.file) {
-      const tmp = req.file.path; const buffer = await fsp.readFile(tmp);
-      const safe = path.basename(req.file.originalname, path.extname(req.file.originalname)).replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-_]/g, "");
-      const id = uuidv4(); const finalName = `${safe}-${id}.jpg`; const finalPath = path.join(PRODUCTS_IMG_DIR, finalName);
-      await sharp(buffer).jpeg({ quality: 85 }).resize({ width: 1600, withoutEnlargement: true }).toFile(finalPath);
-      await fsp.unlink(tmp); imageUrl = "/images/products/" + finalName;
+      const tmp = req.file.path;
+      const buffer = await fsp.readFile(tmp);
+      const safe = path.basename(req.file.originalname, path.extname(req.file.originalname))
+        .replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-_]/g, "");
+      const id = uuidv4();
+      const finalName = `${safe}-${id}.jpg`;
+      const finalPath = path.join(PRODUCTS_IMG_DIR, finalName);
+      await sharp(buffer)
+        .jpeg({ quality: 85 })
+        .resize({ width: 1600, withoutEnlargement: true })
+        .toFile(finalPath);
+      await fsp.unlink(tmp).catch(()=>{});
+      imageUrl = "/images/products/" + finalName;
     }
+
     const list = await readProducts();
     const newProd = { id: uuidv4(), name: name.trim(), description: (description||"").trim(), price: price || "", image: imageUrl, createdAt: new Date().toISOString() };
-    list.push(newProd); await writeProducts(list);
+    list.push(newProd);
+    await writeProducts(list);
+
     res.json({ success: true, product: newProd });
   } catch (err) {
-    console.error('add product error', err); res.status(500).json({ error: 'Failed' });
+    console.error("products/add error", err);
+    res.status(500).json({ error: "Failed" });
   }
 });
 
-app.post("/products/delete", requireAdmin, async (req, res) => {
-  const { id } = req.body;
-  let list = await readProducts(); const idx = list.findIndex(p => p.id === id);
-  if (idx === -1) return res.status(404).json({ error: 'Not found' });
-  const removed = list.splice(idx, 1)[0]; await writeProducts(list);
-  if (removed.image?.startsWith("/images/products/")) fsp.unlink(path.join(PRODUCTS_IMG_DIR, removed.image.replace("/images/products/", ""))).catch(()=>{});
-  res.json({ success: true });
+app.post("/products/delete", requireAdmin, express.json(), async (req, res) => {
+  try {
+    const { id } = req.body;
+    let products = await readProducts();
+    const idx = products.findIndex(p => p.id === id);
+    if (idx === -1) return res.status(404).json({ error: "product not found" });
+    const [removed] = products.splice(idx, 1);
+    await writeProducts(products);
+    if (removed && removed.image && removed.image.startsWith("/images/products/")) {
+      const filename = removed.image.replace("/images/products/", "");
+      fsp.unlink(path.join(PRODUCTS_IMG_DIR, filename)).catch(()=>{});
+    }
+    res.json({ success: true });
+  } catch (err) {
+    console.error("products/delete error", err);
+    res.status(500).json({ error: "delete failed" });
+  }
 });
 
-/* ----------------- START ----------------- */
-app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+/* -------------------- Start server -------------------- */
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
