@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Dory's Bakehouse</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #FAF0DE;
+            --accent: #563e30;
+            --text: #563e30;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui;
+            background: var(--bg);
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        header {
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 14px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        header img.logo {
+            height: 64px;
+            width: auto;
+        }
+
+        .products-btn,
+        .contact-btn {
+            position: absolute;
+            background: var(--accent);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .products-btn { left: 25px; }
+        .contact-btn  { right: 35px; }
+
+        h2 {
+            text-align: center;
+            font-family: 'Great Vibes', cursive;
+            color: var(--text);
+            font-size: 40px;
+            margin-top: 18px;
+        }
+
+        /* GALLERY */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            max-width: 1300px;
+            margin: 0 auto 40px;
+            padding: 16px;
+        }
+        @media (max-width:1100px){ .gallery{grid-template-columns:repeat(4,1fr);} }
+        @media (max-width:900px){ .gallery{grid-template-columns:repeat(3,1fr);} }
+        @media (max-width:640px){ .gallery{grid-template-columns:repeat(2,1fr);} }
+        @media (max-width:420px){ .gallery{grid-template-columns:repeat(1,1fr);} }
+
+        .card {
+            background: rgba(253,239,193,0.45);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .card img:hover {
+            transform: scale(1.03);
+            filter: saturate(1.12);
+        }
+
+        .loader {
+            text-align: center;
+            padding: 22px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        /* CONTACT POPUP */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.45);
+            z-index: 2000;
+        }
+        .popup-box {
+            background: #faebe3;
+            padding: 22px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.14);
+            text-align: center;
+        }
+        .popup-box h3 { margin: 0; color: var(--text); }
+        .popup-box p { font-size: 18px; margin: 10px 0; }
+        .close-btn {
+            background: var(--accent);
+            padding: 10px 18px;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        /* IMAGE VIEWER */
+        .image-viewer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.86);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .image-viewer img {
+            max-width: 95%;
+            max-height: 92%;
+            border-radius: 10px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+        }
+        .image-viewer-close {
+            position: absolute;
+            top: 18px;
+            right: 26px;
+            font-size: 34px;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        /* FLOATING BUTTONS */
+        .floating-buttons {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2000;
+        }
+        .whatsapp-btn,
+        .chat-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            cursor: pointer;
+        }
+        .whatsapp-btn { background: #25D366; }
+        .chat-btn { background: #ff7f7f; }
+        .floating-buttons img { width: 28px; height: 28px; }
+
+    </style>
+</head>
+
+<body>
+
+<!-- Floating Chat & WhatsApp Buttons -->
+<div class="floating-buttons">
+    <div class="chat-btn" onclick="openPopup()">
+        <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png">
+    </div>
+
+    <a class="whatsapp-btn" href="https://wa.me/9168445014" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+    </a>
+</div>
+
+<!-- HEADER -->
+<header>
+    <!-- LEFT: Products Button -->
+    <a href="/product.html" class="products-btn">Products</a>
+
+    <!-- CENTER: Logo -->
+    <img class="logo" src="logo/dorys.PNG" alt="Dory's Bakehouse Logo">
+
+    <!-- RIGHT: Contact Button -->
+    <a onclick="openPopup()" class="contact-btn">Contact</a>
+</header>
+
+<h2>Not Just Baked. Beautifully Born.</h2>
+
+<div class="gallery" id="gallery"></div>
+<div class="loader" id="loader">Scroll down to load more</div>
+
+<!-- CONTACT POPUP -->
+<div class="popup-overlay" id="contactPopup">
+    <div class="popup-box">
+        <h3>Contact Us</h3>
+        <p>📞 <a href="tel:+919168445014" style="color:var(--text);text-decoration:none">+91 9168445014</a></p>
+        <p>📍 Dory's Bakehouse, Pune</p>
+        <span class="close-btn" onclick="closePopup()">Close</span>
+    </div>
+</div>
+
+<!-- IMAGE VIEWER -->
+<div class="image-viewer" id="imgViewer">
+    <span class="image-viewer-close" onclick="closeImageViewer()">×</span>
+    <img id="viewerImg" src="">
+</div>
+
+<script>
+    let files = [];
+    let index = 0;
+    const batchSize = 12;
+
+    const gallery = document.getElementById("gallery");
+    const loader = document.getElementById("loader");
+
+    async function fetchList(){
+        const res = await fetch("/images/list", { cache:"no-cache" });
+        return await res.json();
+    }
+
+    function createCard(src){
+        const card = document.createElement("div");
+        card.className = "card";
+        const img = document.createElement("img");
+        img.src = src;
+        img.onclick = () => openImage(src);
+        card.appendChild(img);
+        return card;
+    }
+
+    async function loadMore(){
+        if(index >= files.length){
+            loader.innerText = "No more images";
+            return;
+        }
+        const slice = files.slice(index, index + batchSize);
+        slice.forEach(f => gallery.appendChild(createCard("/images/"+f)));
+        index += batchSize;
+    }
+
+    async function init(){
+        files = await fetchList();
+
+        const observer = new IntersectionObserver(e=>{
+            if(e[0].isIntersecting) loadMore();   //<-- FIXED HERE
+        }, {rootMargin:"300px"});
+
+        observer.observe(loader);
+        loadMore();
+    }
+    init();
+
+    /* CONTACT POPUP */
+    function openPopup(){
+        document.getElementById("contactPopup").style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+    function closePopup(){
+        document.getElementById("contactPopup").style.display = "none";
+        document.body.style.overflow = "";
+    }
+
+    /* IMAGE VIEWER */
+    function openImage(src){
+        document.getElementById("viewerImg").src = src;
+        document.getElementById("imgViewer").style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+    function closeImageViewer(){
+        document.getElementById("imgViewer").style.display = "none";
+        document.getElementById("viewerImg").src = "";
+        document.body.style.overflow = "";
+    }
+</script>
+
+</body>
+</html>

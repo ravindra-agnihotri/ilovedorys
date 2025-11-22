@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Admin — Upload Images</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg:#FAF0DE;
+            --accent:#563e30;
+            --text:#563e30;
+        }
+        * { box-sizing:border-box; }
+
+        body {
+            margin:0;
+            font-family:system-ui;
+            background:var(--bg);
+            padding:18px;
+            overflow-x:hidden;
+        }
+
+        .wrap {
+            max-width:980px;
+            margin:0 auto;
+            background:#fff;
+            padding:20px;
+            border-radius:12px;
+            box-shadow:0 8px 30px rgba(0,0,0,0.06);
+        }
+
+        /* HEADER */
+        .header {
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            gap:12px;
+        }
+
+        .logo-row {
+            display:flex;
+            gap:12px;
+            align-items:center;
+        }
+        .logo-row img {
+            height:56px;
+            border-radius:8px;
+        }
+
+        /* ADMIN MENU */
+        .actions {
+            display:flex;
+            gap:10px;
+            align-items:center;
+        }
+        .admin-link {
+            background:var(--accent);
+            color:#fff;
+            padding:9px 14px;
+            border-radius:8px;
+            text-decoration:none;
+            font-weight:600;
+            cursor:pointer;
+        }
+        .logout {
+            background:#d9534f !important;
+        }
+
+        /* Upload Area */
+        h2 {
+            margin-top:16px;
+            text-align:center;
+            color:var(--text);
+        }
+
+        .drop {
+            border:2px dashed #e6cfc6;
+            border-radius:10px;
+            padding:28px;
+            text-align:center;
+            color:var(--text);
+            cursor:pointer;
+            transition:0.2s;
+        }
+        .drop.dragover {
+            background:#fff7f0;
+            border-color:#ff9f85;
+        }
+
+        input[type=file] { display:none; }
+
+        /* Thumbnail preview */
+        .previews {
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+            margin-top:14px;
+        }
+        .previews img {
+            height:80px;
+            width:80px;
+            object-fit:cover;
+            border-radius:8px;
+        }
+
+        /* Upload queue */
+        .queue {
+            margin-top:16px;
+        }
+        .queue-item {
+            background:#fff;
+            border:1px solid #f2ded2;
+            padding:10px;
+            border-radius:8px;
+            margin-bottom:10px;
+            display:flex;
+            align-items:center;
+            gap:14px;
+        }
+        .fname {
+            flex:1;
+            white-space:nowrap;
+            overflow:hidden;
+            text-overflow:ellipsis;
+        }
+        .progress {
+            width:180px;
+            height:8px;
+            background:#eee;
+            border-radius:8px;
+            overflow:hidden;
+        }
+        .progress i {
+            display:block;
+            height:100%;
+            background:var(--accent);
+            width:0%;
+        }
+
+        /* Recent upload list */
+        .note {
+            font-size:14px;
+            color:#666;
+        }
+        .recent-box div {
+            padding:6px 0;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+        .recent-delete {
+            background:#d9534f;
+            color:#fff;
+            border:none;
+            padding:6px 10px;
+            border-radius:6px;
+            cursor:pointer;
+        }
+
+        /* Spinner */
+        .loading {
+            width:16px;
+            height:16px;
+            border-radius:50%;
+            border:3px solid rgba(86,62,48,0.15);
+            border-top-color:var(--accent);
+            display:inline-block;
+            animation:spin .9s linear infinite;
+        }
+        @keyframes spin { to { transform:rotate(360deg); } }
+    </style>
+</head>
+
+<body>
+<div class="wrap">
+
+    <!-- HEADER -->
+    <div class="header">
+        <div class="logo-row">
+            <img src="/logo/dorys.PNG" alt="Logo">
+            <div>
+                <div style="font-weight:700;color:var(--text);">Dory's Bakehouse</div>
+                <div style="font-size:13px;color:#666;">Image Uploader (Admin)</div>
+            </div>
+        </div>
+
+        <div class="actions" id="adminMenu" style="display:none;">
+            <a class="admin-link" href="/">Home</a>
+            <a class="admin-link" href="/upload.html">Upload Images</a>
+            <a class="admin-link" href="/admin-products.html">Manage Products</a>
+            <button class="admin-link logout" onclick="adminLogout()">Logout</button>
+        </div>
+    </div>
+
+    <h2>Upload Images — Drag & Drop + Multi File</h2>
+
+    <!-- Drop area -->
+    <div id="drop" class="drop">Click or drag images here to add to upload queue</div>
+    <input id="fileInput" type="file" accept="image/*" multiple>
+
+    <!-- Previews -->
+    <div id="previews" class="previews"></div>
+
+    <!-- Start upload -->
+    <div style="margin-top:14px;">
+        <button id="startUpload" class="admin-link">Start Upload</button>
+        <span id="uploadStatus" class="note"></span>
+    </div>
+
+    <!-- Upload queue -->
+    <div id="queue" class="queue"></div>
+
+    <!-- Recent uploads -->
+    <h3 style="margin-top:20px;color:var(--text);">Recent Gallery Images</h3>
+    <div id="recent" class="recent-box note">Loading...</div>
+
+</div>
+
+<script>
+    /* -------------------------------------
+       ADMIN COOKIE HELPERS
+    --------------------------------------*/
+    function readCookie(name){
+        const v = document.cookie.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="));
+        return v ? decodeURIComponent(v.split("=")[1]) : null;
+    }
+    function setCookie(name,val,days=7){
+        const exp = new Date(Date.now()+days*24*3600*1000).toUTCString();
+        document.cookie = `${name}=${encodeURIComponent(val)}; path=/; expires=${exp}`;
+    }
+    function deleteCookie(name){
+        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    }
+
+    /* -------------------------------------
+       ADMIN PIN GATE
+    --------------------------------------*/
+    (function(){
+        if (readCookie("admin") === "4321"){
+            document.getElementById("adminMenu").style.display = "flex";
+            return;
+        }
+        const pin = prompt("Enter Admin PIN:");
+        if (pin === "4321"){
+            setCookie("admin","4321");
+            document.getElementById("adminMenu").style.display = "flex";
+        } else {
+            alert("Incorrect PIN.");
+            location.href = "/";
+        }
+    })();
+
+    function adminLogout(){
+        deleteCookie("admin");
+        location.href = "/";
+    }
+
+    /* -------------------------------------
+       UPLOAD PAGE LOGIC
+    --------------------------------------*/
+    const drop = document.getElementById("drop");
+    const fileInput = document.getElementById("fileInput");
+    const previews = document.getElementById("previews");
+    const queueEl = document.getElementById("queue");
+    const recentEl = document.getElementById("recent");
+    const startBtn = document.getElementById("startUpload");
+    const statusEl = document.getElementById("uploadStatus");
+
+    let queue = [];
+
+    /* Add files to queue */
+    function addFiles(files){
+        for (const f of files){
+            const id = Date.now().toString(36) + Math.random().toString(36).slice(2,6);
+
+            queue.push({ file:f, id });
+
+            // Thumbnail
+            const img = document.createElement("img");
+            img.src = URL.createObjectURL(f);
+            previews.appendChild(img);
+
+            // Queue item
+            const row = document.createElement("div");
+            row.className = "queue-item";
+            row.id = "q-" + id;
+
+            row.innerHTML = `
+            <div class="fname">${f.name}</div>
+            <div class="progress"><i></i></div>
+            <div class="note" id="st-${id}">Queued</div>
+        `;
+
+            queueEl.appendChild(row);
+
+            queue[queue.length - 1].progEl = row.querySelector(".progress i");
+            queue[queue.length - 1].statusEl = document.getElementById("st-" + id);
+        }
+    }
+
+    /* Drag & drop events */
+    drop.addEventListener("click", () => fileInput.click());
+    drop.addEventListener("dragover", (e)=>{
+        e.preventDefault();
+        drop.classList.add("dragover");
+    });
+    drop.addEventListener("dragleave", ()=> drop.classList.remove("dragover"));
+    drop.addEventListener("drop", (e)=> {
+        e.preventDefault();
+        drop.classList.remove("dragover");
+        addFiles(e.dataTransfer.files);
+    });
+    fileInput.addEventListener("change", e => addFiles(e.target.files));
+
+    /* Upload single file */
+    function uploadFile(item){
+        return new Promise((resolve, reject)=>{
+            const xhr = new XMLHttpRequest();
+            const fd = new FormData();
+            fd.append("images", item.file);
+
+            xhr.open("POST", "/upload", true);
+
+            xhr.upload.onprogress = (e)=>{
+                if (e.lengthComputable){
+                    const pct = (e.loaded / e.total) * 100;
+                    item.progEl.style.width = pct + "%";
+                }
+            };
+
+            xhr.onload = ()=>{
+                if (xhr.status >= 200 && xhr.status < 300){
+                    item.progEl.style.width = "100%";
+                    resolve();
+                } else {
+                    reject("Upload error " + xhr.status);
+                }
+            };
+
+            xhr.onerror = ()=> reject("Network error");
+
+            xhr.send(fd);
+        });
+    }
+
+    /* Run upload sequence */
+    startBtn.addEventListener("click", async ()=>{
+        if (queue.length === 0){
+            statusEl.textContent = "No files to upload.";
+            return;
+        }
+
+        startBtn.disabled = true;
+        statusEl.innerHTML = `Uploading <span class="loading"></span>`;
+
+        for (const item of queue){
+            item.statusEl.textContent = "Uploading...";
+            try {
+                await uploadFile(item);
+                item.statusEl.textContent = "Done";
+            } catch(e){
+                item.statusEl.textContent = "Failed";
+            }
+        }
+
+        statusEl.textContent = "Uploads completed.";
+
+        queue = [];
+        previews.innerHTML = "";
+        queueEl.innerHTML = "";
+
+        setTimeout(()=> statusEl.textContent="", 2000);
+
+        updateRecent();
+    });
+
+    /* -------------------------------------
+       Load recent filenames + delete buttons
+    --------------------------------------*/
+    async function updateRecent(){
+        recentEl.textContent = "Loading...";
+
+        try {
+            const res = await fetch("/images/list", { cache:"no-cache" });
+            if (!res.ok){
+                recentEl.textContent = "Error loading list";
+                return;
+            }
+            const arr = await res.json();
+            if (arr.length === 0){
+                recentEl.textContent = "No images found.";
+                return;
+            }
+
+            recentEl.innerHTML = "";
+
+            for (const name of arr.slice(0,40)){  // newest first
+                const row = document.createElement("div");
+                row.style.display = "flex";
+                row.style.justifyContent = "space-between";
+
+                row.innerHTML = `
+                <span style="flex:1;overflow:hidden;text-overflow:ellipsis;">${name}</span>
+            `;
+
+                const del = document.createElement("button");
+                del.textContent = "Delete";
+                del.className = "recent-delete";
+
+                del.onclick = async ()=>{
+                    if (!confirm("Delete " + name + "?")) return;
+
+                    const r = await fetch("/images/delete", {
+                        method:"POST",
+                        headers:{"Content-Type":"application/json"},
+                        body:JSON.stringify({ filename:name })
+                    });
+                    const j = await r.json();
+                    if (j.success){
+                        updateRecent();
+                    } else {
+                        alert("Delete failed: " + j.error);
+                    }
+                };
+
+                row.appendChild(del);
+                recentEl.appendChild(row);
+            }
+
+        } catch (err){
+            recentEl.textContent = "Error loading images";
+        }
+    }
+
+    // load on page open
+    updateRecent();
+</script>
+
+</body>
+</html>
