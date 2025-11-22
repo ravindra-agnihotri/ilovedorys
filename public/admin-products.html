@@ -1,341 +1,345 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width,initial-scale=1"/>
-    <title>Admin — Manage Products</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Admin – Manage Products</title>
 
-    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
-    <style>
-        :root{--bg:#FAF0DE;--accent:#563e30;--text:#563e30}
-        *{box-sizing:border-box}
-        body{
-            margin:0;
-            font-family:system-ui;
-            background:var(--bg);
-            overflow-x:hidden;
-            padding:18px;
-        }
+<style>
+:root { --bg:#FAF0DE; --accent:#563e30; --text:#563e30; }
 
-        .wrap{
-            max-width:980px;
-            margin:0 auto;
-            background:#fff;
-            padding:20px;
-            border-radius:12px;
-            box-shadow:0 8px 30px rgba(0,0,0,0.06);
-        }
+body {
+    margin:0;
+    font-family:system-ui;
+    background:var(--bg);
+    padding:16px;
+}
 
-        /* HEADER */
-        .header-row{
-            display:flex;
-            align-items:center;
-            gap:16px;
-            justify-content:space-between;
-        }
-        .logo-row{
-            display:flex;
-            align-items:center;
-            gap:12px;
-        }
-        .logo-row img{
-            height:56px;
-            border-radius:8px;
-        }
+.container {
+    max-width:900px;
+    margin:0 auto;
+    background:#fff;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+}
 
-        .actions{
-            display:flex;
-            gap:10px;
-            align-items:center;
-        }
-        .admin-link, button{
-            background:var(--accent);
-            color:#fff;
-            padding:9px 14px;
-            border-radius:8px;
-            text-decoration:none;
-            border:0;
-            cursor:pointer;
-            font-weight:600;
-        }
+.header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
 
-        .admin-link.logout{
-            background:#d9534f;
-        }
+.logo {
+    height:60px;
+    border-radius:8px;
+}
 
-        /* TITLES */
-        h2{
-            margin:12px 0 6px;
-            color:var(--text);
-            text-align:center;
-        }
+.nav-btn {
+    background:var(--accent);
+    color:#fff;
+    padding:8px 14px;
+    border-radius:7px;
+    text-decoration:none;
+    margin-left:10px;
+    font-weight:600;
+}
 
-        /* FORM */
-        label{display:block;margin-top:12px;font-weight:600}
-        input[type=text],textarea,input[type=number],input[type=file]{
-            width:100%;
-            padding:10px;
-            margin-top:6px;
-            border-radius:8px;
-            border:1px solid #ddd;
-        }
-        .preview img{
-            height:90px;
-            border-radius:10px;
-            object-fit:cover;
-            margin-top:10px;
-        }
+h2 {
+    text-align:center;
+    color:var(--text);
+    font-family:'Great Vibes', cursive;
+    font-size:38px;
+    margin-top:10px;
+}
 
-        .note{color:#666;margin-top:8px}
+form {
+    background:#fff7ee;
+    padding:16px;
+    border-radius:10px;
+    margin-top:20px;
+}
 
-        /* PRODUCT LIST */
-        .list{margin-top:22px}
-        .product-item{
-            display:flex;
-            align-items:center;
-            gap:12px;
-            margin-bottom:14px;
-            padding-bottom:12px;
-            border-bottom:1px solid #eee;
-        }
-        .product-item img{
-            height:70px;
-            width:90px;
-            border-radius:8px;
-            object-fit:cover;
-        }
-        .product-name{font-weight:700;color:var(--text)}
-        .product-price{font-size:14px;color:#777}
-        .delete-btn{
-            background:#d9534f;
-            padding:6px 12px;
-            border-radius:6px;
-            color:#fff;
-            cursor:pointer;
-            border:none;
-        }
+input, textarea {
+    width:100%;
+    padding:10px;
+    margin-top:8px;
+    border-radius:6px;
+    border:1px solid #ccc;
+}
 
-        /* LOADING SPINNER */
-        .loading {
-            width:18px;
-            height:18px;
-            border-radius:50%;
-            border:3px solid rgba(86,62,48,0.15);
-            border-top-color:var(--accent);
-            display:inline-block;
-            animation:spin .9s linear infinite;
-        }
-        @keyframes spin{to{transform:rotate(360deg)}}
-    </style>
+button {
+    background:var(--accent);
+    color:white;
+    border:none;
+    padding:10px 18px;
+    margin-top:12px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:15px;
+}
+
+#prodPreview {
+    width:140px;
+    height:140px;
+    object-fit:cover;
+    border-radius:10px;
+    margin-top:10px;
+    display:none;
+}
+
+.product-list {
+    margin-top:20px;
+}
+
+.product-item {
+    background:#fff7ef;
+    padding:14px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    border-radius:10px;
+    margin-bottom:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.05);
+}
+
+.product-item img {
+    height:70px;
+    width:70px;
+    border-radius:8px;
+    object-fit:cover;
+}
+
+.delete-btn {
+    background:#d9534f;
+    padding:6px 10px;
+    color:#fff;
+    border:none;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+#diskBox {
+    background:#fff7ef;
+    padding:12px;
+    border-radius:10px;
+    margin-top:15px;
+}
+
+</style>
 </head>
-
 <body>
-<div class="wrap">
 
-    <!-- HEADER -->
-    <div class="header-row">
-        <div class="logo-row">
-            <img src="/logo/dorys.PNG" alt="logo">
-            <div>
-                <div style="font-weight:700;color:var(--text)">Dory's Bakehouse</div>
-                <div style="font-size:13px;color:#666">Admin Panel</div>
-            </div>
-        </div>
+<div class="container">
 
-        <div class="actions" id="adminMenu" style="display:none">
-            <a href="/" class="admin-link">Home</a>
-            <a href="/upload.html" class="admin-link">Upload Images</a>
-            <a href="/admin-products.html" class="admin-link">Manage Products</a>
-            <button class="admin-link logout" onclick="adminLogout()">Logout</button>
+    <div class="header">
+        <img src="/logo/dorys.PNG" class="logo">
+
+        <div>
+            <a class="nav-btn" href="/">Home</a>
+            <a class="nav-btn" href="/upload.html">Upload Images</a>
+            <a class="nav-btn" href="#" onclick="logout()">Logout</a>
         </div>
     </div>
 
     <h2>Manage Products</h2>
 
-    <!-- ADD PRODUCT FORM -->
-    <form id="productForm">
+    <!-- Disk Usage -->
+    <div id="diskBox">
+        <div style="font-weight:700">Disk Usage</div>
+        <div style="height:10px;background:#eee;border-radius:8px;overflow:hidden;margin-top:6px;">
+            <div id="diskFill" style="height:100%;width:0%;background:var(--accent)"></div>
+        </div>
+        <div id="diskText" style="font-size:13px;color:#666;margin-top:6px;">Loading...</div>
+    </div>
 
-        <label>Product Name *</label>
-        <input type="text" id="name" name="name" required>
+    <!-- Add Product Form -->
+    <form id="prodForm">
+        <label>Product Name</label>
+        <input type="text" id="prodName" required>
 
         <label>Description</label>
-        <textarea id="description" name="description" rows="3"></textarea>
+        <textarea id="prodDesc" rows="3"></textarea>
 
-        <label>Price (₹)</label>
-        <input type="number" id="price" name="price" min="0" step="1">
+        <label>Price</label>
+        <input type="text" id="prodPrice">
 
-        <label>Product Image (optional)</label>
-        <input type="file" id="image" name="image" accept="image/*">
+        <label>Image</label>
+        <input type="file" id="prodImage" accept="image/*">
+        <img id="prodPreview">
 
-        <div class="preview" id="preview"></div>
-
-        <div style="margin-top:12px;">
-            <button type="submit" id="submitBtn">Add Product</button>
-            <span id="addStatus" class="note"></span>
-        </div>
+        <button type="submit">Add Product</button>
+        <div id="status" style="margin-top:10px;color:#444;"></div>
     </form>
 
-    <!-- PRODUCT LIST -->
-    <h3 style="text-align:center;margin-top:20px;color:var(--text)">Existing Products</h3>
-    <div class="list" id="list"></div>
+    <!-- Product List -->
+    <div class="product-list" id="productList">Loading products...</div>
 
 </div>
 
 <script>
-    /* -------------------------------------
-       ADMIN COOKIE HELPERS
-    --------------------------------------*/
-    function readCookie(name){
-        const v = document.cookie.split(";").map(a=>a.trim()).find(a=>a.startsWith(name+"="));
-        return v ? decodeURIComponent(v.split("=")[1]) : null;
+
+/* --------------------------------------
+   ADMIN PIN
+----------------------------------------*/
+function readCookie(name){
+    const v=document.cookie.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="));
+    return v?decodeURIComponent(v.split("=")[1]):null;
+}
+function setCookie(n,v){ document.cookie=`${n}=${v}; path=/;`; }
+function deleteCookie(n){ document.cookie=`${n}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`; }
+
+if(readCookie("admin")!=="4321"){
+    const pin=prompt("Enter Admin PIN:");
+    if(pin!=="4321"){ alert("Wrong PIN"); location.href="/"; }
+    setCookie("admin","4321");
+}
+
+function logout(){
+    deleteCookie("admin");
+    location.href="/";
+}
+
+/* --------------------------------------
+   PRODUCT IMAGE PREVIEW + HEIC SUPPORT
+----------------------------------------*/
+const prodImage = document.getElementById("prodImage");
+const prodPreview = document.getElementById("prodPreview");
+let finalUploadFile = null;
+
+function isHeic(f){
+    return /\.heic$|\.heif$/i.test(f.name);
+}
+
+prodImage.addEventListener("change", async () => {
+    const file = prodImage.files[0];
+    if (!file) return;
+
+    // Show preview
+    prodPreview.src = URL.createObjectURL(file);
+    prodPreview.style.display = "block";
+
+    // HEIC → JPG conversion
+    if (isHeic(file)) {
+        const converted = await heic2any({
+            blob: file,
+            toType: "image/jpeg",
+            quality: 0.92
+        });
+        finalUploadFile = new File([converted], "converted.jpg", { type: "image/jpeg" });
+    } else {
+        finalUploadFile = file;
     }
-    function setCookie(name,val,days=7){
-        const exp = new Date(Date.now()+days*86400000).toUTCString();
-        document.cookie = `${name}=${encodeURIComponent(val)}; path=/; expires=${exp}`;
-    }
-    function deleteCookie(name){
-        document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+});
+
+/* --------------------------------------
+   ADD PRODUCT (POST /products/add)
+----------------------------------------*/
+const form = document.getElementById("prodForm");
+const status = document.getElementById("status");
+
+form.addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    status.textContent = "Uploading...";
+
+    const fd = new FormData();
+    fd.append("name", document.getElementById("prodName").value);
+    fd.append("description", document.getElementById("prodDesc").value);
+    fd.append("price", document.getElementById("prodPrice").value);
+
+    if(finalUploadFile){
+        fd.append("image", finalUploadFile);
     }
 
-    /* -------------------------------------
-       ADMIN PIN GATE
-    --------------------------------------*/
-    (function(){
-        if (readCookie("admin") === "4321"){
-            document.getElementById("adminMenu").style.display = "flex";
-            return;
-        }
-        const pin = prompt("Enter Admin PIN:");
-        if (pin === "4321"){
-            setCookie("admin","4321");
-            document.getElementById("adminMenu").style.display = "flex";
-        } else {
-            alert("Incorrect PIN");
-            location.href = "/";
-        }
-    })();
-
-    function adminLogout(){
-        deleteCookie("admin");
-        location.href = "/";
-    }
-
-    /* -------------------------------------
-       PRODUCT MANAGEMENT
-    --------------------------------------*/
-    const listEl = document.getElementById("list");
-    const preview = document.getElementById("preview");
-    const statusEl = document.getElementById("addStatus");
-    const submitBtn = document.getElementById("submitBtn");
-
-    document.getElementById("image").addEventListener("change", (e)=>{
-        preview.innerHTML = "";
-        if (e.target.files[0]){
-            const img = document.createElement("img");
-            img.src = URL.createObjectURL(e.target.files[0]);
-            preview.appendChild(img);
-        }
+    const res = await fetch("/products/add", {
+        method:"POST",
+        body:fd,
+        credentials:"include"
     });
 
-    /* Load products */
-    async function fetchProducts(){
-        try {
-            const r = await fetch("/products/list", {cache:"no-cache"});
-            return await r.json();
-        } catch {
-            return [];
-        }
+    const j = await res.json();
+    if(res.ok){
+        status.textContent = "Product added!";
+        form.reset();
+        prodPreview.style.display="none";
+        finalUploadFile = null;
+        loadProducts();
+        loadDisk();
+    } else {
+        status.textContent = "Error: " + (j.error || "Failed");
+    }
+});
+
+/* --------------------------------------
+   LOAD PRODUCTS
+----------------------------------------*/
+async function loadProducts(){
+    const box = document.getElementById("productList");
+    box.innerHTML = "Loading...";
+
+    const res = await fetch("/products/list");
+    const list = await res.json();
+
+    if (!list.length) {
+        box.innerHTML = "No products yet.";
+        return;
     }
 
-    /* Render product list */
-    async function renderList(){
-        const items = await fetchProducts();
-        listEl.innerHTML = "";
+    box.innerHTML = "";
 
-        if (items.length === 0){
-            listEl.innerHTML = "<p class='note'>No products added yet.</p>";
-            return;
-        }
+    list.forEach(p=>{
+        const row = document.createElement("div");
+        row.className = "product-item";
 
-        for (const p of items){
-            const row = document.createElement("div");
-            row.className = "product-item";
+        row.innerHTML = `
+            <div style="display:flex;align-items:center;gap:12px;">
+                <img src="${p.image}">
+                <div>
+                    <div style="font-weight:700">${p.name}</div>
+                    <div style="font-size:13px;color:#666">${p.description}</div>
+                    <div style="font-size:14px;color:#000;margin-top:4px;">₹ ${p.price}</div>
+                </div>
+            </div>
 
-            const img = document.createElement("img");
-            img.src = p.image;
-
-            const info = document.createElement("div");
-            info.innerHTML = `
-            <div class="product-name">${p.name}</div>
-            <div class="product-price">₹ ${p.price || ""}</div>
+            <button class="delete-btn" onclick="deleteProduct('${p.id}')">Delete</button>
         `;
 
-            const del = document.createElement("button");
-            del.className = "delete-btn";
-            del.textContent = "Delete";
-            del.onclick = async ()=>{
-                if (!confirm("Delete this product?")) return;
-                del.disabled = true;
-                del.textContent = "Deleting...";
-                await fetch("/products/delete", {
-                    method:"POST",
-                    headers:{"Content-Type":"application/json"},
-                    body:JSON.stringify({id:p.id})
-                });
-                renderList();
-            };
+        box.appendChild(row);
+    });
+}
 
-            row.appendChild(img);
-            row.appendChild(info);
-            row.appendChild(del);
-            listEl.appendChild(row);
-        }
-    }
+async function deleteProduct(id){
+    if(!confirm("Delete this product?")) return;
 
-    /* Handle Add Product */
-    document.getElementById("productForm").addEventListener("submit", async (e)=>{
-        e.preventDefault();
-
-        const name = document.getElementById("name").value.trim();
-        const desc = document.getElementById("description").value.trim();
-        const price = document.getElementById("price").value;
-        const imgFile = document.getElementById("image").files[0];
-
-        if (!name){
-            alert("Product name is required.");
-            return;
-        }
-
-        const fd = new FormData();
-        fd.append("name", name);
-        fd.append("description", desc);
-        fd.append("price", price);
-        if (imgFile) fd.append("image", imgFile);
-
-        submitBtn.disabled = true;
-        statusEl.innerHTML = `Uploading <span class="loading"></span>`;
-
-        try {
-            const r = await fetch("/products/add", { method:"POST", body:fd });
-            const j = await r.json();
-            if (j.success){
-                statusEl.textContent = "Product Added ✓";
-                e.target.reset();
-                preview.innerHTML = "";
-                renderList();
-            } else {
-                statusEl.textContent = "Error: " + j.error;
-            }
-        } catch {
-            statusEl.textContent = "Upload failed.";
-        }
-
-        submitBtn.disabled = false;
-        setTimeout(()=> statusEl.textContent="", 2000);
+    await fetch("/products/delete", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({ id })
     });
 
-    renderList();
+    loadProducts();
+    loadDisk();
+}
+
+/* --------------------------------------
+   DISK USAGE BAR
+----------------------------------------*/
+async function loadDisk(){
+    const r = await fetch("/admin/disk-info", { cache:"no-cache" });
+    const j = await r.json();
+
+    document.getElementById("diskFill").style.width = j.usedPct + "%";
+    document.getElementById("diskText").textContent =
+        `${(j.usedBytes/1024/1024).toFixed(1)} MB used of ${(j.totalBytes/1024/1024/1024).toFixed(1)} GB (${j.usedPct}%)`;
+}
+
+/* INIT */
+loadProducts();
+loadDisk();
+
 </script>
 
 </body>
