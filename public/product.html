@@ -1,275 +1,295 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Admin — Manage Products · Dory's Bakehouse</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Our Products — Dory's Bakehouse</title>
 
-<script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{--bg:#faebe3;--accent:#563e30;--text:#563e30;--muted:#6e5a52;--card:rgba(253,239,193,0.45)}
-*{box-sizing:border-box}
-body{margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text)}
-header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
-.header-left{display:flex;align-items:center;gap:14px}
-.logo{height:60px;border-radius:8px}
-.btn{background:var(--accent);color:#fff;padding:9px 14px;border-radius:8px;text-decoration:none;border:0;cursor:pointer}
-.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(86,62,48,0.06)}
-.container{max-width:1100px;margin:26px auto;padding:0 16px}
-.card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,0.06)}
-.form-row{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-input[type="text"], input[type="number"], textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06);background:#fff}
-.preview{display:flex;gap:12px;align-items:center;margin-top:8px}
-.preview img{width:140px;height:110px;object-fit:cover;border-radius:10px}
-.products{margin-top:16px;display:flex;flex-direction:column;gap:12px}
-.product-item{background:#fff;padding:10px;border-radius:10px;display:flex;gap:12px;align-items:center;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
-.product-item img{width:96px;height:76px;object-fit:cover;border-radius:8px}
-.product-meta{flex:1;display:flex;flex-direction:column;gap:4px}
-.trash{background:#e04b4b;color:#fff;padding:8px 10px;border-radius:8px;border:0;cursor:pointer}
-.small-muted{font-size:13px;color:var(--muted)}
+*{box-sizing:border-box} body{margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text)}
+header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:12px 20px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:1000}
+.header-left{position:absolute;left:18px;display:flex;align-items:center;gap:12px}
+.home-btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 3px 8px rgba(0,0,0,0.12)}
+.logo-img{height:64px;width:auto;border-radius:8px}
+.header-actions{position:absolute;right:28px}
+.contact-btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,0.12);cursor:pointer}
+.filter-bar{max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;justify-content:center;gap:10px;align-items:center}
+.filter-btn{background:#fff;border:1px solid rgba(86,62,48,0.08);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--accent);box-shadow:0 6px 18px rgba(0,0,0,0.03)}
+.filter-btn.active{background:var(--accent);color:#fff;box-shadow:0 8px 26px rgba(86,62,48,0.12)}
+.title{font-family:'Great Vibes',cursive;text-align:center;font-size:36px;margin:10px 0;color:var(--text)}
+.container{max-width:1200px;margin:12px auto;padding:0 16px}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:14px}
+@media(max-width:880px){ .products-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))} }
+.card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible}
+.img-wrap{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+.card img{width:100%;height:100%;object-fit:cover}
+.meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.name{font-weight:700;font-size:18px}
+.cat{font-size:13px;color:var(--muted);background:rgba(86,62,48,0.06);padding:6px 10px;border-radius:999px}
+.price{font-weight:700;color:var(--accent)}
+.desc{font-size:14px;color:#5e4e46;min-height:36px}
+.stars{display:flex;gap:4px;align-items:center}
+.star{color:#e6b422;font-size:16px}
+.star.gray{color:#ddd}
+.enquire-overlay{position:absolute;left:12px;right:12px;bottom:14px;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,235,227,0.95));display:flex;justify-content:center;align-items:center;opacity:0;transform:translateY(8px);transition:all .18s;pointer-events:none}
+.card:hover .enquire-overlay, .card.enquire-active .enquire-overlay{opacity:1;transform:translateY(0);pointer-events:auto}
+.enquire-btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:999px;border:0;cursor:pointer;font-weight:700}
+.enquire-popup{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(100% + 12px);z-index:500;width:280px;max-width:calc(100% - 24px);background:#fff;border-radius:10px;padding:10px;box-shadow:0 12px 36px rgba(0,0,0,0.25);display:none}
+.enquire-popup.active{display:block}
+.enquire-popup .thumb{height:72px;width:72px;object-fit:cover;border-radius:8px}
+.enquire-popup textarea{width:100%;min-height:70px;padding:8px;border-radius:8px;border:1px solid #eee}
+.floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:4000}
+.btn-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.18);cursor:pointer;border:0}
+.whatsapp{background:#25D366}
+.chat{background:#ff7f7f}
+.floating img{width:28px;height:28px}
+.manage-floating{position:fixed;left:18px;bottom:18px;z-index:4000}
+.manage-floating .manage-btn{background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.18)}
+.popup-overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:3000;padding:20px;box-sizing:border-box}
+.popup-box{background:#faebe3;padding:22px;border-radius:14px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 34px rgba(0,0,0,0.18)}
+.popup-box h3{margin:0;font-size:20px;color:var(--accent)}
+.close-btn{margin-top:12px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer}
+.search-bar{max-width:1100px;margin:6px auto;display:flex;gap:8px;justify-content:center;padding:0 16px}
+.search-bar input{width:60%;padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)}
+.add-to-cart{background:#ffd9d9;color:#563e30;padding:8px 12px;border-radius:8px;border:0;cursor:pointer;font-weight:700}
 </style>
 </head>
 <body>
 
 <header>
   <div class="header-left">
-    <img src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" class="logo" alt="logo">
-    <div>
-      <div style="font-family:'Great Vibes';font-size:22px">Dory's Bakehouse</div>
-      <div class="small-muted">Admin — Manage Products</div>
-    </div>
+    <a class="home-btn" href="/">Home</a>
   </div>
-  <div>
-    <a class="btn ghost" href="/">Home</a>
-    <a class="btn ghost" href="/upload.html">Upload Images</a>
-    <a class="btn" href="/admin-gallery.html">Gallery</a>
+
+  <img src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" class="logo-img" alt="Dory's Bakehouse">
+
+  <div class="header-actions">
+    <a class="contact-btn" id="openContact">Contact</a>
   </div>
 </header>
 
+<div class="filter-bar" role="tablist" aria-label="category filters">
+  <button class="filter-btn active" data-cat="All">All</button>
+  <button class="filter-btn" data-cat="Cakes">Cakes</button>
+  <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
+  <button class="filter-btn" data-cat="Pastries">Pastries</button>
+</div>
+
+<div class="search-bar">
+  <input id="searchInput" type="search" placeholder="Search products by name...">
+  <select id="sortSelect" style="padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,0.06)">
+    <option value="newest">Newest</option>
+    <option value="price-asc">Price: Low → High</option>
+    <option value="price-desc">Price: High → Low</option>
+    <option value="rating-desc">Rating</option>
+  </select>
+</div>
+
+<div class="title">Our Products</div>
+
 <div class="container">
-  <h2 style="font-family:'Great Vibes';text-align:center;margin:12px 0;color:var(--text)">Manage Products</h2>
+  <div id="countInfo" class="small-muted" style="text-align:center;margin-bottom:8px">Loading products...</div>
+  <div id="grid" class="products-grid" aria-live="polite">Loading...</div>
+</div>
 
-  <div style="display:grid;grid-template-columns:1fr 380px;gap:18px">
-    <div>
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <div style="font-weight:700">Add New Product</div>
-          <div class="small-muted">Admin PIN required</div>
-        </div>
+<!-- Floating WhatsApp & Chat -->
+<div class="floating" aria-hidden="false">
+  <button class="btn-circle chat" id="chatBtn" title="Chat with us">
+    <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="chat">
+  </button>
+  <a class="btn-circle whatsapp" id="waBtn" title="WhatsApp" target="_blank" rel="noreferrer">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whatsapp">
+  </a>
+</div>
 
-        <form id="productForm">
-          <div class="form-row">
-            <label class="small-muted">Product Name</label>
-            <input id="name" type="text" required placeholder="Chocolate Truffle Cake">
-          </div>
+<!-- Manage floating (shown only for admin) -->
+<div class="manage-floating" id="manageFloating" style="display:none">
+  <button class="manage-btn" id="manageBtn">Manage Products</button>
+</div>
 
-          <div class="form-row">
-            <label class="small-muted">Description</label>
-            <textarea id="description"></textarea>
-          </div>
-
-          <div style="display:flex;gap:10px">
-            <div style="flex:1" class="form-row">
-              <label class="small-muted">Price (₹)</label>
-              <input id="price" type="text" placeholder="499">
-            </div>
-            <div style="width:160px" class="form-row">
-              <label class="small-muted">Rating (0-5)</label>
-              <input id="rating" type="number" min="0" max="5" step="0.1" placeholder="4.5">
-            </div>
-          </div>
-
-          <div class="form-row">
-            <label class="small-muted">Category</label>
-            <select id="category">
-              <option value="Cakes">Cakes</option>
-              <option value="Designer Cakes">Designer Cakes</option>
-              <option value="Cupcakes">Cupcakes</option>
-              <option value="Brownies">Brownies</option>
-              <option value="Cookies">Cookies</option>
-              <option value="Pastries">Pastries</option>
-              <option value="Bread & Buns">Bread & Buns</option>
-              <option value="Celebration Cakes">Celebration Cakes</option>
-              <option value="Anniversaries">Anniversaries</option>
-              <option value="Kids Theme Cakes">Kids Theme Cakes</option>
-            </select>
-          </div>
-
-          <div class="form-row">
-            <label class="small-muted">Image</label>
-            <input id="prodImage" type="file" accept="image/*">
-            <div class="preview" id="imgPreview" style="display:none">
-              <img id="previewImg" src="" alt="preview">
-              <div>
-                <div id="previewName" class="small-muted"></div>
-                <div id="previewSize" class="small-muted"></div>
-              </div>
-            </div>
-          </div>
-
-          <div style="display:flex;gap:10px;margin-top:10px">
-            <button type="submit" class="btn">Add Product</button>
-            <button type="button" class="btn ghost" id="resetBtn">Reset</button>
-          </div>
-
-          <div id="formStatus" class="small-muted" style="margin-top:10px"></div>
-        </form>
-      </div>
-
-      <div class="card" style="margin-top:14px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-          <div style="font-weight:700">Products</div>
-          <div><button class="btn ghost" id="refreshProducts">Refresh</button></div>
-        </div>
-
-        <div id="products" class="products">
-          <div class="small-muted">Loading products...</div>
-        </div>
-      </div>
-
-    </div>
-
-    <aside>
-      <div class="card">
-        <div style="font-weight:700">Disk Usage</div>
-        <div style="margin-top:8px" class="small-muted" id="diskText">Loading...</div>
-      </div>
-
-      <div class="card" style="margin-top:12px">
-        <div style="font-weight:700">Recent Uploads</div>
-        <div id="recentList" style="margin-top:8px" class="small-muted">Loading...</div>
-      </div>
-    </aside>
+<!-- Contact popup -->
+<div id="contactPopup" class="popup-overlay" aria-hidden="true">
+  <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <h3 id="contactTitle">Contact Us</h3>
+    <p>📞 <a id="telLink" href="tel:+919168445014" style="color:var(--accent);text-decoration:none;font-weight:700">+91 9168445014</a></p>
+    <p>📍 Dory's Bakehouse, Pune</p>
+    <button class="close-btn" id="closeContact">Close</button>
   </div>
 </div>
 
 <script>
-/* Admin PIN cookie guard */
-function readCookie(n){ return document.cookie.split('; ').find(x=>x.startsWith(n+'='))?.split('=')[1] || null; }
-function setCookie(n,v,d=7){ const e = new Date(Date.now()+d*86400000).toUTCString(); document.cookie = `${n}=${v};path=/;expires=${e}`; }
-function delCookie(n){ document.cookie = `${n}=;path=/;expires=Thu,01 Jan 1970 00:00:00 GMT`; }
+/* CONFIG */
+const WA_NUMBER = '919168445014';
+const WA_BASE = `https://wa.me/${WA_NUMBER}`;
 
-if (readCookie('admin') !== '4321') {
-  const p = prompt('Enter admin PIN:');
-  if (p === '4321') { setCookie('admin','4321'); } else { alert('Wrong PIN'); location.href = '/'; }
-}
+/* ADMIN VISIBILITY: show manage button only when admin cookie present */
+function readCookie(name){ const c = document.cookie.split('; ').find(x => x.startsWith(name + '=')); return c ? decodeURIComponent(c.split('=')[1]) : null; }
+if (readCookie('admin') === '4321') { document.getElementById('manageFloating').style.display = 'block'; }
 
-/* HEIC conversion helper (uses heic2any) */
-function isHeic(f){ return /\.heic$|\.heif$/i.test(f.name) || f.type==='image/heic' || f.type==='image/heif'; }
-async function convertHeic(file){ const blob = await heic2any({ blob:file, toType:'image/jpeg', quality:0.92 }); const base = (file.name||'image').replace(/\.[^/.]+$/,''); return new File([blob], base+'.jpg', { type:'image/jpeg' }); }
+/* contact popup */
+const contactPopup = document.getElementById('contactPopup');
+document.getElementById('openContact').addEventListener('click', ()=> { contactPopup.style.display='flex'; contactPopup.setAttribute('aria-hidden','false'); });
+document.getElementById('closeContact').addEventListener('click', ()=> { contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); });
+contactPopup.addEventListener('click', (e)=> { if (e.target === contactPopup) { contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); } });
 
-/* Form logic */
-const prodImage = document.getElementById('prodImage');
-const previewImg = document.getElementById('previewImg');
-const previewName = document.getElementById('previewName');
-const previewSize = document.getElementById('previewSize');
-const imgPreview = document.getElementById('imgPreview');
-let fileToUpload = null;
+/* floating buttons */
+document.getElementById('waBtn').href = `${WA_BASE}?text=${encodeURIComponent('Hi, I want to order')}`;
+document.getElementById('chatBtn').addEventListener('click', ()=> window.open(`${WA_BASE}?text=${encodeURIComponent('Hi, I want to order')}`, '_blank'));
 
-prodImage.addEventListener('change', async (e) => {
-  const f = e.target.files && e.target.files[0];
-  if (!f) { imgPreview.style.display='none'; fileToUpload=null; return; }
-  previewImg.src = URL.createObjectURL(f);
-  previewName.textContent = f.name;
-  previewSize.textContent = (f.size/1024).toFixed(1) + ' KB';
-  imgPreview.style.display='flex';
-  if (isHeic(f)) {
-    try { fileToUpload = await convertHeic(f); previewName.textContent = fileToUpload.name; previewSize.textContent = (fileToUpload.size/1024).toFixed(1)+' KB'; previewImg.src = URL.createObjectURL(fileToUpload); }
-    catch(e){ console.error(e); alert('HEIC convert failed. Please convert locally.'); fileToUpload=null; }
-  } else { fileToUpload = f; }
-});
+/* manage button */
+document.getElementById('manageBtn').addEventListener('click', ()=> location.href = '/admin-products.html');
 
-/* Submit product */
-document.getElementById('productForm').addEventListener('submit', async (e) => {
-  e.preventDefault();
-  const name = document.getElementById('name').value.trim();
-  const description = document.getElementById('description').value.trim();
-  const price = document.getElementById('price').value.trim();
-  const category = document.getElementById('category').value;
-  const rating = document.getElementById('rating').value;
+/* products loading/rendering/search/sort/filter */
+let products = [], activeCategory = 'All';
+const grid = document.getElementById('grid'), countInfo = document.getElementById('countInfo');
 
-  if (!name) { alert('Name required'); return; }
-
-  const fd = new FormData();
-  fd.append('name', name);
-  fd.append('description', description);
-  fd.append('price', price);
-  fd.append('category', category);
-  fd.append('rating', rating);
-
-  if (fileToUpload) fd.append('image', fileToUpload, fileToUpload.name);
-
-  const statusEl = document.getElementById('formStatus'); statusEl.textContent = 'Uploading...';
-  try {
-    const r = await fetch('/products/add', { method:'POST', body: fd, credentials: 'include' });
-    const j = await r.json();
-    if (r.ok) { statusEl.textContent = 'Product added'; document.getElementById('productForm').reset(); imgPreview.style.display='none'; fileToUpload=null; loadProducts(); loadRecent(); }
-    else { statusEl.textContent = 'Error: ' + (j.error || 'Failed'); }
-  } catch (err) { console.error(err); statusEl.textContent = 'Network error'; }
-});
-
-/* Reset */
-document.getElementById('resetBtn').addEventListener('click', ()=> { document.getElementById('productForm').reset(); imgPreview.style.display='none'; fileToUpload=null; });
-
-/* Load products */
 async function loadProducts(){
-  const container = document.getElementById('products'); container.innerHTML='Loading...';
   try {
     const res = await fetch('/products/list', { cache:'no-cache' });
-    const arr = await res.json();
-    if (!arr.length) { container.innerHTML = '<div class="small-muted">No products yet</div>'; return; }
-    container.innerHTML = '';
-    arr.forEach(p => {
-      const el = document.createElement('div'); el.className='product-item';
-      el.innerHTML = `<img src="${p.image}" alt="${p.name}">
-        <div class="product-meta">
-          <div style="display:flex;justify-content:space-between;align-items:center">
-            <div style="font-weight:700">${p.name}</div>
-            <div style="font-weight:700">₹ ${p.price || '-'}</div>
-          </div>
-          <div class="small-muted">${p.description || ''}</div>
-          <div style="margin-top:6px;font-size:13px;color:var(--muted)">Category: ${p.category || 'Uncategorized'} · Rating: ${Number(p.rating || 0).toFixed(1)}</div>
+    if (!res.ok) throw new Error('fetch failed');
+    products = await res.json();
+  } catch (err) {
+    console.error(err); products = [];
+  }
+  render();
+}
+
+function sortProducts(arr){
+  const mode = document.getElementById('sortSelect').value;
+  const copy = arr.slice();
+  if (mode === 'price-asc') copy.sort((a,b)=> (Number(a.price)||0) - (Number(b.price)||0));
+  else if (mode === 'price-desc') copy.sort((a,b)=> (Number(b.price)||0) - (Number(a.price)||0));
+  else if (mode === 'rating-desc') copy.sort((a,b)=> (Number(b.rating)||0) - (Number(a.rating)||0));
+  else copy.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
+  return copy;
+}
+
+function renderStars(v){
+  const val = Math.max(0, Math.min(5, Number(v) || 0));
+  const full = Math.floor(val);
+  let out = '';
+  for (let i=0;i<full;i++) out += '<span class="star">★</span>';
+  for (let i=full;i<5;i++) out += '<span class="star gray">★</span>';
+  out += ` <span style="font-size:13px;color:var(--muted);margin-left:6px">${val.toFixed(1)}</span>`;
+  return out;
+}
+
+function render(){
+  const q = document.getElementById('searchInput').value.trim().toLowerCase();
+  const filtered = products.filter(p => (activeCategory === 'All' || (p.category || '').toLowerCase() === activeCategory.toLowerCase()) && (p.name||'').toLowerCase().includes(q));
+  const sorted = sortProducts(filtered);
+  grid.innerHTML = '';
+  countInfo.textContent = `${sorted.length} product${sorted.length===1?'':'s'} shown`;
+  if (!sorted.length) { grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No products found.</div>`; return; }
+
+  sorted.forEach(p => {
+    const name = p.name || 'Untitled', desc = p.description || '', price = p.price ? `₹ ${p.price}` : '—', category = p.category || 'Uncategorized', rating = Number(p.rating || 0);
+    const img = p.image || '/images/products/default-sample.png';
+
+    const card = document.createElement('div'); card.className = 'card';
+    card.innerHTML = `
+      <div class="img-wrap"><img src="${img}" alt="${escapeHtml(name)}" loading="lazy"></div>
+      <div class="meta">
+        <div>
+          <div class="name">${escapeHtml(name)}</div>
+          <div class="desc">${escapeHtml(desc)}</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:8px">
-          <button class="trash" data-id="${p.id}">Delete</button>
-        </div>`;
-      container.appendChild(el);
+        <div style="text-align:right">
+          <div class="cat">${escapeHtml(category)}</div>
+          <div style="margin-top:6px" class="price">${escapeHtml(price)}</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="stars">${renderStars(rating)}</div>
+        <div>
+          <button class="add-to-cart">Add to Cart</button>
+        </div>
+      </div>
+
+      <div class="enquire-overlay">
+        <button class="enquire-btn">Enquire Now</button>
+      </div>
+
+      <div class="enquire-popup" role="dialog" aria-hidden="true">
+        <div style="display:flex;gap:8px;align-items:center">
+          <img class="thumb" src="${img}" alt="${escapeHtml(name)}">
+          <div style="flex:1">
+            <div style="font-weight:700">${escapeHtml(name)}</div>
+            <div style="color:var(--muted);font-size:13px">${escapeHtml(category)} · ${escapeHtml(price)}</div>
+          </div>
+        </div>
+        <div style="margin-top:8px">
+          <textarea class="enquire-text" placeholder="Your message (e.g., I want 1 kg, delivery date...)"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+          <button class="enquire-send" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Send on WhatsApp</button>
+          <button class="enquire-cancel" style="background:#ccc;color:#222;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Cancel</button>
+        </div>
+      </div>
+    `;
+
+    // enquire interactions
+    const enquireBtn = card.querySelector('.enquire-btn');
+    const enquirePopup = card.querySelector('.enquire-popup');
+    const enquireSend = card.querySelector('.enquire-send');
+    const enquireCancel = card.querySelector('.enquire-cancel');
+    const enquireText = card.querySelector('.enquire-text');
+
+    enquireBtn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      closeAllEnquires();
+      enquirePopup.classList.add('active');
+      enquirePopup.setAttribute('aria-hidden','false');
+      card.classList.add('enquire-active');
     });
-    // attach delete handlers
-    container.querySelectorAll('.trash').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        if (!confirm('Delete product?')) return;
-        btn.disabled = true; btn.textContent = 'Deleting...';
-        const id = btn.dataset.id;
-        try {
-          const r = await fetch('/products/delete', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ id }) });
-          const j = await r.json();
-          if (r.ok) loadProducts(); else { alert('Delete error: ' + (j.error||r.status)); btn.disabled=false; btn.textContent='Delete'; }
-        } catch (err) { console.error(err); alert('Delete failed'); btn.disabled=false; btn.textContent='Delete'; }
-      });
+    enquireCancel.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      enquirePopup.classList.remove('active');
+      enquirePopup.setAttribute('aria-hidden','true');
+      card.classList.remove('enquire-active');
     });
-  } catch (err) { console.error(err); container.innerHTML='<div class="small-muted">Could not load products</div>'; }
+    enquireSend.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const userMsg = (enquireText.value || '').trim();
+      let fullMsg = `Product Enquiry:%0AName: ${name}%0ACategory: ${category}%0APrice: ${price}%0A`;
+      if (userMsg) fullMsg += `%0AUser Message:%0A${encodeURIComponent(userMsg)}`;
+      window.open(`${WA_BASE}?text=${encodeURIComponent(decodeURIComponent(fullMsg))}`, '_blank');
+      enquirePopup.classList.remove('active'); enquirePopup.setAttribute('aria-hidden','true'); card.classList.remove('enquire-active'); enquireText.value = '';
+    });
+
+    // add-to-cart placeholder
+    card.querySelector('.add-to-cart').addEventListener('click', ()=> alert('Add to cart (demo) — this is non-functional.'));
+
+    // click outside to close
+    document.addEventListener('click', (e) => { if (!card.contains(e.target)) { enquirePopup.classList.remove('active'); card.classList.remove('enquire-active'); } });
+
+    grid.appendChild(card);
+  });
 }
 
-/* refresh */
-document.getElementById('refreshProducts').addEventListener('click', loadProducts);
-
-/* disk & recent */
-async function loadRecent(){
-  try {
-    const r = await fetch('/images/history', { cache:'no-cache' });
-    if (!r.ok) return;
-    const arr = await r.json();
-    const list = arr.slice(0,8);
-    const out = list.map(x => `<div style="padding:6px 0;display:flex;justify-content:space-between"><div style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${x.file}</div><div style="color:var(--muted);font-size:12px">${new Date(x.mtime).toLocaleString()}</div></div>`).join('');
-    document.getElementById('recentList').innerHTML = out;
-  } catch (err) { console.error(err); document.getElementById('recentList').innerHTML = '<div class="small-muted">N/A</div>'; }
+function closeAllEnquires(){
+  document.querySelectorAll('.enquire-popup.active').forEach(p => { p.classList.remove('active'); p.setAttribute('aria-hidden','true'); });
+  document.querySelectorAll('.card.enquire-active').forEach(c => c.classList.remove('enquire-active'));
 }
-async function refreshDisk(){ try { const r = await fetch('/admin/disk-info', { cache:'no-cache' }); if (!r.ok) return; const j = await r.json(); document.getElementById('diskText').textContent = `${(j.usedMB||0).toFixed(1)} MB used of ${j.totalGB||5} GB (${j.usedPct||0}%)`; } catch(e){ console.error(e); } }
 
-loadProducts(); loadRecent(); refreshDisk(); setInterval(refreshDisk, 60*1000);
+function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* filters/search/sort event handlers */
+document.querySelectorAll('.filter-btn').forEach(btn => btn.addEventListener('click', () => {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeCategory = btn.getAttribute('data-cat') || 'All';
+  render();
+}));
+document.getElementById('searchInput').addEventListener('input', ()=> render());
+document.getElementById('sortSelect').addEventListener('change', ()=> render());
+
+/* initial load */
+loadProducts();
+setInterval(loadProducts, 90_000);
 </script>
 </body>
 </html>
