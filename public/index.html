@@ -298,6 +298,19 @@
         document.body.style.overflow = "";
     }
 </script>
+    <script>
+function readCookie(name){
+    const c = document.cookie.split("; ").find(x=>x.startsWith(name+"="));
+    return c ? c.split("=")[1] : null;
+}
+
+window.addEventListener('DOMContentLoaded', ()=>{
+    if(readCookie("admin")==="4321"){
+        document.getElementById("manageFloating").style.display="block";
+    }
+});
+</script>
+
 <a id="manageFloating" href="/admin-products.html"
    style="
    position:fixed;
