@@ -15,16 +15,15 @@
   --text: #563e30;
   --muted: #6e5a52;
   --card: rgba(253,239,193,0.45);
+
+  /* Gold glow */
+  --gold: #d4af37;
+  --gold-glow: 0 8px 28px rgba(212,175,55,0.18);
 }
 
+/* Reset / base */
 *{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:'Poppins',system-ui;
-  background:var(--bg);
-  color:var(--text);
-  overflow-x:hidden;
-}
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 
 /* HEADER */
 header{
@@ -32,248 +31,136 @@ header{
   background:#fff;
   padding:14px 20px;
   box-shadow:0 2px 8px rgba(0,0,0,0.08);
-  position:sticky;
-  top:0; z-index:1000;
-  display:flex; align-items:center; justify-content:center;
-  position:relative;
+  position:sticky; top:0; z-index:1200;
+  display:flex; align-items:center; justify-content:center; position:relative;
 }
-.home-btn{
-  position:absolute; left:18px;
-  background:var(--accent); color:#fff;
-  padding:8px 12px; border-radius:10px;
-  text-decoration:none; font-weight:600;
-}
-.logo-img{
-  height:64px; width:auto; border-radius:8px;
-}
-.contact-btn{
-  position:absolute; right:18px;
-  background:var(--accent); color:#fff;
-  padding:8px 12px; border-radius:8px;
-  font-weight:600; cursor:pointer;
-}
+.home-btn{position:absolute; left:18px; background:var(--accent); color:#fff; padding:8px 12px; border-radius:10px; text-decoration:none; font-weight:600;}
+.logo-img{height:64px; width:auto; border-radius:8px}
+.contact-btn{position:absolute; right:18px; background:var(--accent); color:#fff; padding:8px 12px; border-radius:8px; font-weight:600; cursor:pointer;}
 
 /* TITLE */
-h1.page-title{
-  text-align:center;
-  margin:20px 0 10px;
-  font-family:'Great Vibes',cursive;
-  font-size:42px;
-}
+h1.page-title{margin:18px 0 8px; text-align:center; font-family:'Great Vibes', cursive; font-size:42px; color:var(--text);}
 
 /* FILTERS */
-.filters{
-  max-width:1200px;
-  margin:8px auto;
-  padding:0 16px;
-  display:flex;
-  justify-content:center;
-  gap:8px;
-  flex-wrap:wrap;
-}
-.filter-btn{
-  background:#fff;
-  padding:8px 14px;
-  border-radius:999px;
-  border:1px solid rgba(0,0,0,0.06);
-  font-weight:600;
-  cursor:pointer;
-}
-.filter-btn.active{
-  background:var(--accent-2);
-  color:#fff;
-}
+.filters{max-width:1200px; margin:8px auto; padding:0 16px; display:flex; gap:8px; justify-content:center; flex-wrap:wrap;}
+.filter-btn{background:#fff; padding:8px 14px; border-radius:999px; border:1px solid rgba(0,0,0,0.06); font-weight:600; cursor:pointer; color:var(--accent);}
+.filter-btn.active{background:var(--accent-2); color:#fff;}
 
 /* SEARCH */
-.search-wrap{
-  max-width:1200px;
-  margin:12px auto;
-  padding:0 16px;
-}
-.search-box{
-  display:flex;
-  gap:10px;
-}
-.search-input{
-  flex:1;
-  padding:12px 14px;
-  border-radius:10px;
-  border:1px solid rgba(0,0,0,0.06);
-  background:#fff;
-}
-.sort-select{
-  padding:10px 12px;
-  border-radius:10px;
-  background:#fff;
-  border:1px solid rgba(0,0,0,0.06);
-}
+.search-wrap{max-width:1200px; margin:12px auto; padding:0 16px;}
+.search-box{display:flex; gap:10px;}
+.search-input{flex:1; padding:12px 14px; border-radius:10px; border:1px solid rgba(0,0,0,0.06); background:#fff; font-size:15px;}
+.sort-select{padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,0.06); background:#fff;}
 
 /* GRID */
-.grid{
-  max-width:1300px;
-  margin:18px auto 80px;
-  padding:0 16px;
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-  gap:18px;
-}
+.grid{max-width:1300px; margin:18px auto 140px; padding:0 16px; display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px;}
 
-/* PRODUCT CARD */
-.card{
-  background:var(--card);
-  padding:10px;
-  border-radius:12px;
-  box-shadow:0 6px 18px rgba(0,0,0,0.06);
-  position:relative;
-}
-.card .img-wrap{
-  height:180px;
-  background:#fff;
-  border-radius:10px;
-  overflow:hidden;
-}
-.card img{
-  width:100%; height:100%;
-  object-fit:cover;
-}
+/* CARD */
+.card{background:var(--card); padding:10px; border-radius:12px; box-shadow:0 6px 18px rgba(0,0,0,0.06); position:relative; overflow:hidden;}
+.img-wrap{height:180px; border-radius:10px; overflow:hidden; background:#fff; display:flex; align-items:center; justify-content:center;}
+.card img{width:100%; height:100%; object-fit:cover;}
 .name{font-weight:700; margin-top:10px;}
-.cat{color:var(--muted); font-size:13px;}
+.cat{color:var(--muted); font-size:13px; margin-top:4px;}
 .price{font-weight:700; margin-top:6px;}
 
-/* ENQUIRE OVERLAY */
-.overlay{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  pointer-events:none;
-}
-.overlay .cta{
-  pointer-events:auto;
-  background:linear-gradient(180deg, rgba(255,127,127,0.98), rgba(86,62,48,0.95));
-  color:#fff;
-  padding:10px 14px;
-  border-radius:999px;
-  border:none;
-  margin:14px;
-  opacity:0;
-  transform:translateY(10px);
-  transition:all .18s;
-}
-.card:hover .cta{
-  opacity:1;
-  transform:translateY(0);
-}
+/* OVERLAY CTA */
+.overlay{position:absolute; inset:0; display:flex; align-items:flex-end; justify-content:center; pointer-events:none;}
+.cta{pointer-events:auto; background:linear-gradient(180deg, rgba(255,127,127,0.98), rgba(86,62,48,0.95)); color:#fff; padding:10px 14px; border-radius:999px; border:0; margin:14px; opacity:0; transform:translateY(10px); transition:all .18s; box-shadow:0 12px 28px rgba(0,0,0,0.18);}
+.card:hover .cta{opacity:1; transform:translateY(0);}
 
-/* ENQUIRE POPUP */
-.enq-popup{
-  position:fixed; left:50%; top:50%;
-  transform:translate(-50%,-50%);
-  background:#fff;
-  width:92%; max-width:420px;
-  border-radius:12px;
-  padding:16px;
-  box-shadow:0 18px 48px rgba(0,0,0,0.35);
-  display:none;
-  z-index:5000;
-}
-.enq-popup .close-x{
-  position:absolute; right:10px; top:10px;
-  cursor:pointer; font-size:22px;
-}
+/* ENQUIRY POPUP (center) */
+.enq-popup{position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); width:92%; max-width:460px; background:#fff; border-radius:12px; padding:16px; box-shadow:0 22px 58px rgba(0,0,0,0.42); z-index:5000; display:none;}
+.enq-popup .close-x{position:absolute; right:10px; top:8px; font-size:22px; color:#fff; background:rgba(0,0,0,0.45); width:34px; height:34px; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+.enq-popup .row{display:flex; gap:12px; align-items:center;}
+.enq-popup img{width:96px; height:96px; object-fit:cover; border-radius:8px;}
+.enq-popup textarea{width:100%; height:80px; margin-top:8px; border-radius:8px; padding:8px; border:1px solid #ddd;}
+.enq-popup .send{background:#25D366; color:#fff; padding:10px; border-radius:8px; border:0; width:100%; margin-top:10px; cursor:pointer;}
 
-/* FLOATING BUTTONS (CHAT/WA) */
-.floating{
-  position:fixed; right:18px; bottom:18px;
-  display:flex; flex-direction:column;
-  gap:12px; z-index:2000;
-}
-.floating .btn{
-  width:56px; height:56px;
-  border-radius:50%;
-  display:flex; align-items:center; justify-content:center;
-  box-shadow:0 6px 18px rgba(0,0,0,0.15);
-}
+/* FLOATING CHAT/WA */
+.floating{position:fixed; right:18px; bottom:18px; display:flex; flex-direction:column; gap:12px; z-index:3000;}
+.floating .btn{width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 8px 24px rgba(0,0,0,0.14); cursor:pointer; border:0;}
 .wh{background:#25D366;}
 .chat{background:var(--accent-2);}
 
-/* ALWAYS VISIBLE ADMIN BUTTON */
+/* ADMIN BUTTONS */
+/* small hammer icon (always visible) */
 #adminLoginBtn{
-  position:fixed;
-  left:18px;
-  bottom:80px;
-  width:50px;
-  height:50px;
-  background:#fff;
-  border:2px solid var(--accent);
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  box-shadow:0 6px 18px rgba(0,0,0,0.18);
-  cursor:pointer;
-  z-index:3000;
+  position:fixed; left:18px; bottom:100px; width:50px; height:50px; background:#fff; border:2px solid var(--accent); border-radius:12px; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,0.18); cursor:pointer; z-index:3200;
 }
-#adminLoginBtn img{
-  width:26px; height:26px;
-}
+#adminLoginBtn img{width:26px; height:26px;}
 
-/* MANAGE BUTTON (after login) */
-#manageFloating{
-  position:fixed;
-  left:18px;
-  bottom:18px;
-  background:var(--accent);
-  color:#fff;
-  padding:12px 16px;
-  border-radius:10px;
-  font-weight:700;
-  text-decoration:none;
-  display:none;
-  box-shadow:0 8px 24px rgba(0,0,0,0.14);
-  z-index:3000;
-}
+/* manage button (appears after login) */
+#manageFloating{position:fixed; left:18px; bottom:18px; background:var(--accent); color:#fff; padding:12px 16px; border-radius:10px; display:none; text-decoration:none; font-weight:700; box-shadow:0 8px 24px rgba(0,0,0,0.14); z-index:3200;}
 
-/* CONTACT POPUP */
-.popup-overlay{
-  position:fixed; inset:0;
-  background:rgba(0,0,0,0.45);
-  display:none;
-  justify-content:center;
-  align-items:center;
-  z-index:6000;
+/* ADMIN OPTIONS POPUP (P3 - dark glass) */
+.admin-modal-overlay{
+  position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:4500;
+  backdrop-filter: blur(6px);
 }
-.popup-box{
-  background:#faebe3;
-  padding:22px;
-  border-radius:14px;
-  text-align:center;
+.admin-modal-backdrop{
+  position:absolute; inset:0; background:rgba(0,0,0,0.55);
+}
+.admin-modal{
+  position:relative; width:92%; max-width:420px; border-radius:14px; padding:20px;
+  background: linear-gradient(180deg, rgba(20,20,20,0.88), rgba(12,12,12,0.92));
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  color:#fff; z-index:10; transform:translateY(-6px);
+  border:1px solid rgba(255,255,255,0.04);
+}
+.admin-modal h3{margin:0 0 12px; font-size:18px; color:#fff;}
+.admin-options{display:flex; gap:12px; flex-direction:column;}
+.admin-btn{
+  display:flex; gap:12px; align-items:center; padding:12px 14px; border-radius:10px; cursor:pointer;
+  border:1px solid rgba(255,255,255,0.04); background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  transition:transform .12s, box-shadow .12s;
+}
+.admin-btn:hover{transform:translateY(-4px); box-shadow:0 12px 36px rgba(212,175,55,0.12);}
+
+/* Gold-glow style for action buttons (C1) */
+.admin-btn.gold{
+  border:1px solid rgba(212,175,55,0.25);
+  box-shadow: var(--gold-glow);
+}
+.admin-btn .icon{
+  width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.02);
+}
+.admin-btn .label{font-weight:700; color:#fff; font-size:15px;}
+.admin-close{position:absolute; top:12px; right:12px; font-size:20px; color:#fff; cursor:pointer;}
+
+/* responsive tweaks */
+@media(max-width:640px){
+  .admin-btn{padding:10px}
+  .enq-popup img{width:80px;height:80px}
+  .img-wrap{height:160px}
 }
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <header>
   <a class="home-btn" href="/index.html">Home</a>
-  <img class="logo-img" src="/logo/dorys.PNG">
+  <!-- logo uses uploaded local path (will be transformed to URL by your environment) -->
+  <img class="logo-img" src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" alt="Dory's Bakehouse">
   <div class="contact-btn" onclick="openContact()">Contact</div>
 </header>
 
+<!-- TITLE -->
 <h1 class="page-title">Our Products</h1>
 
 <!-- FILTERS -->
-<div class="filters">
+<div class="filters" role="tablist" aria-label="Categories">
   <button class="filter-btn active" data-cat="all">All</button>
   <button class="filter-btn" data-cat="Cakes">Cakes</button>
   <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
   <button class="filter-btn" data-cat="Pastries">Pastries</button>
 </div>
 
-<!-- SEARCH BAR -->
+<!-- SEARCH -->
 <div class="search-wrap">
   <div class="search-box">
-    <input id="searchInput" class="search-input" placeholder="Search products...">
+    <input id="searchInput" class="search-input" placeholder="Search products by name, category or description...">
     <select id="sortSelect" class="sort-select">
       <option value="newest">Newest</option>
       <option value="price-asc">Price: Low → High</option>
@@ -283,180 +170,251 @@ h1.page-title{
 </div>
 
 <!-- GRID -->
-<div id="grid" class="grid"></div>
+<div id="grid" class="grid" aria-live="polite">Loading…</div>
 
-<!-- FLOATING BUTTONS -->
-<div class="floating">
-  <button class="btn chat" onclick="openContact()">
-    <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png" width="26">
+<!-- FLOATING CHAT + WA -->
+<div class="floating" aria-hidden="false">
+  <button class="btn chat" onclick="openContact()" title="Chat">
+    <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png" width="26" alt="chat">
   </button>
-  <a class="btn wh" id="waFloat" target="_blank">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="26">
+  <a class="btn wh" id="waFloat" target="_blank" rel="noreferrer" title="WhatsApp">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="26" alt="wa">
   </a>
 </div>
 
 <!-- ALWAYS VISIBLE HAMMER ADMIN BUTTON -->
-<div id="adminLoginBtn" onclick="openAdminLogin()">
-  <img src="https://cdn-icons-png.flaticon.com/512/753/753244.png">
+<div id="adminLoginBtn" title="Admin" onclick="openAdminLogin()">
+  <img src="https://cdn-icons-png.flaticon.com/512/753/753244.png" alt="admin">
 </div>
 
-<!-- MANAGE BUTTON -->
-<a id="manageFloating" href="/admin-products.html">Manage Products</a>
+<!-- MANAGE BUTTON (visible after login) -->
+<a id="manageFloating" href="#" title="Manage Products">Manage Products</a>
 
-<!-- ENQUIRE POPUP -->
-<div id="enqPopup" class="enq-popup">
-  <span class="close-x" onclick="closeEnq()">×</span>
-  <div style="display:flex;gap:12px;align-items:center">
-    <img id="enqImg" style="width:90px;height:90px;border-radius:10px;">
-    <div>
-      <h3 id="enqName" style="margin:0"></h3>
-      <p id="enqCat"></p>
-      <p id="enqPrice"></p>
+<!-- ADMIN OPTIONS POPUP (P3 dark glass) -->
+<div id="adminModal" class="admin-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="admin-modal-backdrop" onclick="closeAdminModal()"></div>
+  <div class="admin-modal" role="document">
+    <div class="admin-close" onclick="closeAdminModal()">×</div>
+    <h3>Admin Options</h3>
+    <div class="admin-options">
+      <div class="admin-btn gold" onclick="goToUpload()">
+        <div class="icon"><img src="https://cdn-icons-png.flaticon.com/512/1828/1828911.png" alt="upload" width="20"></div>
+        <div class="label">Upload Images</div>
+      </div>
+
+      <div class="admin-btn gold" onclick="goToManage()">
+        <div class="icon"><img src="https://cdn-icons-png.flaticon.com/512/2989/2989988.png" alt="manage" width="20"></div>
+        <div class="label">Manage Products</div>
+      </div>
     </div>
   </div>
-  <textarea id="enqMsg" placeholder="Your message..."></textarea>
-  <button class="send" onclick="sendEnquiry()" style="margin-top:10px;background:#25D366;color:#fff;border:0;padding:10px;width:100%;border-radius:8px;cursor:pointer;">
-    Send on WhatsApp
-  </button>
+</div>
+
+<!-- ENQUIRY POPUP -->
+<div id="enqPopup" class="enq-popup" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="close-x" onclick="closeEnq()">×</div>
+  <div class="row">
+    <img id="enqImg" alt="">
+    <div>
+      <h3 id="enqName"></h3>
+      <p id="enqCat" style="margin:6px 0;color:var(--muted)"></p>
+      <p id="enqPrice" style="margin:0 0 6px"></p>
+    </div>
+  </div>
+  <textarea id="enqMsg" placeholder="Your message (delivery date, quantity...)"></textarea>
+  <button class="send" onclick="sendEnquiry()">Send on WhatsApp</button>
 </div>
 
 <!-- CONTACT POPUP -->
-<div id="contactPopup" class="popup-overlay">
-  <div class="popup-box">
+<div id="contactPopup" class="popup-overlay" aria-hidden="true">
+  <div class="popup-box" role="dialog">
     <h3>Contact Us</h3>
-    <p>📞 <a href="tel:+917972032790">+91 7972032790</a></p>
+    <p>📞 <a href="tel:+917972032790" style="color:var(--text);text-decoration:none;font-weight:700">+91 7972032790</a></p>
     <p>📍 Dory's Bakehouse, Pune</p>
-    <div class="close-btn" onclick="closeContact()" style="background:var(--accent);color:#fff;padding:10px;border-radius:8px;cursor:pointer;">Close</div>
+    <div class="close-btn" onclick="closeContact()">Close</div>
   </div>
 </div>
 
 <script>
-/* WHATSAPP */
+/* CONFIG */
 const WA_NUMBER = "919168445014";
-document.getElementById("waFloat").href = "https://wa.me/" + WA_NUMBER;
+document.getElementById('waFloat').href = "https://wa.me/" + WA_NUMBER;
 
-/* COOKIE */
+/* Cookie helper */
 function readCookie(name){
-  const c = document.cookie.split('; ').find(r=>r.startsWith(name+'='));
-  return c ? c.split('=')[1] : null;
+  const c = document.cookie.split('; ').find(r=>r.trim().startsWith(name+'='));
+  return c ? decodeURIComponent(c.split('=')[1]) : null;
 }
 
-/* SHOW MANAGE BUTTON */
-function showManageBtn(){
-  document.getElementById("manageFloating").style.display="block";
-  document.getElementById("adminLoginBtn").style.display="none";
+/* Show manage button if admin cookie exists */
+function updateAdminUI(){
+  if(readCookie('admin') === '4321'){
+    document.getElementById('manageFloating').style.display = 'block';
+    document.getElementById('adminLoginBtn').style.display = 'none';
+  } else {
+    document.getElementById('manageFloating').style.display = 'none';
+    document.getElementById('adminLoginBtn').style.display = 'flex';
+  }
 }
 
-/* HAMMER BUTTON BEHAVIOR */
+/* HAMMER ADMIN BUTTON behavior */
 function openAdminLogin(){
-  // Already logged in -> go directly to Upload Page
-  if(readCookie("admin") === "4321"){
-    window.location.href = "/upload.html";
+  // if already logged in -> go straight to upload
+  if(readCookie('admin') === '4321'){
+    window.location.href = '/upload.html';
     return;
   }
-
   const pin = prompt("Enter Admin PIN:");
-  if(pin === "4321"){
+  if(pin === '4321'){
+    // set cookie site-wide for 1 day
     document.cookie = "admin=4321; path=/; max-age=86400;";
-    showManageBtn();
-    window.location.href = "/upload.html"; // AUTO redirect after login
+    updateAdminUI();
+    // redirect to upload page
+    window.location.href = '/upload.html';
   } else if(pin !== null){
-    alert("Incorrect PIN");
+    alert('Incorrect PIN');
   }
 }
 
-/* ON LOAD */
-window.addEventListener("DOMContentLoaded", ()=>{
-  if(readCookie("admin") === "4321"){
-    showManageBtn();
+/* MANAGE button -> open admin options popup (C) */
+document.getElementById('manageFloating').addEventListener('click', (e)=>{
+  e.preventDefault();
+  // only open modal if admin
+  if(readCookie('admin') === '4321'){
+    openAdminModal();
+  } else {
+    // if somehow visible but not admin, prompt
+    openAdminLogin();
   }
-  loadProducts();
 });
 
-/* CONTACT POPUP */
-function openContact(){document.getElementById("contactPopup").style.display="flex";}
-function closeContact(){document.getElementById("contactPopup").style.display="none";}
+/* Admin modal controls */
+function openAdminModal(){
+  document.getElementById('adminModal').style.display = 'flex';
+  document.getElementById('adminModal').setAttribute('aria-hidden','false');
+}
+function closeAdminModal(){
+  document.getElementById('adminModal').style.display = 'none';
+  document.getElementById('adminModal').setAttribute('aria-hidden','true');
+}
+function goToUpload(){
+  closeAdminModal();
+  window.location.href = '/upload.html';
+}
+function goToManage(){
+  closeAdminModal();
+  window.location.href = '/admin-products.html';
+}
 
-/* PRODUCTS */
-let products=[];
+/* Contact popup */
+function openContact(){ const el = document.getElementById('contactPopup'); el.style.display = 'flex'; el.setAttribute('aria-hidden','false'); }
+function closeContact(){ const el = document.getElementById('contactPopup'); el.style.display = 'none'; el.setAttribute('aria-hidden','true'); }
+
+/* Enquiry popup */
+let currentProduct = null;
+function openEnquiry(p){
+  currentProduct = p;
+  document.getElementById('enqImg').src = p.image || '/images/products/default-sample.png';
+  document.getElementById('enqName').textContent = p.name || '';
+  document.getElementById('enqCat').textContent = p.category || '';
+  document.getElementById('enqPrice').textContent = p.price ? '₹ ' + p.price : '';
+  document.getElementById('enqPopup').style.display = 'block';
+  document.getElementById('enqPopup').setAttribute('aria-hidden','false');
+}
+function closeEnq(){ document.getElementById('enqPopup').style.display = 'none'; document.getElementById('enqPopup').setAttribute('aria-hidden','true'); }
+function sendEnquiry(){
+  const msg = document.getElementById('enqMsg').value || '';
+  if(!currentProduct) return;
+  const text = `Product Enquiry:%0AName: ${currentProduct.name}%0ACategory: ${currentProduct.category || ''}%0APrice: ${currentProduct.price || ''}%0A%0AMessage:%0A${encodeURIComponent(msg)}`;
+  window.open(`https://wa.me/${WA_NUMBER}?text=${text}`, '_blank');
+  closeEnq();
+}
+
+/* PRODUCTS: fetch and render */
+let products = [];
+let activeCategory = 'all';
+const grid = document.getElementById('grid');
+
 async function loadProducts(){
-  const r = await fetch("/products/list");
-  products = await r.json();
+  try{
+    const res = await fetch('/products/list', {cache: 'no-cache'});
+    products = await res.json();
+  } catch(e){
+    console.error('Failed to load products', e);
+    products = [];
+  }
   render();
 }
 
-function escapeHtml(s){
-  return (s||"").toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-}
-
-let activeCategory="all";
-document.querySelectorAll(".filter-btn").forEach(btn=>{
-  btn.onclick = ()=>{
-    document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
-    activeCategory = btn.dataset.cat;
-    render();
-  };
-});
-
-document.getElementById("searchInput").oninput = render;
-document.getElementById("sortSelect").onchange = render;
-
 function render(){
-  const q = document.getElementById("searchInput").value.toLowerCase();
-  const sortMode = document.getElementById("sortSelect").value;
+  const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
+  const sortMode = document.getElementById('sortSelect')?.value || 'newest';
 
   let list = products.filter(p=>{
-    const catOK = activeCategory==="all" || (p.category||"").toLowerCase()===activeCategory.toLowerCase();
-    const text = (p.name+" "+p.category+" "+p.description).toLowerCase();
-    return catOK && (!q || text.includes(q));
+    const catOK = activeCategory === 'all' || ((p.category||'').toLowerCase() === activeCategory.toLowerCase());
+    const text = ((p.name||'') + ' ' + (p.category||'') + ' ' + (p.description||'')).toLowerCase();
+    const matches = !q || text.includes(q);
+    return catOK && matches;
   });
 
-  if(sortMode==="price-asc") list.sort((a,b)=>a.price-b.price);
-  if(sortMode==="price-desc") list.sort((a,b)=>b.price-a.price);
-  if(sortMode==="newest") list.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  if(sortMode === 'price-asc') list.sort((a,b)=> (Number(a.price)||0) - (Number(b.price)||0));
+  else if(sortMode === 'price-desc') list.sort((a,b)=> (Number(b.price)||0) - (Number(a.price)||0));
+  else list.sort((a,b)=> new Date(b.createdAt) - new Date(a.createdAt));
 
-  const grid = document.getElementById("grid");
-  grid.innerHTML="";
+  grid.innerHTML = '';
+  if(!list.length){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:36px">No products found.</div>`;
+    return;
+  }
 
   list.forEach(p=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.innerHTML=`
-      <div class="img-wrap"><img src="${p.image}" alt=""></div>
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <div class="img-wrap"><img src="${p.image || '/images/products/default-sample.png'}" alt="${escapeHtml(p.name)}"></div>
       <div class="name">${escapeHtml(p.name)}</div>
       <div class="cat">${escapeHtml(p.category)}</div>
       <div class="price">₹ ${escapeHtml(p.price)}</div>
       <div class="overlay"><button class="cta">Enquire Now</button></div>
     `;
-    card.querySelector(".cta").onclick = ()=>openEnquiry(p);
+    card.querySelector('.cta').addEventListener('click', ()=> openEnquiry(p));
     grid.appendChild(card);
   });
 }
 
-/* ENQUIRY */
-let currentProduct=null;
-function openEnquiry(p){
-  currentProduct=p;
-  document.getElementById("enqImg").src=p.image;
-  document.getElementById("enqName").textContent=p.name;
-  document.getElementById("enqCat").textContent=p.category;
-  document.getElementById("enqPrice").textContent="₹ "+p.price;
-  document.getElementById("enqMsg").value="";
-  document.getElementById("enqPopup").style.display="block";
-}
-function closeEnq(){
-  document.getElementById("enqPopup").style.display="none";
-}
-function sendEnquiry(){
-  const msg=document.getElementById("enqMsg").value;
-  const url=`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(
-    `Enquiry for ${currentProduct.name} (${currentProduct.category})\nPrice: ₹${currentProduct.price}\n\n${msg}`
-  )}`;
-  window.open(url,"_blank");
-  closeEnq();
-}
-</script>
+function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
+/* FILTERS */
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCategory = btn.dataset.cat || 'all';
+    render();
+  });
+});
+
+/* SEARCH & SORT */
+document.getElementById('searchInput').addEventListener('input', render);
+document.getElementById('sortSelect').addEventListener('change', render);
+
+/* Admin modal opener from manageFloating */
+document.getElementById('manageFloating').addEventListener('click', (e) => {
+  e.preventDefault();
+  if(readCookie('admin') === '4321') openAdminModal();
+  else openAdminLogin();
+});
+
+/* Show/hide admin UI on load */
+window.addEventListener('DOMContentLoaded', () => {
+  updateAdminUI();
+  loadProducts();
+  // refresh periodically so new uploads appear quickly
+  setInterval(loadProducts, 90000);
+});
+
+/* Close admin modal on backdrop click handled via backdrop element */
+document.querySelectorAll('.admin-modal-backdrop').forEach(b => b.addEventListener('click', closeAdminModal));
+</script>
 </body>
 </html>
