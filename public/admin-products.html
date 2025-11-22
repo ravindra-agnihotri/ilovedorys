@@ -1,370 +1,394 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Dory's Bakehouse — Manage Products</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin – Manage Products | Dory's Bakehouse</title>
 
-<!-- Google Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<!-- HEIC Converter -->
-<script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
 
 <style>
-:root{
-    --bg: #faebe3;
+:root {
+    --bg: rgba(255, 243, 207, 0.45);
     --accent: #563e30;
-    --card: rgba(253,239,193,0.45);
     --text: #563e30;
+    --muted: #6e5a52;
+    --card: rgba(253,239,193,0.45);
 }
 
-body{
+body {
     margin:0;
+    font-family:Poppins, system-ui;
     background:var(--bg);
-    font-family:'Poppins', system-ui;
-    color:var(--text);
+    overflow-x:hidden;
 }
 
 /* HEADER */
-header{
-    width:100%;
+header {
     background:#fff;
     padding:14px 20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    box-shadow:0 2px 8px rgba(0,0,0,0.1);
     display:flex;
+    justify-content:center;
     align-items:center;
-    justify-content:space-between;
     position:sticky;
     top:0;
     z-index:1000;
+    position:relative;
 }
-header .left{
-    display:flex; align-items:center; gap:12px;
+
+.logo {
+    height:64px;
 }
-header img.logo{
-    height:60px; width:auto;
-}
-header h1{
-    margin:0;
-    font-family:'Great Vibes', cursive;
-    font-size:34px;
-}
-header .actions a{
-    margin-left:10px;
+
+.home-btn {
+    position:absolute;
+    left:20px;
+    background:var(--accent);
+    color:#fff;
+    padding:8px 14px;
+    border-radius:8px;
     text-decoration:none;
     font-size:14px;
-    padding:10px 14px;
-    background:var(--accent);
-    color:white;
+}
+.logout-btn {
+    position:absolute;
+    right:20px;
+    background:#ff7f7f;
+    color:#fff;
+    padding:8px 14px;
     border-radius:8px;
-    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+    font-size:14px;
+    cursor:pointer;
 }
 
-/* MAIN LAYOUT */
-.container{
-    max-width:1100px;
-    margin:30px auto;
-    padding:0 16px;
+/* LOGIN BOX */
+#loginBox {
+    max-width:360px;
+    background:#fff;
+    padding:22px;
+    margin:40px auto;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.12);
+}
+#loginBox h3 {
+    margin:0 0 12px;
+    color:var(--text);
+}
+input[type=password] {
+    width:100%;
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+    border:1px solid #aaa;
 }
 
-/* FORM CARD */
-.card{
-    background:var(--card);
-    padding:20px;
-    border-radius:14px;
-    box-shadow:0 6px 22px rgba(0,0,0,0.1);
-    margin-bottom:25px;
+/* ADMIN AREA */
+#adminArea {
+    display:none;
+    max-width:950px;
+    margin:20px auto;
+    padding:10px;
 }
 
-.card h2{
-    margin:0 0 12px 0;
-    font-family:'Great Vibes', cursive;
-    font-size:40px;
-    text-align:center;
+.section {
+    background:#fff;
+    padding:18px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,0.12);
+    margin-bottom:20px;
+}
+
+.section h3 {
+    margin:0 0 12px;
+    color:var(--text);
 }
 
 /* FORM */
-label{
-    font-size:15px;
+label {
     font-weight:500;
 }
-input, select, textarea{
+input[type=text], input[type=number], textarea, select {
     width:100%;
-    margin-top:6px;
-    margin-bottom:14px;
     padding:10px;
     border-radius:8px;
-    border:1px solid #bbb;
-    font-size:15px;
+    border:1px solid #aaa;
+    margin:8px 0 14px;
 }
+textarea { height:80px; }
 
-textarea{
-    resize:vertical;
-    min-height:80px;
-}
-
-button{
-    padding:10px 18px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    background:var(--accent);
-    color:white;
-    font-size:15px;
-    font-weight:500;
-}
-
-/* PRODUCT GRID */
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
-    gap:18px;
-    margin-top:20px;
-}
-
-.product-card{
-    background:#fff;
+/* PRODUCT LIST */
+.card {
+    background:var(--card);
+    padding:12px;
     border-radius:12px;
-    box-shadow:0 6px 20px rgba(0,0,0,0.08);
-    padding:14px;
-    text-align:center;
+    display:flex;
+    gap:14px;
+    align-items:center;
+    box-shadow:0 4px 12px rgba(0,0,0,0.1);
+    margin-bottom:14px;
 }
 
-.product-card img{
-    width:100%;
-    height:160px;
+.card img {
+    width:80px;
+    height:80px;
     object-fit:cover;
     border-radius:10px;
 }
+.delete-btn {
+    background:#ff7f7f;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:8px;
+    border:0;
+    cursor:pointer;
+}
 
-.name{
-    font-size:16px;
-    font-weight:600;
-    margin:8px 0 4px;
+/* FLOATING BUTTONS */
+.floating-buttons{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+    z-index:2000;
 }
-.cat{
-    font-size:13px;
-    color:#666;
+.whatsapp-btn,.chat-btn{
+    width:55px;
+    height:55px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,0.25);
 }
-.price{
-    font-size:15px;
-    font-weight:600;
-    margin:6px 0;
+.whatsapp-btn{background:#25D366;}
+.chat-btn{background:#ff7f7f;}
+.floating-buttons img{width:28px;height:28px;}
+
+/* CONTACT POPUP */
+.popup-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:5000;
 }
-.delbtn{
-    margin-top:10px;
-    display:inline-block;
-    padding:8px 14px;
-    background:#b02020;
-    color:white;
-    font-size:13px;
+.popup-box{
+    background:#faebe3;
+    padding:22px;
+    border-radius:14px;
+    text-align:center;
+    width:90%;
+    max-width:320px;
+}
+.close-btn{
+    margin-top:14px;
+    background:var(--accent);
+    color:#fff;
+    padding:10px;
     border-radius:8px;
 }
 
-/* Preview */
-#preview{
-    margin-top:12px;
-    text-align:center;
-}
-#preview img{
-    width:150px;
-    height:150px;
-    object-fit:cover;
-    border-radius:10px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.12);
-}
-
-/* RESPONSIVE */
-@media(max-width:700px){
-    header h1{ font-size:26px; }
-    .grid{ grid-template-columns:1fr 1fr; }
-}
-@media(max-width:450px){
-    .grid{ grid-template-columns:1fr; }
-}
 </style>
 </head>
-
 <body>
 
-<!-- HEADER -->
 <header>
-    <div class="left">
-        <img src="/logo/dorys.PNG" class="logo" />
-        <h1>Dory's Bakehouse</h1>
-    </div>
-    <div class="actions">
-        <a href="/">Home</a>
-        <a href="/upload.html">Upload Images</a>
-        <a href="/admin-products.html">Manage Gallery</a>
-        <a href="#" id="logoutBtn" style="background:#7b0f0f;">Logout</a>
-    </div>
+    <a class="home-btn" href="/index.html">Home</a>
+    <img class="logo" src="/logo/dorys.PNG">
+    <div class="logout-btn" onclick="logout()">Logout</div>
 </header>
 
-<div class="container">
-
-<!-- ADD PRODUCT CARD -->
-<div class="card">
-    <h2>Add Product</h2>
-
-    <label>Product Name</label>
-    <input id="pname" type="text" placeholder="Chocolate Truffle Cake">
-
-    <label>Description</label>
-    <textarea id="pdesc" placeholder="Rich chocolate layers with ganache..."></textarea>
-
-    <label>Price (₹)</label>
-    <input id="pprice" type="text" placeholder="599">
-
-    <label>Category</label>
-    <select id="pcat">
-        <option value="Cakes">Cakes</option>
-        <option value="Designer Cakes">Designer Cakes</option>
-        <option value="Cupcakes">Cupcakes</option>
-        <option value="Brownies">Brownies</option>
-        <option value="Cookies">Cookies</option>
-        <option value="Pastries">Pastries</option>
-        <option value="Bread & Buns">Bread & Buns</option>
-        <option value="Celebration Cakes">Celebration Cakes</option>
-        <option value="Anniversary Cakes">Anniversary Cakes</option>
-        <option value="Kids Theme Cakes">Kids Theme Cakes</option>
-    </select>
-
-    <label>Image</label>
-    <input id="pimg" type="file" accept="image/*">
-
-    <div id="preview"></div>
-
-    <button id="addBtn">Add Product</button>
+<!-- LOGIN BOX -->
+<div id="loginBox">
+    <h3>Admin Login</h3>
+    <input type="password" id="pin" placeholder="Enter PIN (4321)">
+    <button onclick="login()">Login</button>
 </div>
 
-<!-- PRODUCT LIST -->
-<h2 style="font-family:'Great Vibes',cursive;font-size:38px;text-align:center;">Our Products</h2>
-<div id="list" class="grid"></div>
+<!-- ADMIN AREA -->
+<div id="adminArea">
 
+    <!-- ADD PRODUCT -->
+    <div class="section">
+        <h3>Add Product</h3>
+
+        <label>Name</label>
+        <input type="text" id="pname">
+
+        <label>Description</label>
+        <textarea id="pdesc"></textarea>
+
+        <label>Price (₹)</label>
+        <input type="number" id="pprice" min="0">
+
+        <label>Category</label>
+        <select id="pcategory">
+            <option value="">Select Category</option>
+            <option value="Cakes">Cakes</option>
+            <option value="Cupcakes">Cupcakes</option>
+            <option value="Pastries">Pastries</option>
+        </select>
+
+        <label>Product Image</label>
+        <input type="file" id="pimage" accept="image/*,.heic,.HEIC"/>
+
+        <button onclick="addProduct()">Add Product</button>
+        <div id="addStatus" style="margin-top:10px;color:green;font-weight:600;"></div>
+    </div>
+
+    <!-- PRODUCT LIST -->
+    <div class="section">
+        <h3>Existing Products</h3>
+        <div id="productList"></div>
+    </div>
+
+</div>
+
+<!-- FLOATING BUTTONS -->
+<div class="floating-buttons">
+    <div class="chat-btn" onclick="openContact()">
+        <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png">
+    </div>
+    <a class="whatsapp-btn" href="https://wa.me/9168445014" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
+    </a>
+</div>
+
+<!-- CONTACT POPUP -->
+<div class="popup-overlay" id="contactPopup">
+    <div class="popup-box">
+        <h3>Contact Us</h3>
+        <p>📞 <a href="tel:+917972032790" style="color:var(--text);text-decoration:none;font-weight:700">+91 7972032790</a></p>
+        <p>📍 Dory's Bakehouse, Pune</p>
+        <div class="close-btn" onclick="closeContact()">Close</div>
+    </div>
 </div>
 
 <script>
-/* --------------------------
-   ADMIN PIN
---------------------------- */
-function readCookie(n){
-  return document.cookie.split("; ").find(x=>x.startsWith(n+"="))?.split("=")[1]||null;
-}
-function setCookie(n,v){
-  document.cookie=n+"="+v+";path=/";
-}
-function deleteCookie(n){
-  document.cookie=n+"=;expires=Thu,01 Jan 1970 00:00:00 GMT;path=/";
-}
-if(readCookie("admin")!=="4321"){
-  let p = prompt("Enter Admin PIN:");
-  if(p==="4321") setCookie("admin","4321");
-  else { alert("Wrong PIN"); location.href="/"; }
-}
-document.getElementById("logoutBtn").onclick = ()=>{
-    deleteCookie("admin");
-    location.href="/";
-};
-
-/* --------------------------
-   PREVIEW
---------------------------- */
-let picked = null;
-pimg.onchange = e=>{
-    if(e.target.files.length){
-        picked = e.target.files[0];
-        preview.innerHTML = `<img src="${URL.createObjectURL(picked)}">`;
-    }
-};
-
-/* --------------------------
-   ADD PRODUCT (with HEIC support)
---------------------------- */
-function isHeic(f){ return /\.heic$|\.heif$/i.test(f.name); }
-
-async function convertHeic(file){
-    let jpg = await heic2any({ blob:file, toType:"image/jpeg", quality:0.90 });
-    return new File([jpg], file.name.replace(/\.\w+$/, ".jpg"), {type:"image/jpeg"});
-}
-
-addBtn.onclick = async()=>{
-    let name = pname.value.trim();
-    if(!name){ alert("Enter product name"); return; }
-
-    let desc = pdesc.value.trim();
-    let price = pprice.value.trim();
-    let cat = pcat.value;
-
-    let file = picked;
-    if(!file){ alert("Select image"); return; }
-
-    if(isHeic(file)){
-        file = await convertHeic(file);
-    }
-
-    let fd = new FormData();
-    fd.append("name", name);
-    fd.append("description", desc);
-    fd.append("price", price);
-    fd.append("category", cat);
-    fd.append("image", file);
-
-    let r = await fetch("/products/add", { method:"POST", body:fd });
-    let d = await r.json();
-
-    if(d.success){
-        alert("Product added!");
-        pname.value = "";
-        pdesc.value = "";
-        pprice.value = "";
-        pimg.value = "";
-        preview.innerHTML="";
+/* ==========================
+   ADMIN LOGIN
+========================== */
+function login(){
+    const pin = document.getElementById('pin').value;
+    if(pin === "4321"){
+        document.cookie = "admin=4321; path=/; max-age=86400;";
+        document.getElementById('loginBox').style.display='none';
+        document.getElementById('adminArea').style.display='block';
         loadProducts();
-    }else{
-        alert("Failed: "+d.error);
+    } else {
+        alert("Incorrect PIN");
     }
-};
+}
 
-/* --------------------------
-   LOAD PRODUCT LIST
---------------------------- */
+function logout(){
+    document.cookie = "admin=; path=/; max-age=0;";
+    location.reload();
+}
+
+function readCookie(name){
+    const c = document.cookie.split('; ').find(r => r.startsWith(name+'='));
+    return c ? c.split('=')[1] : null;
+}
+
+window.addEventListener('DOMContentLoaded',()=>{
+    if(readCookie('admin')==='4321'){
+        document.getElementById('loginBox').style.display='none';
+        document.getElementById('adminArea').style.display='block';
+        loadProducts();
+    }
+});
+
+/* ==========================
+   LOAD PRODUCTS
+========================== */
 async function loadProducts(){
-    let r = await fetch("/products/list");
-    let arr = await r.json();
+    const res = await fetch('/products/list', {cache:'no-cache'});
+    const list = await res.json();
 
-    list.innerHTML="";
+    const box = document.getElementById('productList');
+    box.innerHTML = "";
 
-    arr.forEach(p=>{
-        let card = document.createElement("div");
-        card.className="product-card";
+    list.forEach(p=>{
+        const div = document.createElement('div');
+        div.className='card';
 
-        card.innerHTML=`
-            <img src="${p.image}" />
-            <div class="name">${p.name}</div>
-            <div class="cat">${p.category}</div>
-            <div class="price">₹${p.price}</div>
-            <a class="delbtn" onclick="delProd('${p.id}')">Delete</a>
+        div.innerHTML = `
+            <img src="${p.image}">
+            <div style="flex:1">
+                <div><b>${p.name}</b></div>
+                <div>${p.category}</div>
+                <div>₹ ${p.price}</div>
+            </div>
+            <button class="delete-btn" onclick="deleteProduct('${p.id}')">Delete</button>
         `;
-        list.appendChild(card);
+
+        box.appendChild(div);
     });
 }
 
-async function delProd(id){
+/* ==========================
+   ADD PRODUCT
+========================== */
+async function addProduct(){
+    const name = document.getElementById('pname').value.trim();
+    const desc = document.getElementById('pdesc').value.trim();
+    const price = document.getElementById('pprice').value.trim();
+    const category = document.getElementById('pcategory').value;
+    const file = document.getElementById('pimage').files[0];
+
+    if(!name || !price || !category){
+        alert("Name, Price, Category are required");
+        return;
+    }
+
+    const fd = new FormData();
+    fd.append('name', name);
+    fd.append('description', desc);
+    fd.append('price', price);
+    fd.append('category', category);
+    if(file) fd.append('image', file);
+
+    const res = await fetch('/products/add', {
+        method:'POST',
+        body:fd
+    });
+
+    const data = await res.json();
+    document.getElementById('addStatus').textContent = "Product Added!";
+    loadProducts();
+}
+
+/* ==========================
+   DELETE PRODUCT
+========================== */
+async function deleteProduct(id){
     if(!confirm("Delete this product?")) return;
-    let r = await fetch("/products/delete", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
+
+    await fetch('/products/delete', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
         body:JSON.stringify({id})
     });
-    let d = await r.json();
-    if(d.success) loadProducts();
-    else alert("Delete failed");
+
+    loadProducts();
 }
 
-loadProducts();
-</script>
+/* ==========================
+   CONTACT POPUP
+========================== */
+function openContact(){
+    document.getElementById('contactPopup').style.display='flex';
+}
+function closeContact(){
+    document.getElementById('contactPopup').style.display='none';
+}
 
+</script>
 </body>
 </html>
