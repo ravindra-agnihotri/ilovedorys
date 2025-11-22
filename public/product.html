@@ -1,205 +1,297 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Our Products – Dory's Bakehouse</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Our Products — Dory's Bakehouse</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-    --bg:#faebe3;
-    --accent:#563e30;
-    --text:#563e30;
-    --card:rgba(253,239,193,0.45);
+  --bg:#faebe3;
+  --accent:#563e30;
+  --text:#563e30;
+  --card:rgba(253,239,193,0.45);
+  --muted:#6e5a52;
+  --accent-dark:#472a20;
 }
-
-/* Page */
-body{
-    margin:0;
-    font-family:'Poppins',system-ui;
-    background:var(--bg);
-    color:var(--text);
-}
-
-/* Header */
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 header{
-    width:100%;
-    background:#fff;
-    padding:14px 20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.08);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:sticky;
-    top:0;
-    z-index:1000;
+  width:100%;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
-header img.logo{
-    height:64px;
+.header-left{position:absolute;left:18px;display:flex;align-items:center;gap:12px}
+.header-left a.home-btn{
+  background:var(--accent);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 3px 8px rgba(0,0,0,0.12);
 }
+.logo-img{height:64px;width:auto;border-radius:8px}
+.header-actions{position:absolute;right:28px}
+
 .contact-btn{
-    position:absolute;
-    right:30px;
-    background:var(--accent);
-    color:#fff;
-    padding:10px 15px;
-    border-radius:8px;
-    text-decoration:none;
-    cursor:pointer;
-    font-weight:500;
+  background:var(--accent);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,0.12);
 }
 
-/* Contact popup */
+/* Filter (centered under header) */
+.filter-bar{
+  max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;justify-content:center;gap:10px;align-items:center;
+}
+.filter-btn{
+  background:#fff;border:1px solid rgba(86,62,48,0.08);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--accent);
+  box-shadow:0 6px 18px rgba(0,0,0,0.03);
+}
+.filter-btn.active{background:var(--accent);color:#fff;box-shadow:0 8px 26px rgba(86,62,48,0.12)}
+
+/* page title */
+.title{font-family:'Great Vibes',cursive;text-align:center;font-size:36px;margin:10px 0;color:var(--text)}
+
+/* container & grid */
+.container{max-width:1200px;margin:12px auto;padding:0 16px}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:14px}
+@media(max-width:880px){ .products-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))} }
+
+/* product card */
+.card{
+  background:var(--card);
+  padding:12px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;
+}
+.card .img-wrap{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+.card img{width:100%;height:100%;object-fit:cover}
+.card .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.name{font-weight:700;font-size:18px}
+.cat{font-size:13px;color:var(--muted);background:rgba(86,62,48,0.06);padding:6px 10px;border-radius:999px}
+.price{font-weight:700;color:var(--accent-dark)}
+.desc{font-size:14px;color:#5e4e46}
+
+/* rating */
+.stars{display:flex;gap:4px;align-items:center}
+.star{color:#e6b422;font-size:16px}
+.star.gray{color:#ddd}
+
+/* floating buttons */
+.floating {
+  position:fixed; right:18px; bottom:18px; display:flex;flex-direction:column;gap:12px; z-index:4000;
+}
+.btn-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.18);cursor:pointer;border:0}
+.whatsapp{background:#25D366}
+.chat{background:#ff7f7f}
+.floating img{width:28px;height:28px}
+
+/* modal popup identical to index */
 .popup-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:2000;
+  position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.45);z-index:3000;padding:20px;box-sizing:border-box;
 }
-.popup-box{
-    background:#faebe3;
-    padding:22px;
-    width:90%;
-    max-width:380px;
-    border-radius:14px;
-    text-align:center;
-    box-shadow:0 6px 22px rgba(0,0,0,0.14);
-}
-.popup-box h3{
-    margin:0;
-    font-size:22px;
-    color:var(--text);
-}
-.popup-box p{
-    font-size:18px;
-    margin:10px 0;
-}
-.close-btn{
-    margin-top:14px;
-    background:var(--accent);
-    color:#fff;
-    padding:10px 18px;
-    border-radius:8px;
-    display:inline-block;
-    cursor:pointer;
-}
+.popup-box{background:#faebe3;padding:22px;border-radius:14px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 34px rgba(0,0,0,0.18)}
+.popup-box h3{margin:0;font-size:20px;color:var(--accent)}
+.popup-box p{margin:10px 0;color:#444;font-weight:600}
+.close-btn{margin-top:12px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer}
 
-/* Products Grid */
-.products-container{
-    max-width:1000px;
-    margin:40px auto;
-    padding:16px;
-}
-.products-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
-    gap:18px;
-}
-.product-card{
-    background:var(--card);
-    padding:14px;
-    border-radius:12px;
-    box-shadow:0 6px 16px rgba(0,0,0,0.06);
-    text-align:center;
-}
-.product-card img{
-    width:100%;
-    height:200px;
-    object-fit:cover;
-    border-radius:10px;
-}
-.product-card h4{
-    margin:12px 0 6px;
-    font-size:18px;
-    color:var(--text);
-}
-.product-card p{
-    font-size:14px;
-    color:#6e5a52;
-}
-
-/* Manage Button */
-.manage-btn{
-    position:fixed;
-    bottom:20px;
-    left:20px;
-    background:var(--accent);
-    color:#fff;
-    padding:12px 20px;
-    border-radius:10px;
-    text-decoration:none;
-    font-weight:600;
-    box-shadow:0 4px 12px rgba(0,0,0,0.14);
-}
+/* small helpers */
+.small-muted{font-size:13px;color:var(--muted)}
+.sort-row{max-width:1100px;margin:4px auto 0;padding:0 16px;display:flex;justify-content:center;align-items:center;gap:12px}
 </style>
 </head>
-
 <body>
 
 <header>
-    <img src="logo/dorys.PNG" class="logo" alt="">
-    <a class="contact-btn" onclick="openPopup()">Contact</a>
+  <div class="header-left">
+    <a class="home-btn" href="/">Home</a>
+  </div>
+
+  <!-- logo centered -->
+  <img src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" class="logo-img" alt="Dory's Bakehouse">
+
+  <div class="header-actions">
+    <a class="contact-btn" href="javascript:;" id="openContact">Contact</a>
+  </div>
 </header>
 
-<h2 style="text-align:center;font-family:'Great Vibes';font-size:40px;margin:20px 0">
-    Our Products
-</h2>
-
-<div class="products-container">
-    <div class="products-grid" id="productsGrid">
-        <!-- JS Loads Products -->
-    </div>
+<!-- filter under header (centered) -->
+<div class="filter-bar" role="tablist" aria-label="category filters">
+  <button class="filter-btn active" data-cat="All">All</button>
+  <button class="filter-btn" data-cat="Cakes">Cakes</button>
+  <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
+  <button class="filter-btn" data-cat="Pastries">Pastries</button>
 </div>
 
-<a href="/admin-products.html" class="manage-btn">Manage Products</a>
+<div class="title">Our Products</div>
 
-<!-- CONTACT POPUP -->
-<div id="contactPopup" class="popup-overlay">
-    <div class="popup-box">
-        <h3>Contact Us</h3>
-        <p>📞 <a href="tel:+917972932790 style="text-decoration:none;color:#563e30;font-weight:700">
-            +91 9168445014
-        </a></p>
-        <p>📍 Dory's Bakehouse, Pune</p>
-        <span class="close-btn" onclick="closePopup()">Close</span>
-    </div>
+<div class="container">
+  <div id="countInfo" class="small-muted" style="text-align:center;margin-bottom:8px">Loading products...</div>
+
+  <div id="grid" class="products-grid">
+    <!-- JS will render product cards here -->
+  </div>
+</div>
+
+<!-- Floating WhatsApp & Chat -->
+<div class="floating" aria-hidden="false">
+  <!-- Chat button (opens prefilled WhatsApp message) -->
+  <button class="btn-circle chat" id="chatBtn" title="Chat with us">
+    <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="chat">
+  </button>
+
+  <!-- WhatsApp button -->
+  <a class="btn-circle whatsapp" id="waBtn" title="WhatsApp" href="#" target="_blank" rel="noreferrer">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whatsapp">
+  </a>
+</div>
+
+<!-- Contact popup (same as index) -->
+<div id="contactPopup" class="popup-overlay" aria-hidden="true">
+  <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <h3 id="contactTitle">Contact Us</h3>
+    <p>📞 <a id="telLink" href="tel:+919168445014" style="color:var(--accent);text-decoration:none;font-weight:700">+91 9168445014</a></p>
+    <p>📍 Dory's Bakehouse, Pune</p>
+    <button class="close-btn" id="closeContact">Close</button>
+  </div>
 </div>
 
 <script>
-/* Load products */
-async function loadProducts(){
-    const res = await fetch('/products/list');
-    const arr = await res.json();
-    const box = document.getElementById('productsGrid');
+/* -------------- Configuration -------------- */
+// WhatsApp number (country code + number, no + sign)
+const WA_NUMBER = '919168445014'; // country code 91 + 10-digit number 9168445014
+const WA_MESSAGE = encodeURIComponent('Hi, I want to order');
+const WA_URL = `https://wa.me/${WA_NUMBER}?text=${WA_MESSAGE}`;
 
-    if(!arr.length){
-        box.innerHTML = `<p style="text-align:center;font-size:18px;">No products added yet.</p>`;
-        return;
-    }
+/* -------------- Contact popup -------------- */
+const contactPopup = document.getElementById('contactPopup');
+document.getElementById('openContact').addEventListener('click', ()=> {
+  contactPopup.style.display = 'flex';
+  contactPopup.setAttribute('aria-hidden','false');
+});
+document.getElementById('closeContact').addEventListener('click', ()=> {
+  contactPopup.style.display = 'none';
+  contactPopup.setAttribute('aria-hidden','true');
+});
+contactPopup.addEventListener('click', (e)=> { if(e.target === contactPopup) { contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); } });
 
-    box.innerHTML = arr.map(p => `
-        <div class="product-card">
-            <img src="${p.image}">
-            <h4>${p.name}</h4>
-            <p>${p.description}</p>
-        </div>
-    `).join('');
+/* -------------- Floating buttons -------------- */
+document.getElementById('waBtn').href = WA_URL;
+document.getElementById('chatBtn').addEventListener('click', ()=> {
+  // Chat opens WhatsApp prefilled message (option d)
+  window.open(WA_URL, '_blank');
+});
+
+/* -------------- Products rendering -------------- */
+const grid = document.getElementById('grid');
+const countInfo = document.getElementById('countInfo');
+let products = []; // fetched list
+let activeCategory = 'All';
+
+/* helper: render stars (style 2: ★★★★☆) */
+function renderStars(value){
+  const v = Math.max(0, Math.min(5, Number(value) || 0));
+  const full = Math.floor(v);
+  const half = (v - full) >= 0.5 ? 1 : 0;
+  let out = '';
+  for(let i=0;i<full;i++) out += '<span class="star">★</span>';
+  if(half){ out += '<span class="star">★</span>'; } // keep simple: show as full for partial
+  for(let i=full+half;i<5;i++) out += '<span class="star gray">★</span>';
+  // numeric value
+  out += ` <span style="font-size:13px;color:var(--muted);margin-left:6px">${v.toFixed(1)}</span>`;
+  return out;
 }
+
+/* fetch products from server */
+async function loadProducts(){
+  try {
+    const res = await fetch('/products/list', {cache:'no-cache'});
+    if(!res.ok) throw new Error('Failed to fetch');
+    products = await res.json();
+  } catch(err){
+    console.error(err);
+    products = [];
+  }
+  render();
+}
+
+/* render grid with filters */
+function render(){
+  const list = products.filter(p => activeCategory === 'All' || (p.category || '').toLowerCase() === activeCategory.toLowerCase());
+  grid.innerHTML = '';
+  countInfo.textContent = `${list.length} product${list.length===1?'':'s'} shown`;
+  if(list.length === 0){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No products in this category.</div>`;
+    return;
+  }
+  list.forEach(p => {
+    // prepare values
+    const name = p.name || 'Untitled';
+    const desc = p.description || '';
+    const price = p.price ? `₹ ${p.price}` : '—';
+    const category = p.category || 'Uncategorized';
+    // rating: use p.rating if present else default 4.5
+    const rating = (typeof p.rating !== 'undefined') ? Number(p.rating) : 4.5;
+    const img = (p.image && p.image.startsWith('/')) ? p.image : (p.image || '/images/products/default-sample.png');
+
+    const div = document.createElement('div');
+    div.className = 'card';
+    div.innerHTML = `
+      <div class="img-wrap"><img src="${img}" alt="${escapeHtml(name)}" loading="lazy"></div>
+      <div class="meta">
+        <div>
+          <div class="name">${escapeHtml(name)}</div>
+          <div class="desc">${escapeHtml(desc)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="cat">${escapeHtml(category)}</div>
+          <div style="margin-top:6px" class="price">${escapeHtml(price)}</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="stars">${renderStars(rating)}</div>
+        <div>
+          <button class="contact-btn-mini" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Order</button>
+        </div>
+      </div>
+    `;
+    // Order button opens whatsapp prefilled
+    div.querySelector('.contact-btn-mini').addEventListener('click', ()=> window.open(WA_URL + `&text=${encodeURIComponent('Hi, I want to order: '+ name)}`, '_blank'));
+
+    grid.appendChild(div);
+  });
+}
+
+/* escape helper */
+function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* -------------- Filters setup -------------- */
+document.querySelectorAll('.filter-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCategory = btn.getAttribute('data-cat') || 'All';
+    render();
+  });
+});
+
+/* -------------- Initial load -------------- */
 loadProducts();
 
-/* CONTACT POPUP */
-function openPopup(){
-    document.getElementById('contactPopup').style.display = 'flex';
-}
-function closePopup(){
-    document.getElementById('contactPopup').style.display = 'none';
-}
+/* auto-reload products every 90s so newly added items appear */
+setInterval(loadProducts, 90_000);
 </script>
-
 </body>
 </html>
