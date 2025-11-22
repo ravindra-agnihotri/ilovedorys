@@ -1,280 +1,369 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Admin Gallery — Dory's Bakehouse</title>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dory's Bakehouse — Manage Products</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- HEIC Converter -->
+<script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
 
 <style>
 :root{
-  --bg:#faebe3;
-  --accent:#563e30;
-  --card:rgba(253,239,193,0.45);
-  --muted:#6d5c54;
+    --bg: #faebe3;
+    --accent: #563e30;
+    --card: rgba(253,239,193,0.45);
+    --text: #563e30;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--accent);overflow-x:hidden}
-header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
-header img.logo{height:60px;border-radius:8px}
-header .actions a{background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-left:10px;font-weight:600}
 
-.container{max-width:1200px;margin:22px auto;padding:0 16px}
-.title{font-family:'Great Vibes',cursive;font-size:36px;margin:10px 0;text-align:center}
+body{
+    margin:0;
+    background:var(--bg);
+    font-family:'Poppins', system-ui;
+    color:var(--text);
+}
 
-.controls{display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:14px}
-.controls .btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;border:none;cursor:pointer}
-.controls .btn.ghost{background:transparent;border:1px solid rgba(86,62,48,0.08);color:var(--accent)}
+/* HEADER */
+header{
+    width:100%;
+    background:#fff;
+    padding:14px 20px;
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+header .left{
+    display:flex; align-items:center; gap:12px;
+}
+header img.logo{
+    height:60px; width:auto;
+}
+header h1{
+    margin:0;
+    font-family:'Great Vibes', cursive;
+    font-size:34px;
+}
+header .actions a{
+    margin-left:10px;
+    text-decoration:none;
+    font-size:14px;
+    padding:10px 14px;
+    background:var(--accent);
+    color:white;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
+}
 
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.card{background:#fff;padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;align-items:center}
-.card img{width:100%;height:160px;object-fit:cover;border-radius:8px;cursor:pointer}
-.card .meta{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px}
-.card label{display:flex;align-items:center;gap:6px}
-.card .trash{background:#e04b4b;color:#fff;padding:6px 8px;border-radius:8px;border:none;cursor:pointer}
+/* MAIN LAYOUT */
+.container{
+    max-width:1100px;
+    margin:30px auto;
+    padding:0 16px;
+}
 
-/* batch delete bar */
-.batchbar{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--card);border-radius:10px;margin-bottom:12px}
-.batchbar .left{display:flex;gap:12px;align-items:center}
-.batchbar .right{display:flex;gap:10px;align-items:center}
+/* FORM CARD */
+.card{
+    background:var(--card);
+    padding:20px;
+    border-radius:14px;
+    box-shadow:0 6px 22px rgba(0,0,0,0.1);
+    margin-bottom:25px;
+}
 
-/* modal */
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:4000}
-.modal .box{background:#fff;padding:18px;border-radius:10px;max-width:90%;max-height:90%;overflow:auto}
-.modal img{max-width:100%;max-height:80vh;border-radius:8px}
+.card h2{
+    margin:0 0 12px 0;
+    font-family:'Great Vibes', cursive;
+    font-size:40px;
+    text-align:center;
+}
 
-/* responsive */
-@media (max-width:800px){
-  .card img{height:140px}
+/* FORM */
+label{
+    font-size:15px;
+    font-weight:500;
+}
+input, select, textarea{
+    width:100%;
+    margin-top:6px;
+    margin-bottom:14px;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #bbb;
+    font-size:15px;
+}
+
+textarea{
+    resize:vertical;
+    min-height:80px;
+}
+
+button{
+    padding:10px 18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:var(--accent);
+    color:white;
+    font-size:15px;
+    font-weight:500;
+}
+
+/* PRODUCT GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:18px;
+    margin-top:20px;
+}
+
+.product-card{
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    padding:14px;
+    text-align:center;
+}
+
+.product-card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.name{
+    font-size:16px;
+    font-weight:600;
+    margin:8px 0 4px;
+}
+.cat{
+    font-size:13px;
+    color:#666;
+}
+.price{
+    font-size:15px;
+    font-weight:600;
+    margin:6px 0;
+}
+.delbtn{
+    margin-top:10px;
+    display:inline-block;
+    padding:8px 14px;
+    background:#b02020;
+    color:white;
+    font-size:13px;
+    border-radius:8px;
+}
+
+/* Preview */
+#preview{
+    margin-top:12px;
+    text-align:center;
+}
+#preview img{
+    width:150px;
+    height:150px;
+    object-fit:cover;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+    header h1{ font-size:26px; }
+    .grid{ grid-template-columns:1fr 1fr; }
+}
+@media(max-width:450px){
+    .grid{ grid-template-columns:1fr; }
 }
 </style>
 </head>
+
 <body>
 
+<!-- HEADER -->
 <header>
-  <div style="display:flex;align-items:center;gap:12px">
-    <img class="logo" src="/logo/dorys.PNG" alt="logo">
-    <div>
-      <div style="font-size:18px;font-weight:700">Dory's Bakehouse</div>
-      <div style="font-size:12px;color:var(--muted)">Admin Gallery</div>
+    <div class="left">
+        <img src="/logo/dorys.PNG" class="logo" />
+        <h1>Dory's Bakehouse</h1>
     </div>
-  </div>
-  <div class="actions">
-    <a href="/" class="btn ghost">Home</a>
-    <a href="/upload.html" class="btn">Upload Images</a>
-    <a href="/admin-products.html" class="btn">Products</a>
-  </div>
+    <div class="actions">
+        <a href="/">Home</a>
+        <a href="/upload.html">Upload Images</a>
+        <a href="/admin-gallery.html">Manage Gallery</a>
+        <a href="#" id="logoutBtn" style="background:#7b0f0f;">Logout</a>
+    </div>
 </header>
 
 <div class="container">
-  <div class="title">Gallery — Manage Images</div>
 
-  <div class="batchbar">
-    <div class="left">
-      <label><input type="checkbox" id="selectAll"> Select all</label>
-      <div id="countInfo" style="font-size:14px;color:var(--muted)">0 images</div>
-    </div>
+<!-- ADD PRODUCT CARD -->
+<div class="card">
+    <h2>Add Product</h2>
 
-    <div class="right">
-      <button id="deleteSelected" class="btn" style="background:#e04b4b">Delete selected</button>
-      <button id="refreshBtn" class="btn ghost" onclick="loadGallery()">Refresh</button>
-    </div>
-  </div>
+    <label>Product Name</label>
+    <input id="pname" type="text" placeholder="Chocolate Truffle Cake">
 
-  <div id="grid" class="grid">Loading images...</div>
+    <label>Description</label>
+    <textarea id="pdesc" placeholder="Rich chocolate layers with ganache..."></textarea>
 
-  <div style="margin-top:14px; text-align:center; color:var(--muted); font-size:13px">
-    Use checkboxes to select multiple images. Deleting is permanent.
-  </div>
+    <label>Price (₹)</label>
+    <input id="pprice" type="text" placeholder="599">
+
+    <label>Category</label>
+    <select id="pcat">
+        <option value="Cakes">Cakes</option>
+        <option value="Designer Cakes">Designer Cakes</option>
+        <option value="Cupcakes">Cupcakes</option>
+        <option value="Brownies">Brownies</option>
+        <option value="Cookies">Cookies</option>
+        <option value="Pastries">Pastries</option>
+        <option value="Bread & Buns">Bread & Buns</option>
+        <option value="Celebration Cakes">Celebration Cakes</option>
+        <option value="Anniversary Cakes">Anniversary Cakes</option>
+        <option value="Kids Theme Cakes">Kids Theme Cakes</option>
+    </select>
+
+    <label>Image</label>
+    <input id="pimg" type="file" accept="image/*">
+
+    <div id="preview"></div>
+
+    <button id="addBtn">Add Product</button>
 </div>
 
-<!-- preview modal -->
-<div id="modal" class="modal" aria-hidden="true" onclick="closeModal()">
-  <div class="box" onclick="event.stopPropagation()">
-    <img id="modalImg" src="" alt="preview">
-    <div style="margin-top:8px;text-align:right">
-      <button onclick="closeModal()" style="padding:8px 12px;border-radius:8px;border:none;background:#ccc;cursor:pointer">Close</button>
-    </div>
-  </div>
+<!-- PRODUCT LIST -->
+<h2 style="font-family:'Great Vibes',cursive;font-size:38px;text-align:center;">Our Products</h2>
+<div id="list" class="grid"></div>
+
 </div>
 
 <script>
-/* admin gate */
-function readCookie(name){
-  const c = document.cookie.split("; ").find(x=>x.startsWith(name+"="));
-  return c ? c.split("=")[1] : null;
+/* --------------------------
+   ADMIN PIN
+--------------------------- */
+function readCookie(n){
+  return document.cookie.split("; ").find(x=>x.startsWith(n+"="))?.split("=")[1]||null;
+}
+function setCookie(n,v){
+  document.cookie=n+"="+v+";path=/";
+}
+function deleteCookie(n){
+  document.cookie=n+"=;expires=Thu,01 Jan 1970 00:00:00 GMT;path=/";
 }
 if(readCookie("admin")!=="4321"){
-  const p = prompt("Enter admin PIN:");
-  if (p !== "4321") { alert("Wrong PIN"); location.href="/"; }
-  document.cookie = "admin=4321; path=/";
+  let p = prompt("Enter Admin PIN:");
+  if(p==="4321") setCookie("admin","4321");
+  else { alert("Wrong PIN"); location.href="/"; }
 }
+document.getElementById("logoutBtn").onclick = ()=>{
+    deleteCookie("admin");
+    location.href="/";
+};
 
-/* globals */
-let images = []; // {file, size, mtime}
-const grid = document.getElementById('grid');
-const selectAllEl = document.getElementById('selectAll');
-const deleteSelectedBtn = document.getElementById('deleteSelected');
-const countInfo = document.getElementById('countInfo');
-
-/* load gallery (admin images history) */
-async function loadGallery(){
-  grid.innerHTML = 'Loading...';
-  try {
-    const res = await fetch('/images/history', { cache:'no-cache' });
-    if (!res.ok) throw new Error('Failed to fetch');
-    images = await res.json();
-    renderGrid();
-  } catch (err) {
-    console.error(err);
-    grid.innerHTML = '<div style="color:var(--muted)">Could not load images</div>';
-  }
-}
-
-/* render grid */
-function renderGrid(){
-  if (!images || images.length === 0) {
-    grid.innerHTML = '<div style="color:var(--muted)">No images found</div>';
-    countInfo.textContent = '0 images';
-    return;
-  }
-
-  grid.innerHTML = '';
-  countInfo.textContent = images.length + ' images';
-
-  images.forEach((it, idx) => {
-    const card = document.createElement('div');
-    card.className = 'card';
-
-    // image path relative may include subfolders (products/...)
-    const url = '/images/' + encodeURIComponent(it.file);
-
-    // checkbox
-    const checkboxId = 'cb-' + idx;
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.dataset.file = it.file;
-    checkbox.addEventListener('change', updateSelectedCount);
-
-    // image element
-    const img = document.createElement('img');
-    img.src = url;
-    img.alt = it.file;
-    img.loading = 'lazy';
-    img.onclick = ()=> openModal(url);
-
-    // meta row
-    const meta = document.createElement('div');
-    meta.className = 'meta';
-    const left = document.createElement('div');
-    left.style.display = 'flex'; left.style.alignItems='center'; left.style.gap='8px';
-    left.appendChild(checkbox);
-    const nameDiv = document.createElement('div');
-    nameDiv.style.fontSize='13px'; nameDiv.style.overflow='hidden'; nameDiv.style.textOverflow='ellipsis'; nameDiv.style.maxWidth='160px';
-    nameDiv.textContent = it.file;
-    left.appendChild(nameDiv);
-
-    const right = document.createElement('div');
-    const trash = document.createElement('button');
-    trash.className = 'trash';
-    trash.textContent = 'Delete';
-    trash.addEventListener('click', async ()=>{
-      if(!confirm('Delete ' + it.file + ' ?')) return;
-      trash.disabled = true; trash.textContent = 'Deleting...';
-      await deleteSingle(it.file);
-    });
-    right.appendChild(trash);
-
-    meta.appendChild(left);
-    meta.appendChild(right);
-
-    card.appendChild(img);
-    card.appendChild(meta);
-
-    grid.appendChild(card);
-  });
-}
-
-/* open modal */
-function openModal(src){
-  document.getElementById('modalImg').src = src;
-  document.getElementById('modal').style.display = 'flex';
-  document.getElementById('modal').setAttribute('aria-hidden','false');
-}
-function closeModal(){
-  document.getElementById('modal').style.display = 'none';
-  document.getElementById('modal').setAttribute('aria-hidden','true');
-}
-
-/* update selected count */
-function updateSelectedCount(){
-  const selected = Array.from(grid.querySelectorAll('input[type=checkbox]')).filter(cb=>cb.checked);
-  deleteSelectedBtn.textContent = selected.length ? `Delete selected (${selected.length})` : 'Delete selected';
-}
-
-/* select all toggler */
-selectAllEl.addEventListener('change', () => {
-  const all = grid.querySelectorAll('input[type=checkbox]');
-  all.forEach(cb => cb.checked = selectAllEl.checked);
-  updateSelectedCount();
-});
-
-/* delete selected (batch) */
-deleteSelectedBtn.addEventListener('click', async ()=>{
-  const selected = Array.from(grid.querySelectorAll('input[type=checkbox]')).filter(cb=>cb.checked).map(cb=>cb.dataset.file);
-  if (!selected.length) { alert('No images selected'); return; }
-  if (!confirm(`Delete ${selected.length} image(s) permanently?`)) return;
-
-  deleteSelectedBtn.disabled = true; deleteSelectedBtn.textContent = 'Deleting...';
-
-  try {
-    const res = await fetch('/images/delete', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ files: selected })
-    });
-    const j = await res.json();
-    // show results
-    let msg = '';
-    if (j.deleted && j.deleted.length) msg += `Deleted: ${j.deleted.length}\n`;
-    if (j.errors && j.errors.length) msg += `Errors: ${j.errors.length}\n`;
-    alert(msg || 'Operation completed');
-  } catch (err) {
-    console.error(err);
-    alert('Delete failed');
-  } finally {
-    deleteSelectedBtn.disabled = false;
-    await loadGallery();
-  }
-});
-
-/* delete single via DELETE endpoint fallback */
-async function deleteSingle(filename){
-  try {
-    const res = await fetch('/images/delete', {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ filename })
-    });
-    const j = await res.json();
-    if (j.deleted && j.deleted.length) {
-      alert('Deleted: ' + j.deleted[0]);
-    } else if (j.errors && j.errors.length) {
-      alert('Error deleting: ' + (j.errors.map(e => e.file + ': ' + e.error).join(', ')));
-    } else {
-      alert('Delete response: ' + JSON.stringify(j));
+/* --------------------------
+   PREVIEW
+--------------------------- */
+let picked = null;
+pimg.onchange = e=>{
+    if(e.target.files.length){
+        picked = e.target.files[0];
+        preview.innerHTML = `<img src="${URL.createObjectURL(picked)}">`;
     }
-  } catch (err) {
-    console.error(err);
-    alert('Delete failed');
-  } finally {
-    await loadGallery();
-  }
+};
+
+/* --------------------------
+   ADD PRODUCT (with HEIC support)
+--------------------------- */
+function isHeic(f){ return /\.heic$|\.heif$/i.test(f.name); }
+
+async function convertHeic(file){
+    let jpg = await heic2any({ blob:file, toType:"image/jpeg", quality:0.90 });
+    return new File([jpg], file.name.replace(/\.\w+$/, ".jpg"), {type:"image/jpeg"});
 }
 
-/* initial */
-loadGallery();
+addBtn.onclick = async()=>{
+    let name = pname.value.trim();
+    if(!name){ alert("Enter product name"); return; }
+
+    let desc = pdesc.value.trim();
+    let price = pprice.value.trim();
+    let cat = pcat.value;
+
+    let file = picked;
+    if(!file){ alert("Select image"); return; }
+
+    if(isHeic(file)){
+        file = await convertHeic(file);
+    }
+
+    let fd = new FormData();
+    fd.append("name", name);
+    fd.append("description", desc);
+    fd.append("price", price);
+    fd.append("category", cat);
+    fd.append("image", file);
+
+    let r = await fetch("/products/add", { method:"POST", body:fd });
+    let d = await r.json();
+
+    if(d.success){
+        alert("Product added!");
+        pname.value = "";
+        pdesc.value = "";
+        pprice.value = "";
+        pimg.value = "";
+        preview.innerHTML="";
+        loadProducts();
+    }else{
+        alert("Failed: "+d.error);
+    }
+};
+
+/* --------------------------
+   LOAD PRODUCT LIST
+--------------------------- */
+async function loadProducts(){
+    let r = await fetch("/products/list");
+    let arr = await r.json();
+
+    list.innerHTML="";
+
+    arr.forEach(p=>{
+        let card = document.createElement("div");
+        card.className="product-card";
+
+        card.innerHTML=`
+            <img src="${p.image}" />
+            <div class="name">${p.name}</div>
+            <div class="cat">${p.category}</div>
+            <div class="price">₹${p.price}</div>
+            <a class="delbtn" onclick="delProd('${p.id}')">Delete</a>
+        `;
+        list.appendChild(card);
+    });
+}
+
+async function delProd(id){
+    if(!confirm("Delete this product?")) return;
+    let r = await fetch("/products/delete", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({id})
+    });
+    let d = await r.json();
+    if(d.success) loadProducts();
+    else alert("Delete failed");
+}
+
+loadProducts();
 </script>
 
 </body>
