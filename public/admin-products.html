@@ -2,344 +2,279 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Admin – Manage Products</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Admin Gallery — Dory's Bakehouse</title>
 
-<script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-:root { --bg:#FAF0DE; --accent:#563e30; --text:#563e30; }
-
-body {
-    margin:0;
-    font-family:system-ui;
-    background:var(--bg);
-    padding:16px;
+:root{
+  --bg:#faebe3;
+  --accent:#563e30;
+  --card:rgba(253,239,193,0.45);
+  --muted:#6d5c54;
 }
+*{box-sizing:border-box}
+body{margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--accent);overflow-x:hidden}
+header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:1000}
+header img.logo{height:60px;border-radius:8px}
+header .actions a{background:var(--accent);color:#fff;padding:10px 16px;border-radius:8px;text-decoration:none;margin-left:10px;font-weight:600}
 
-.container {
-    max-width:900px;
-    margin:0 auto;
-    background:#fff;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 8px 24px rgba(0,0,0,0.08);
+.container{max-width:1200px;margin:22px auto;padding:0 16px}
+.title{font-family:'Great Vibes',cursive;font-size:36px;margin:10px 0;text-align:center}
+
+.controls{display:flex;gap:12px;align-items:center;justify-content:center;margin-bottom:14px}
+.controls .btn{background:var(--accent);color:#fff;padding:8px 14px;border-radius:8px;border:none;cursor:pointer}
+.controls .btn.ghost{background:transparent;border:1px solid rgba(86,62,48,0.08);color:var(--accent)}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.card{background:#fff;padding:10px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:8px;align-items:center}
+.card img{width:100%;height:160px;object-fit:cover;border-radius:8px;cursor:pointer}
+.card .meta{width:100%;display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card label{display:flex;align-items:center;gap:6px}
+.card .trash{background:#e04b4b;color:#fff;padding:6px 8px;border-radius:8px;border:none;cursor:pointer}
+
+/* batch delete bar */
+.batchbar{display:flex;justify-content:space-between;align-items:center;padding:10px;background:var(--card);border-radius:10px;margin-bottom:12px}
+.batchbar .left{display:flex;gap:12px;align-items:center}
+.batchbar .right{display:flex;gap:10px;align-items:center}
+
+/* modal */
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:4000}
+.modal .box{background:#fff;padding:18px;border-radius:10px;max-width:90%;max-height:90%;overflow:auto}
+.modal img{max-width:100%;max-height:80vh;border-radius:8px}
+
+/* responsive */
+@media (max-width:800px){
+  .card img{height:140px}
 }
-
-.header {
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-}
-
-.logo {
-    height:60px;
-    border-radius:8px;
-}
-
-.nav-btn {
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:7px;
-    text-decoration:none;
-    margin-left:10px;
-    font-weight:600;
-}
-
-h2 {
-    text-align:center;
-    color:var(--text);
-    font-family:'Great Vibes', cursive;
-    font-size:38px;
-    margin-top:10px;
-}
-
-form {
-    background:#fff7ee;
-    padding:16px;
-    border-radius:10px;
-    margin-top:20px;
-}
-
-input, textarea {
-    width:100%;
-    padding:10px;
-    margin-top:8px;
-    border-radius:6px;
-    border:1px solid #ccc;
-}
-
-button {
-    background:var(--accent);
-    color:white;
-    border:none;
-    padding:10px 18px;
-    margin-top:12px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:15px;
-}
-
-#prodPreview {
-    width:140px;
-    height:140px;
-    object-fit:cover;
-    border-radius:10px;
-    margin-top:10px;
-    display:none;
-}
-
-.product-list {
-    margin-top:20px;
-}
-
-.product-item {
-    background:#fff7ef;
-    padding:14px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    border-radius:10px;
-    margin-bottom:10px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.05);
-}
-
-.product-item img {
-    height:70px;
-    width:70px;
-    border-radius:8px;
-    object-fit:cover;
-}
-
-.delete-btn {
-    background:#d9534f;
-    padding:6px 10px;
-    color:#fff;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-}
-
-#diskBox {
-    background:#fff7ef;
-    padding:12px;
-    border-radius:10px;
-    margin-top:15px;
-}
-
 </style>
 </head>
 <body>
 
+<header>
+  <div style="display:flex;align-items:center;gap:12px">
+    <img class="logo" src="/logo/dorys.PNG" alt="logo">
+    <div>
+      <div style="font-size:18px;font-weight:700">Dory's Bakehouse</div>
+      <div style="font-size:12px;color:var(--muted)">Admin Gallery</div>
+    </div>
+  </div>
+  <div class="actions">
+    <a href="/" class="btn ghost">Home</a>
+    <a href="/upload.html" class="btn">Upload Images</a>
+    <a href="/admin-products.html" class="btn">Products</a>
+  </div>
+</header>
+
 <div class="container">
+  <div class="title">Gallery — Manage Images</div>
 
-    <div class="header">
-        <img src="/logo/dorys.PNG" class="logo">
-
-        <div>
-            <a class="nav-btn" href="/">Home</a>
-            <a class="nav-btn" href="/upload.html">Upload Images</a>
-            <a class="nav-btn" href="#" onclick="logout()">Logout</a>
-        </div>
+  <div class="batchbar">
+    <div class="left">
+      <label><input type="checkbox" id="selectAll"> Select all</label>
+      <div id="countInfo" style="font-size:14px;color:var(--muted)">0 images</div>
     </div>
 
-    <h2>Manage Products</h2>
-
-    <!-- Disk Usage -->
-    <div id="diskBox">
-        <div style="font-weight:700">Disk Usage</div>
-        <div style="height:10px;background:#eee;border-radius:8px;overflow:hidden;margin-top:6px;">
-            <div id="diskFill" style="height:100%;width:0%;background:var(--accent)"></div>
-        </div>
-        <div id="diskText" style="font-size:13px;color:#666;margin-top:6px;">Loading...</div>
+    <div class="right">
+      <button id="deleteSelected" class="btn" style="background:#e04b4b">Delete selected</button>
+      <button id="refreshBtn" class="btn ghost" onclick="loadGallery()">Refresh</button>
     </div>
+  </div>
 
-    <!-- Add Product Form -->
-    <form id="prodForm">
-        <label>Product Name</label>
-        <input type="text" id="prodName" required>
+  <div id="grid" class="grid">Loading images...</div>
 
-        <label>Description</label>
-        <textarea id="prodDesc" rows="3"></textarea>
+  <div style="margin-top:14px; text-align:center; color:var(--muted); font-size:13px">
+    Use checkboxes to select multiple images. Deleting is permanent.
+  </div>
+</div>
 
-        <label>Price</label>
-        <input type="text" id="prodPrice">
-
-        <label>Image</label>
-        <input type="file" id="prodImage" accept="image/*">
-        <img id="prodPreview">
-
-        <button type="submit">Add Product</button>
-        <div id="status" style="margin-top:10px;color:#444;"></div>
-    </form>
-
-    <!-- Product List -->
-    <div class="product-list" id="productList">Loading products...</div>
-
+<!-- preview modal -->
+<div id="modal" class="modal" aria-hidden="true" onclick="closeModal()">
+  <div class="box" onclick="event.stopPropagation()">
+    <img id="modalImg" src="" alt="preview">
+    <div style="margin-top:8px;text-align:right">
+      <button onclick="closeModal()" style="padding:8px 12px;border-radius:8px;border:none;background:#ccc;cursor:pointer">Close</button>
+    </div>
+  </div>
 </div>
 
 <script>
-
-/* --------------------------------------
-   ADMIN PIN
-----------------------------------------*/
+/* admin gate */
 function readCookie(name){
-    const v=document.cookie.split(";").map(x=>x.trim()).find(x=>x.startsWith(name+"="));
-    return v?decodeURIComponent(v.split("=")[1]):null;
+  const c = document.cookie.split("; ").find(x=>x.startsWith(name+"="));
+  return c ? c.split("=")[1] : null;
 }
-function setCookie(n,v){ document.cookie=`${n}=${v}; path=/;`; }
-function deleteCookie(n){ document.cookie=`${n}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`; }
-
 if(readCookie("admin")!=="4321"){
-    const pin=prompt("Enter Admin PIN:");
-    if(pin!=="4321"){ alert("Wrong PIN"); location.href="/"; }
-    setCookie("admin","4321");
+  const p = prompt("Enter admin PIN:");
+  if (p !== "4321") { alert("Wrong PIN"); location.href="/"; }
+  document.cookie = "admin=4321; path=/";
 }
 
-function logout(){
-    deleteCookie("admin");
-    location.href="/";
+/* globals */
+let images = []; // {file, size, mtime}
+const grid = document.getElementById('grid');
+const selectAllEl = document.getElementById('selectAll');
+const deleteSelectedBtn = document.getElementById('deleteSelected');
+const countInfo = document.getElementById('countInfo');
+
+/* load gallery (admin images history) */
+async function loadGallery(){
+  grid.innerHTML = 'Loading...';
+  try {
+    const res = await fetch('/images/history', { cache:'no-cache' });
+    if (!res.ok) throw new Error('Failed to fetch');
+    images = await res.json();
+    renderGrid();
+  } catch (err) {
+    console.error(err);
+    grid.innerHTML = '<div style="color:var(--muted)">Could not load images</div>';
+  }
 }
 
-/* --------------------------------------
-   PRODUCT IMAGE PREVIEW + HEIC SUPPORT
-----------------------------------------*/
-const prodImage = document.getElementById("prodImage");
-const prodPreview = document.getElementById("prodPreview");
-let finalUploadFile = null;
+/* render grid */
+function renderGrid(){
+  if (!images || images.length === 0) {
+    grid.innerHTML = '<div style="color:var(--muted)">No images found</div>';
+    countInfo.textContent = '0 images';
+    return;
+  }
 
-function isHeic(f){
-    return /\.heic$|\.heif$/i.test(f.name);
+  grid.innerHTML = '';
+  countInfo.textContent = images.length + ' images';
+
+  images.forEach((it, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+
+    // image path relative may include subfolders (products/...)
+    const url = '/images/' + encodeURIComponent(it.file);
+
+    // checkbox
+    const checkboxId = 'cb-' + idx;
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.dataset.file = it.file;
+    checkbox.addEventListener('change', updateSelectedCount);
+
+    // image element
+    const img = document.createElement('img');
+    img.src = url;
+    img.alt = it.file;
+    img.loading = 'lazy';
+    img.onclick = ()=> openModal(url);
+
+    // meta row
+    const meta = document.createElement('div');
+    meta.className = 'meta';
+    const left = document.createElement('div');
+    left.style.display = 'flex'; left.style.alignItems='center'; left.style.gap='8px';
+    left.appendChild(checkbox);
+    const nameDiv = document.createElement('div');
+    nameDiv.style.fontSize='13px'; nameDiv.style.overflow='hidden'; nameDiv.style.textOverflow='ellipsis'; nameDiv.style.maxWidth='160px';
+    nameDiv.textContent = it.file;
+    left.appendChild(nameDiv);
+
+    const right = document.createElement('div');
+    const trash = document.createElement('button');
+    trash.className = 'trash';
+    trash.textContent = 'Delete';
+    trash.addEventListener('click', async ()=>{
+      if(!confirm('Delete ' + it.file + ' ?')) return;
+      trash.disabled = true; trash.textContent = 'Deleting...';
+      await deleteSingle(it.file);
+    });
+    right.appendChild(trash);
+
+    meta.appendChild(left);
+    meta.appendChild(right);
+
+    card.appendChild(img);
+    card.appendChild(meta);
+
+    grid.appendChild(card);
+  });
 }
 
-prodImage.addEventListener("change", async () => {
-    const file = prodImage.files[0];
-    if (!file) return;
+/* open modal */
+function openModal(src){
+  document.getElementById('modalImg').src = src;
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById('modal').setAttribute('aria-hidden','false');
+}
+function closeModal(){
+  document.getElementById('modal').style.display = 'none';
+  document.getElementById('modal').setAttribute('aria-hidden','true');
+}
 
-    // Show preview
-    prodPreview.src = URL.createObjectURL(file);
-    prodPreview.style.display = "block";
+/* update selected count */
+function updateSelectedCount(){
+  const selected = Array.from(grid.querySelectorAll('input[type=checkbox]')).filter(cb=>cb.checked);
+  deleteSelectedBtn.textContent = selected.length ? `Delete selected (${selected.length})` : 'Delete selected';
+}
 
-    // HEIC → JPG conversion
-    if (isHeic(file)) {
-        const converted = await heic2any({
-            blob: file,
-            toType: "image/jpeg",
-            quality: 0.92
-        });
-        finalUploadFile = new File([converted], "converted.jpg", { type: "image/jpeg" });
-    } else {
-        finalUploadFile = file;
-    }
+/* select all toggler */
+selectAllEl.addEventListener('change', () => {
+  const all = grid.querySelectorAll('input[type=checkbox]');
+  all.forEach(cb => cb.checked = selectAllEl.checked);
+  updateSelectedCount();
 });
 
-/* --------------------------------------
-   ADD PRODUCT (POST /products/add)
-----------------------------------------*/
-const form = document.getElementById("prodForm");
-const status = document.getElementById("status");
+/* delete selected (batch) */
+deleteSelectedBtn.addEventListener('click', async ()=>{
+  const selected = Array.from(grid.querySelectorAll('input[type=checkbox]')).filter(cb=>cb.checked).map(cb=>cb.dataset.file);
+  if (!selected.length) { alert('No images selected'); return; }
+  if (!confirm(`Delete ${selected.length} image(s) permanently?`)) return;
 
-form.addEventListener("submit", async (e)=>{
-    e.preventDefault();
-    status.textContent = "Uploading...";
+  deleteSelectedBtn.disabled = true; deleteSelectedBtn.textContent = 'Deleting...';
 
-    const fd = new FormData();
-    fd.append("name", document.getElementById("prodName").value);
-    fd.append("description", document.getElementById("prodDesc").value);
-    fd.append("price", document.getElementById("prodPrice").value);
-
-    if(finalUploadFile){
-        fd.append("image", finalUploadFile);
-    }
-
-    const res = await fetch("/products/add", {
-        method:"POST",
-        body:fd,
-        credentials:"include"
+  try {
+    const res = await fetch('/images/delete', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ files: selected })
     });
-
     const j = await res.json();
-    if(res.ok){
-        status.textContent = "Product added!";
-        form.reset();
-        prodPreview.style.display="none";
-        finalUploadFile = null;
-        loadProducts();
-        loadDisk();
-    } else {
-        status.textContent = "Error: " + (j.error || "Failed");
-    }
+    // show results
+    let msg = '';
+    if (j.deleted && j.deleted.length) msg += `Deleted: ${j.deleted.length}\n`;
+    if (j.errors && j.errors.length) msg += `Errors: ${j.errors.length}\n`;
+    alert(msg || 'Operation completed');
+  } catch (err) {
+    console.error(err);
+    alert('Delete failed');
+  } finally {
+    deleteSelectedBtn.disabled = false;
+    await loadGallery();
+  }
 });
 
-/* --------------------------------------
-   LOAD PRODUCTS
-----------------------------------------*/
-async function loadProducts(){
-    const box = document.getElementById("productList");
-    box.innerHTML = "Loading...";
-
-    const res = await fetch("/products/list");
-    const list = await res.json();
-
-    if (!list.length) {
-        box.innerHTML = "No products yet.";
-        return;
+/* delete single via DELETE endpoint fallback */
+async function deleteSingle(filename){
+  try {
+    const res = await fetch('/images/delete', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ filename })
+    });
+    const j = await res.json();
+    if (j.deleted && j.deleted.length) {
+      alert('Deleted: ' + j.deleted[0]);
+    } else if (j.errors && j.errors.length) {
+      alert('Error deleting: ' + (j.errors.map(e => e.file + ': ' + e.error).join(', ')));
+    } else {
+      alert('Delete response: ' + JSON.stringify(j));
     }
-
-    box.innerHTML = "";
-
-    list.forEach(p=>{
-        const row = document.createElement("div");
-        row.className = "product-item";
-
-        row.innerHTML = `
-            <div style="display:flex;align-items:center;gap:12px;">
-                <img src="${p.image}">
-                <div>
-                    <div style="font-weight:700">${p.name}</div>
-                    <div style="font-size:13px;color:#666">${p.description}</div>
-                    <div style="font-size:14px;color:#000;margin-top:4px;">₹ ${p.price}</div>
-                </div>
-            </div>
-
-            <button class="delete-btn" onclick="deleteProduct('${p.id}')">Delete</button>
-        `;
-
-        box.appendChild(row);
-    });
+  } catch (err) {
+    console.error(err);
+    alert('Delete failed');
+  } finally {
+    await loadGallery();
+  }
 }
 
-async function deleteProduct(id){
-    if(!confirm("Delete this product?")) return;
-
-    await fetch("/products/delete", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({ id })
-    });
-
-    loadProducts();
-    loadDisk();
-}
-
-/* --------------------------------------
-   DISK USAGE BAR
-----------------------------------------*/
-async function loadDisk(){
-    const r = await fetch("/admin/disk-info", { cache:"no-cache" });
-    const j = await r.json();
-
-    document.getElementById("diskFill").style.width = j.usedPct + "%";
-    document.getElementById("diskText").textContent =
-        `${(j.usedBytes/1024/1024).toFixed(1)} MB used of ${(j.totalBytes/1024/1024/1024).toFixed(1)} GB (${j.usedPct}%)`;
-}
-
-/* INIT */
-loadProducts();
-loadDisk();
-
+/* initial */
+loadGallery();
 </script>
 
 </body>
