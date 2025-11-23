@@ -73,5 +73,14 @@
     "category": "Cookies",
     "image": "/images/products/100DD84C-E56F-403F-BE26-522AE04E6D23-f2c6855f-105a-4a78-b4b5-de1e3a7d59ae.jpg",
     "createdAt": "2025-11-23T09:50:04.188Z"
+  },
+  {
+    "id": "e8e912a0-286a-4226-a395-7aa880db6354",
+    "name": "last test",
+    "description": "haha",
+    "price": "335345",
+    "category": "Cupcakes",
+    "image": "/images/products/5426C5C3-9890-4592-87F1-D8D068E94052-a9f5bd64-101e-4ba5-aa63-ebde25e3aac1.jpg",
+    "createdAt": "2025-11-23T10:01:26.516Z"
   }
 ]

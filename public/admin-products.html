@@ -2,516 +2,369 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Dory's Bakehouse – Products</title>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Dory's Bakehouse — Manage Products</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<!-- HEIC Converter -->
+<script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
 
 <style>
-/* ========== THEME ========== */
 :root{
-    --bg: rgba(255,243,207,0.45);
-    --accent:#563e30;
-    --text:#563e30;
-    --muted:#6e5a52;
-    --card:rgba(253,239,193,0.45);
+    --bg: #faebe3;
+    --accent: #563e30;
+    --card: rgba(253,239,193,0.45);
+    --text: #563e30;
 }
 
 body{
     margin:0;
-    font-family:Poppins, system-ui;
     background:var(--bg);
-    overflow-x:hidden;
+    font-family:'Poppins', system-ui;
+    color:var(--text);
 }
 
-/* ========== HEADER ========== */
+/* HEADER */
 header{
     width:100%;
     background:#fff;
     padding:14px 20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+    box-shadow:0 2px 8px rgba(0,0,0,0.08);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
     position:sticky;
     top:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
     z-index:1000;
 }
-
-header .logo{
-    height:64px;
+header .left{
+    display:flex; align-items:center; gap:12px;
 }
-
-.home-btn{
-    position:absolute;
-    left:20px;
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    text-decoration:none;
-    font-size:14px;
+header img.logo{
+    height:60px; width:auto;
 }
-
-.contact-btn{
-    position:absolute;
-    right:20px;
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    text-decoration:none;
-    font-size:14px;
-}
-
-/* ========== TITLE ========== */
-h2{
-    text-align:center;
+header h1{
+    margin:0;
     font-family:'Great Vibes', cursive;
-    color:var(--text);
-    font-size:42px;
-    margin:20px 0 10px;
+    font-size:34px;
 }
-
-/* ========== FILTER BAR ========== */
-.filter-bar{
-    display:flex;
-    justify-content:center;
-    gap:10px;
-    flex-wrap:wrap;
-    margin-bottom:10px;
-}
-
-.filter-btn{
-    background:var(--accent);
-    color:#fff;
-    border:0;
-    padding:8px 14px;
-    border-radius:8px;
+header .actions a{
+    margin-left:10px;
+    text-decoration:none;
     font-size:14px;
-    cursor:pointer;
+    padding:10px 14px;
+    background:var(--accent);
+    color:white;
+    border-radius:8px;
+    box-shadow:0 2px 6px rgba(0,0,0,0.15);
 }
 
-.filter-btn.active{
-    background:#ff7f7f;
-}
-
-/* ========== SEARCH BAR ========== */
-.search-wrapper{
-    max-width:900px;
-    margin:0 auto;
-    padding:0 16px 10px;
-}
-
-.search-input{
-    width:100%;
-    padding:12px 16px;
-    font-size:15px;
-    border-radius:10px;
-    border:1px solid #b9a89d;
-    background:#fff;
-    box-shadow:0 3px 12px rgba(0,0,0,0.08);
-    outline:none;
-}
-
-/* ========== PRODUCT GRID ========== */
-.grid{
-    max-width:1300px;
-    margin:0 auto 50px;
+/* MAIN LAYOUT */
+.container{
+    max-width:1100px;
+    margin:30px auto;
     padding:0 16px;
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-    gap:18px;
 }
 
+/* FORM CARD */
 .card{
     background:var(--card);
-    padding:10px;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-    position:relative;
-    transition:0.25s;
-}
-
-.card img{
-    width:100%;
-    height:180px;
-    object-fit:cover;
-    border-radius:10px;
-}
-
-/* Hover Enquire Overlay */
-.hover-overlay{
-    position:absolute;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    opacity:0;
-    transition:0.25s;
-    border-radius:12px;
-}
-
-.card:hover .hover-overlay{
-    opacity:1;
-}
-
-.enquire-btn{
-    background:#ff7f7f;
-    color:#fff;
-    border:0;
-    padding:10px 16px;
-    border-radius:8px;
-    cursor:pointer;
-    font-size:14px;
-}
-
-/* Text */
-.card-title{
-    font-size:16px;
-    font-weight:600;
-    margin-top:8px;
-    color:var(--text);
-}
-
-.card-cat{
-    font-size:13px;
-    color:var(--muted);
-}
-
-.card-price{
-    font-size:15px;
-    font-weight:600;
-    color:#333;
-    margin-top:4px;
-}
-
-/* ========== ENQUIRY POPUP ========== */
-.enquiry-popup{
-    position:fixed;
-    z-index:3000;
-    background:#fff;
     padding:20px;
     border-radius:14px;
-    width:90%;
-    max-width:360px;
-    box-shadow:0 10px 28px rgba(0,0,0,0.25);
-    display:none;
+    box-shadow:0 6px 22px rgba(0,0,0,0.1);
+    margin-bottom:25px;
 }
 
-.enquiry-popup img{
-    width:100px;
-    height:100px;
-    border-radius:10px;
-    object-fit:cover;
+.card h2{
+    margin:0 0 12px 0;
+    font-family:'Great Vibes', cursive;
+    font-size:40px;
+    text-align:center;
 }
 
-.popup-row{
-    display:flex;
-    gap:14px;
+/* FORM */
+label{
+    font-size:15px;
+    font-weight:500;
 }
-
-.close-mini{
-    position:absolute;
-    right:12px;
-    top:10px;
-    font-size:22px;
-    cursor:pointer;
+input, select, textarea{
+    width:100%;
+    margin-top:6px;
+    margin-bottom:14px;
+    padding:10px;
+    border-radius:8px;
+    border:1px solid #bbb;
+    font-size:15px;
 }
 
 textarea{
-    width:100%;
-    height:70px;
-    border-radius:10px;
-    padding:10px;
-    margin-top:10px;
+    resize:vertical;
+    min-height:80px;
 }
 
-.send-btn{
-    width:100%;
-    background:#25D366;
-    color:#fff;
-    border:0;
-    padding:10px;
-    margin-top:10px;
-    border-radius:10px;
-    font-size:15px;
-    cursor:pointer;
-}
-
-/* ========== FLOATING BUTTONS ========== */
-.floating-buttons{
-    position:fixed;
-    right:25px;
-    bottom:25px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    z-index:2000;
-}
-
-.whatsapp-btn,.chat-btn{
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    box-shadow:0 6px 18px rgba(0,0,0,0.25);
-}
-
-.whatsapp-btn{background:#25D366;}
-.chat-btn{background:#ff7f7f;}
-
-.floating-buttons img{
-    width:28px;
-    height:28px;
-}
-
-/* ========== MANAGE PRODUCTS (admin only) ========== */
-#manageFloating{
-    position:fixed;
-    left:20px;
-    bottom:30px;
-    background:var(--accent);
-    color:#fff;
+button{
     padding:10px 18px;
-    border-radius:10px;
-    text-decoration:none;
-    font-size:14px;
-    display:none; /* only admin sees it */
-    z-index:2000;
-}
-
-/* ========== CONTACT POPUP ========== */
-.popup-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:5000;
-}
-.popup-box{
-    background:#faebe3;
-    padding:22px;
-    border-radius:14px;
-    text-align:center;
-    width:90%;
-    max-width:320px;
-}
-.close-btn{
-    margin-top:14px;
-    background:var(--accent);
-    color:#fff;
-    padding:10px;
+    border:none;
     border-radius:8px;
     cursor:pointer;
+    background:var(--accent);
+    color:white;
+    font-size:15px;
+    font-weight:500;
+}
+
+/* PRODUCT GRID */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(220px,1fr));
+    gap:18px;
+    margin-top:20px;
+}
+
+.product-card{
+    background:#fff;
+    border-radius:12px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    padding:14px;
+    text-align:center;
+}
+
+.product-card img{
+    width:100%;
+    height:160px;
+    object-fit:cover;
+    border-radius:10px;
+}
+
+.name{
+    font-size:16px;
+    font-weight:600;
+    margin:8px 0 4px;
+}
+.cat{
+    font-size:13px;
+    color:#666;
+}
+.price{
+    font-size:15px;
+    font-weight:600;
+    margin:6px 0;
+}
+.delbtn{
+    margin-top:10px;
+    display:inline-block;
+    padding:8px 14px;
+    background:#b02020;
+    color:white;
+    font-size:13px;
+    border-radius:8px;
+}
+
+/* Preview */
+#preview{
+    margin-top:12px;
+    text-align:center;
+}
+#preview img{
+    width:150px;
+    height:150px;
+    object-fit:cover;
+    border-radius:10px;
+    box-shadow:0 4px 12px rgba(0,0,0,0.12);
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+    header h1{ font-size:26px; }
+    .grid{ grid-template-columns:1fr 1fr; }
+}
+@media(max-width:450px){
+    .grid{ grid-template-columns:1fr; }
 }
 </style>
 </head>
+
 <body>
 
 <!-- HEADER -->
 <header>
-    <a class="home-btn" href="/index.html">Home</a>
-    <img class="logo" src="/logo/dorys.PNG">
-    <a class="contact-btn" onclick="openContact()">Contact</a>
+    <div class="left">
+        <img src="/logo/dorys.PNG" class="logo" />
+        <h1>Dory's Bakehouse</h1>
+    </div>
+    <div class="actions">
+        <a href="/">Home</a>
+        <a href="/upload.html">Upload Images</a>
+        <a href="/admin-products.html">Manage Gallery</a>
+        <a href="#" id="logoutBtn" style="background:#7b0f0f;">Logout</a>
+    </div>
 </header>
 
-<h2>Our Products</h2>
+<div class="container">
 
-<!-- FILTERS -->
-<div class="filter-bar">
-    <button class="filter-btn active" data-cat="all">All</button>
-    <button class="filter-btn" data-cat="Cakes">Cakes</button>
-    <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
-    <button class="filter-btn" data-cat="Pastries">Pastries</button>
+<!-- ADD PRODUCT CARD -->
+<div class="card">
+    <h2>Add Product</h2>
+
+    <label>Product Name</label>
+    <input id="pname" type="text" placeholder="Chocolate Truffle Cake">
+
+    <label>Description</label>
+    <textarea id="pdesc" placeholder="Rich chocolate layers with ganache..."></textarea>
+
+    <label>Price (₹)</label>
+    <input id="pprice" type="text" placeholder="599">
+
+    <label>Category</label>
+    <select id="pcat">
+        <option value="Cakes">Cakes</option>
+        <option value="Designer Cakes">Designer Cakes</option>
+        <option value="Cupcakes">Cupcakes</option>
+        <option value="Brownies">Brownies</option>
+        <option value="Cookies">Cookies</option>
+        <option value="Pastries">Pastries</option>
+        <option value="Bread & Buns">Bread & Buns</option>
+        <option value="Celebration Cakes">Celebration Cakes</option>
+        <option value="Anniversary Cakes">Anniversary Cakes</option>
+        <option value="Kids Theme Cakes">Kids Theme Cakes</option>
+    </select>
+
+    <label>Image</label>
+    <input id="pimg" type="file" accept="image/*">
+
+    <div id="preview"></div>
+
+    <button id="addBtn">Add Product</button>
 </div>
 
-<!-- SEARCH BAR -->
-<div class="search-wrapper">
-    <input type="text" class="search-input" id="searchBox" placeholder="Search products…">
-</div>
+<!-- PRODUCT LIST -->
+<h2 style="font-family:'Great Vibes',cursive;font-size:38px;text-align:center;">Our Products</h2>
+<div id="list" class="grid"></div>
 
-<!-- PRODUCT GRID -->
-<div class="grid" id="grid"></div>
-
-<!-- FLOATING BUTTONS -->
-<div class="floating-buttons">
-    <div class="chat-btn" onclick="openContact()">
-        <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png">
-    </div>
-    <a class="whatsapp-btn" href="https://wa.me/9168445014" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
-    </a>
-</div>
-
-<!-- ADMIN MANAGE FLOATING BUTTON -->
-<a id="manageFloating" href="/admin-products.html">Manage Products</a>
-
-<!-- ENQUIRY POPUP -->
-<div class="enquiry-popup" id="enqBox">
-    <span class="close-mini" onclick="closeEnq()">×</span>
-    <div class="popup-row">
-        <img id="enqImg">
-        <div>
-            <h3 id="enqName"></h3>
-            <p id="enqCat"></p>
-            <p id="enqPrice"></p>
-        </div>
-    </div>
-    <textarea id="enqMsg" placeholder="Your message..."></textarea>
-    <button class="send-btn" onclick="sendEnq()">Send on WhatsApp</button>
-</div>
-
-<!-- CONTACT POPUP -->
-<div class="popup-overlay" id="contactPopup">
-    <div class="popup-box">
-        <h3>Contact Us</h3>
-        <p>📞 <a href="tel:+917972032790" style="color:var(--text);font-weight:700;text-decoration:none;">+91 7972032790</a></p>
-        <p>📍 Dory's Bakehouse, Pune</p>
-        <div class="close-btn" onclick="closeContact()">Close</div>
-    </div>
 </div>
 
 <script>
-/* =============================
-   LOAD PRODUCTS
-============================= */
-async function loadProducts(){
-    const res = await fetch('/products/list',{cache:'no-cache'});
-    const list = await res.json();
-    window.fullProducts = list;
-    renderProducts(list);
+/* --------------------------
+   ADMIN PIN
+--------------------------- */
+function readCookie(n){
+  return document.cookie.split("; ").find(x=>x.startsWith(n+"="))?.split("=")[1]||null;
+}
+function setCookie(n,v){
+  document.cookie=n+"="+v+";path=/";
+}
+function deleteCookie(n){
+  document.cookie=n+"=;expires=Thu,01 Jan 1970 00:00:00 GMT;path=/";
+}
+if(readCookie("admin")!=="4321"){
+  let p = prompt("Enter Admin PIN:");
+  if(p==="4321") setCookie("admin","4321");
+  else { alert("Wrong PIN"); location.href="/"; }
+}
+document.getElementById("logoutBtn").onclick = ()=>{
+    deleteCookie("admin");
+    location.href="/";
+};
+
+/* --------------------------
+   PREVIEW
+--------------------------- */
+let picked = null;
+pimg.onchange = e=>{
+    if(e.target.files.length){
+        picked = e.target.files[0];
+        preview.innerHTML = `<img src="${URL.createObjectURL(picked)}">`;
+    }
+};
+
+/* --------------------------
+   ADD PRODUCT (with HEIC support)
+--------------------------- */
+function isHeic(f){ return /\.heic$|\.heif$/i.test(f.name); }
+
+async function convertHeic(file){
+    let jpg = await heic2any({ blob:file, toType:"image/jpeg", quality:0.90 });
+    return new File([jpg], file.name.replace(/\.\w+$/, ".jpg"), {type:"image/jpeg"});
 }
 
-/* =============================
-   RENDER PRODUCTS
-============================= */
-function renderProducts(arr){
-    const grid = document.getElementById('grid');
-    grid.innerHTML = "";
+addBtn.onclick = async()=>{
+    let name = pname.value.trim();
+    if(!name){ alert("Enter product name"); return; }
+
+    let desc = pdesc.value.trim();
+    let price = pprice.value.trim();
+    let cat = pcat.value;
+
+    let file = picked;
+    if(!file){ alert("Select image"); return; }
+
+    if(isHeic(file)){
+        file = await convertHeic(file);
+    }
+
+    let fd = new FormData();
+    fd.append("name", name);
+    fd.append("description", desc);
+    fd.append("price", price);
+    fd.append("category", cat);
+    fd.append("image", file);
+
+    let r = await fetch("/products/add", { method:"POST", body:fd });
+    let d = await r.json();
+
+    if(d.success){
+        alert("Product added!");
+        pname.value = "";
+        pdesc.value = "";
+        pprice.value = "";
+        pimg.value = "";
+        preview.innerHTML="";
+        loadProducts();
+    }else{
+        alert("Failed: "+d.error);
+    }
+};
+
+/* --------------------------
+   LOAD PRODUCT LIST
+--------------------------- */
+async function loadProducts(){
+    let r = await fetch("/products/list");
+    let arr = await r.json();
+
+    list.innerHTML="";
 
     arr.forEach(p=>{
-        const div = document.createElement('div');
-        div.className = "card";
+        let card = document.createElement("div");
+        card.className="product-card";
 
-        div.innerHTML = `
-            <img src="${p.image}">
-            <div class="hover-overlay">
-                <button class="enquire-btn" onclick="openEnq('${p.id}')">Enquire Now</button>
-            </div>
-            <div class="card-title">${p.name}</div>
-            <div class="card-cat">${p.category}</div>
-            <div class="card-price">₹ ${p.price}</div>
+        card.innerHTML=`
+            <img src="${p.image}" />
+            <div class="name">${p.name}</div>
+            <div class="cat">${p.category}</div>
+            <div class="price">₹${p.price}</div>
+            <a class="delbtn" onclick="delProd('${p.id}')">Delete</a>
         `;
-        grid.appendChild(div);
+        list.appendChild(card);
     });
 }
 
-/* =============================
-   FILTERS
-============================= */
-document.querySelectorAll(".filter-btn").forEach(btn=>{
-    btn.onclick = ()=>{
-        document.querySelectorAll(".filter-btn").forEach(b=>b.classList.remove("active"));
-        btn.classList.add("active");
-        applyFilters();
-    };
-});
-
-/* =============================
-   SEARCH FUNCTION
-============================= */
-document.getElementById('searchBox').addEventListener('input', applyFilters);
-
-function applyFilters(){
-    const cat = document.querySelector(".filter-btn.active").dataset.cat;
-    const search = document.getElementById('searchBox').value.toLowerCase();
-
-    let arr = window.fullProducts;
-
-    if(cat !== "all"){
-        arr = arr.filter(p => p.category === cat);
-    }
-
-    if(search.trim() !== ""){
-        arr = arr.filter(p =>
-            p.name.toLowerCase().includes(search) ||
-            p.category.toLowerCase().includes(search) ||
-            p.description?.toLowerCase().includes(search)
-        );
-    }
-
-    renderProducts(arr);
+async function delProd(id){
+    if(!confirm("Delete this product?")) return;
+    let r = await fetch("/products/delete", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({id})
+    });
+    let d = await r.json();
+    if(d.success) loadProducts();
+    else alert("Delete failed");
 }
-
-/* =============================
-   ENQUIRY POPUP
-============================= */
-function openEnq(id){
-    const p = window.fullProducts.find(x=>x.id===id);
-
-    document.getElementById("enqImg").src = p.image;
-    document.getElementById("enqName").textContent = p.name;
-    document.getElementById("enqCat").textContent = "Category: "+p.category;
-    document.getElementById("enqPrice").textContent = "₹ "+p.price;
-
-    document.getElementById("enqBox").style.display = "block";
-    window.currentProduct = p;
-}
-
-function closeEnq(){
-    document.getElementById("enqBox").style.display = "none";
-}
-
-function sendEnq(){
-    const p = window.currentProduct;
-    const msg = document.getElementById("enqMsg").value;
-
-    const text = `
-Product Enquiry:
-Name: ${p.name}
-Category: ${p.category}
-Price: ₹ ${p.price}
-
-User Message:
-${msg}
-`;
-
-    window.open("https://wa.me/9168445014?text="+encodeURIComponent(text), "_blank");
-}
-
-/* =============================
-   CONTACT POPUP
-============================= */
-function openContact(){
-    document.getElementById("contactPopup").style.display="flex";
-}
-function closeContact(){
-    document.getElementById("contactPopup").style.display="none";
-}
-
-/* =============================
-   ADMIN BUTTON
-============================= */
-function readCookie(name){
-    const c = document.cookie.split("; ").find(x=>x.startsWith(name+"="));
-    return c ? c.split("=")[1] : null;
-}
-
-window.addEventListener('DOMContentLoaded', ()=>{
-    if(readCookie("admin")==="4321"){
-        document.getElementById("manageFloating").style.display="block";
-    }
-});
 
 loadProducts();
 </script>
+
 </body>
 </html>

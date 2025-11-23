@@ -1,317 +1,302 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Dory's Bakehouse</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Dory's Bakehouse</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
-<style>
-:root{
-    --bg: rgba(255,243,207,0.45);
-    --accent:#563e30;
-    --text:#563e30;
-    --card:rgba(253,239,193,0.45);
-}
+    <style>
+        :root {
+            --bg: #FAF0DE;
+            --accent: #563e30;
+            --text: #563e30;
+        }
 
-body{
-    margin:0;
-    font-family:Poppins, system-ui;
-    background:var(--bg);
-    overflow-x:hidden;
-}
+        body {
+            margin: 0;
+            font-family: system-ui;
+            background: var(--bg);
+            overflow-x: hidden;
+        }
 
-/* HEADER */
-header{
-    width:100%;
-    background:#fff;
-    padding:14px 20px;
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
-    position:sticky;
-    top:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    position:relative;
-    z-index:1000;
-}
+        /* HEADER */
+        header {
+            width: 100%;
+            background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 14px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        header img.logo {
+            height: 64px;
+            width: auto;
+        }
 
-header .logo{
-    height:64px;
-}
+        .products-btn,
+        .contact-btn {
+            position: absolute;
+            background: var(--accent);
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+        }
+        .products-btn { left: 25px; }
+        .contact-btn  { right: 35px; }
 
-.products-btn{
-    position:absolute;
-    left:20px;
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    text-decoration:none;
-    font-size:14px;
-}
+        h2 {
+            text-align: center;
+            font-family: 'Great Vibes', cursive;
+            color: var(--text);
+            font-size: 40px;
+            margin-top: 18px;
+        }
 
-.contact-btn{
-    position:absolute;
-    right:20px;
-    background:var(--accent);
-    color:#fff;
-    padding:8px 14px;
-    border-radius:8px;
-    text-decoration:none;
-    font-size:14px;
-}
+        /* GALLERY */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 14px;
+            max-width: 1300px;
+            margin: 0 auto 40px;
+            padding: 16px;
+        }
+        @media (max-width:1100px){ .gallery{grid-template-columns:repeat(4,1fr);} }
+        @media (max-width:900px){ .gallery{grid-template-columns:repeat(3,1fr);} }
+        @media (max-width:640px){ .gallery{grid-template-columns:repeat(2,1fr);} }
+        @media (max-width:420px){ .gallery{grid-template-columns:repeat(1,1fr);} }
 
-/* TITLE */
-h2{
-    text-align:center;
-    font-family:'Great Vibes', cursive;
-    font-size:42px;
-    color:var(--text);
-    margin:22px 0;
-}
+        .card {
+            background: rgba(253,239,193,0.45);
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+        }
+        .card img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+            cursor: pointer;
+            transition: .25s;
+        }
+        .card img:hover {
+            transform: scale(1.03);
+            filter: saturate(1.12);
+        }
 
-/* GALLERY */
-.gallery{
-    max-width:1300px;
-    margin:0 auto;
-    padding:16px;
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
-    gap:16px;
-}
+        .loader {
+            text-align: center;
+            padding: 22px;
+            font-size: 16px;
+            color: #555;
+        }
 
-.card{
-    background:var(--card);
-    padding:10px;
-    border-radius:12px;
-    box-shadow:0 4px 12px rgba(0,0,0,0.1);
-}
+        /* CONTACT POPUP */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0,0,0,0.45);
+            z-index: 2000;
+        }
+        .popup-box {
+            background: #faebe3;
+            padding: 22px;
+            border-radius: 14px;
+            width: 90%;
+            max-width: 380px;
+            box-shadow: 0 6px 22px rgba(0,0,0,0.14);
+            text-align: center;
+        }
+        .popup-box h3 { margin: 0; color: var(--text); }
+        .popup-box p { font-size: 18px; margin: 10px 0; }
+        .close-btn {
+            background: var(--accent);
+            padding: 10px 18px;
+            color: #fff;
+            border-radius: 8px;
+            cursor: pointer;
+        }
 
-.card img{
-    width:100%;
-    height:200px;
-    object-fit:cover;
-    border-radius:10px;
-    cursor:pointer;
-}
+        /* IMAGE VIEWER */
+        .image-viewer {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.86);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 3000;
+        }
+        .image-viewer img {
+            max-width: 95%;
+            max-height: 92%;
+            border-radius: 10px;
+            box-shadow: 0 12px 36px rgba(0,0,0,0.6);
+        }
+        .image-viewer-close {
+            position: absolute;
+            top: 18px;
+            right: 26px;
+            font-size: 34px;
+            color: #fff;
+            cursor: pointer;
+        }
 
-/* LOADER */
-.loader{
-    text-align:center;
-    padding:20px;
-    color:#555;
-}
+        /* FLOATING BUTTONS */
+        .floating-buttons {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 2000;
+        }
+        .whatsapp-btn,
+        .chat-btn {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+            cursor: pointer;
+        }
+        .whatsapp-btn { background: #25D366; }
+        .chat-btn { background: #ff7f7f; }
+        .floating-buttons img { width: 28px; height: 28px; }
 
-/* IMAGE VIEWER */
-.image-viewer{
-    position:fixed;
-    inset:0;
-    display:none;
-    justify-content:center;
-    align-items:center;
-    background:rgba(0,0,0,0.86);
-    z-index:5000;
-}
-
-.image-viewer img{
-    max-width:96%;
-    max-height:92%;
-    border-radius:10px;
-}
-
-.viewer-close{
-    position:absolute;
-    right:20px;
-    top:20px;
-    color:#fff;
-    font-size:40px;
-    cursor:pointer;
-}
-
-/* FLOATING BUTTONS */
-.floating-buttons{
-    position:fixed;
-    right:25px;
-    bottom:25px;
-    display:flex;
-    flex-direction:column;
-    gap:12px;
-    z-index:3000;
-}
-
-.whatsapp-btn, .chat-btn{
-    width:55px;
-    height:55px;
-    border-radius:50%;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    cursor:pointer;
-    box-shadow:0 6px 18px rgba(0,0,0,0.25);
-}
-
-.whatsapp-btn{ background:#25D366; }
-.chat-btn{ background:#ff7f7f; }
-.floating-buttons img{ width:28px; height:28px; }
-
-/* MANAGE PRODUCTS (Admin only) */
-#manageFloating{
-    position:fixed;
-    left:20px;
-    bottom:30px;
-    background:var(--accent);
-    color:#fff;
-    padding:10px 18px;
-    border-radius:10px;
-    text-decoration:none;
-    font-size:14px;
-    display:none;
-    z-index:4000;
-}
-
-/* CONTACT POPUP */
-.popup-overlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:6000;
-}
-
-.popup-box{
-    background:#faebe3;
-    padding:22px;
-    border-radius:14px;
-    text-align:center;
-    width:90%;
-    max-width:320px;
-}
-
-.close-btn{
-    margin-top:14px;
-    background:var(--accent);
-    color:#fff;
-    padding:10px;
-    border-radius:8px;
-    cursor:pointer;
-}
-</style>
+    </style>
 </head>
+
 <body>
 
-<header>
-    <a class="products-btn" href="/product.html">Products</a>
-    <img class="logo" src="/logo/dorys.PNG">
-    <a class="contact-btn" onclick="openContact()">Contact</a>
-</header>
-
-<h2>Not Just Baked. Beautifully Born.</h2>
-
-<div class="gallery" id="gallery"></div>
-<div class="loader" id="loader">Loading images…</div>
-
-<!-- Floating Buttons -->
+<!-- Floating Chat & WhatsApp Buttons -->
 <div class="floating-buttons">
-    <div class="chat-btn" onclick="openContact()">
+    <div class="chat-btn" onclick="openPopup()">
         <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png">
     </div>
+
     <a class="whatsapp-btn" href="https://wa.me/9168445014" target="_blank">
         <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg">
     </a>
 </div>
 
-<!-- Admin Manage -->
-<a id="manageFloating" href="/admin-products.html">Manage Products</a>
+<!-- HEADER -->
+<header>
+    <!-- LEFT: Products Button -->
+    <a href="/product.html" class="products-btn">Products</a>
 
-<!-- Image Viewer -->
-<div class="image-viewer" id="viewer">
-    <span class="viewer-close" onclick="closeViewer()">×</span>
-    <img id="viewerImg">
-</div>
+    <!-- CENTER: Logo -->
+    <img class="logo" src="logo/dorys.PNG" alt="Dory's Bakehouse Logo">
 
-<!-- Contact Popup -->
+    <!-- RIGHT: Contact Button -->
+    <a onclick="openPopup()" class="contact-btn">Contact</a>
+</header>
+
+<h2>Not Just Baked. Beautifully Born.</h2>
+
+<div class="gallery" id="gallery"></div>
+<div class="loader" id="loader">Scroll down to load more</div>
+
+<!-- CONTACT POPUP -->
 <div class="popup-overlay" id="contactPopup">
     <div class="popup-box">
         <h3>Contact Us</h3>
-        <p>📞 <a href="tel:+917972032790" style="color:var(--text);font-weight:700;">+91 7972032790</a></p>
+        <p>📞 <a href="tel:+917072032790" style="color:var(--text);text-decoration:none">+91 9168445014</a></p>
         <p>📍 Dory's Bakehouse, Pune</p>
-        <div class="close-btn" onclick="closeContact()">Close</div>
+        <span class="close-btn" onclick="closePopup()">Close</span>
     </div>
 </div>
 
+<!-- IMAGE VIEWER -->
+<div class="image-viewer" id="imgViewer">
+    <span class="image-viewer-close" onclick="closeImageViewer()">×</span>
+    <img id="viewerImg" src="">
+</div>
+
 <script>
-/* ========== ADMIN CHECK ========== */
-function readCookie(name){
-    const c = document.cookie.split("; ").find(x => x.startsWith(name+"="));
-    return c ? c.split("=")[1] : null;
-}
+    let files = [];
+    let index = 0;
+    const batchSize = 12;
 
-window.addEventListener('DOMContentLoaded', ()=>{
-    if(readCookie("admin")==="4321"){
-        document.getElementById("manageFloating").style.display="block";
-    }
-});
+    const gallery = document.getElementById("gallery");
+    const loader = document.getElementById("loader");
 
-/* ========== IMAGE GALLERY LOAD ========== */
-let pointer = 0;
-let files = [];
-const batch = 12;
-
-async function loadList(){
-    const res = await fetch('/images/list', {cache:"no-cache"});
-    files = await res.json();
-    loadMore();
-}
-
-function loadMore(){
-    const gallery = document.getElementById('gallery');
-    const end = Math.min(pointer + batch, files.length);
-
-    for(; pointer<end; pointer++){
-        const f = files[pointer];
-        const div = document.createElement('div');
-        div.className="card";
-        div.innerHTML = `<img src="/images/${f}" onclick="openViewer('/images/${f}')">`;
-        gallery.appendChild(div);
+    async function fetchList(){
+        const res = await fetch("/images/list", { cache:"no-cache" });
+        return await res.json();
     }
 
-    document.getElementById('loader').textContent =
-        pointer >= files.length ? "No more images" : "Loading…";
-}
+    function createCard(src){
+        const card = document.createElement("div");
+        card.className = "card";
+        const img = document.createElement("img");
+        img.src = src;
+        img.onclick = () => openImage(src);
+        card.appendChild(img);
+        return card;
+    }
 
-const obs = new IntersectionObserver((entries)=>{
-    if(entries[0].isIntersecting){
+    async function loadMore(){
+        if(index >= files.length){
+            loader.innerText = "No more images";
+            return;
+        }
+        const slice = files.slice(index, index + batchSize);
+        slice.forEach(f => gallery.appendChild(createCard("/images/"+f)));
+        index += batchSize;
+    }
+
+    async function init(){
+        files = await fetchList();
+
+        const observer = new IntersectionObserver(e=>{
+            if(e[0].isIntersecting) loadMore();   //<-- FIXED HERE
+        }, {rootMargin:"300px"});
+
+        observer.observe(loader);
         loadMore();
     }
-});
+    init();
 
-obs.observe(document.getElementById('loader'));
+    /* CONTACT POPUP */
+    function openPopup(){
+        document.getElementById("contactPopup").style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+    function closePopup(){
+        document.getElementById("contactPopup").style.display = "none";
+        document.body.style.overflow = "";
+    }
 
-loadList();
-
-/* IMAGE VIEWER */
-function openViewer(src){
-    document.getElementById('viewerImg').src = src;
-    document.getElementById('viewer').style.display='flex';
-    document.body.style.overflow='hidden';
-}
-
-function closeViewer(){
-    document.getElementById('viewer').style.display='none';
-    document.body.style.overflow='';
-}
-
-/* CONTACT POPUP */
-function openContact(){
-    document.getElementById("contactPopup").style.display='flex';
-}
-function closeContact(){
-    document.getElementById("contactPopup").style.display='none';
-}
+    /* IMAGE VIEWER */
+    function openImage(src){
+        document.getElementById("viewerImg").src = src;
+        document.getElementById("imgViewer").style.display = "flex";
+        document.body.style.overflow = "hidden";
+    }
+    function closeImageViewer(){
+        document.getElementById("imgViewer").style.display = "none";
+        document.getElementById("viewerImg").src = "";
+        document.body.style.overflow = "";
+    }
 </script>
 
 </body>

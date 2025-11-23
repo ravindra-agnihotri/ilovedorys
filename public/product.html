@@ -145,7 +145,7 @@ header{
   </div>
 
   <!-- centered logo (developer-provided local path used here) -->
-  <img src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" class="logo-img" alt="Dory's Bakehouse">
+  <img src="logo/dorys.PNG" class="logo-img" alt="Dory's Bakehouse">
 
   <div class="header-actions">
     <a class="contact-btn" id="openContact">Contact</a>
@@ -399,6 +399,66 @@ loadProducts();
 
 /* periodic refresh */
 setInterval(loadProducts, 90_000);
+function openAdminLogin() {
+    document.getElementById("adminPopup").style.display = "flex";
+    document.getElementById("adminPinInput").value = "";
+    document.getElementById("adminError").style.display = "none";
+}
+
+function checkAdminPin() {
+    const pin = document.getElementById("adminPinInput").value;
+
+    if (pin === "4321") {
+        // set cookie so admin page stays unlocked
+        document.cookie = "admin=4321; path=/; max-age=604800";
+        window.location.href = "/admin-products.html";
+    } else {
+        document.getElementById("adminError").style.display = "block";
+    }
+}
+
+document.getElementById("adminPopup").addEventListener("click", e => {
+    if (e.target.id === "adminPopup") {
+        document.getElementById("adminPopup").style.display = "none";
+    }
+});
+
 </script>
-</body>
+<!-- ADMIN LOGIN POPUP -->
+<div id="adminPopup" style="
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.45);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:5000;
+">
+    <div class="box" style="
+        background:#faebe3;
+        padding:25px;
+        border-radius:12px;
+        width:90%;
+        max-width:330px;
+        text-align:center;
+        box-shadow:0 6px 22px rgba(0,0,0,0.14);
+    ">
+        <h3 style="margin:0;color:#563e30">Enter Admin PIN</h3>
+
+        <input id="adminPinInput" type="password" maxlength="6"
+               style="margin-top:14px;width:100%;padding:10px;border-radius:8px;
+            border:1px solid #ccc;font-size:16px;text-align:center;">
+
+        <button onclick="checkAdminPin()" style="
+            margin-top:14px;background:#563e30;color:#fff;border:none;
+            padding:10px 18px;border-radius:8px;cursor:pointer;">
+            Submit
+        </button>
+
+        <div id="adminError" style="color:red;font-size:14px;margin-top:8px;display:none;">
+            Incorrect PIN
+        </div>
+    </div>
+</div>
+
 </html>
