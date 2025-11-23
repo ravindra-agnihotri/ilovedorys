@@ -333,6 +333,7 @@ app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (r
     }
 });
 
+
 app.post("/products/delete", requireAdmin, async (req, res) => {
     const { id } = req.body;
     let list = await readProducts(); const idx = list.findIndex(p => p.id === id);
