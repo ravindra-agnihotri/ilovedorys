@@ -1,9 +1,12 @@
 /**
- * server.js (updated)
- * - Includes endpoints:
- *    GET /images/list       -> array of filenames (existing)
- *    GET /images/history    -> [{ file, mtime, size }]
- *    GET /admin/disk-info   -> { totalBytes, usedBytes, usedPct, fileCount }
+ * server.js (updated & fixed)
+ *
+ * - GET /images/list
+ * - GET /images/history
+ * - GET /admin/disk-info
+ * - POST /upload
+ * - POST /images/delete   <- fixed / hardened (supports single or multiple files)
+ * - Products endpoints (list/add/delete)
  *
  * Disk size (GB) set from admin input (user gave 5)
  */
@@ -35,7 +38,8 @@ const ALLOWED = /\.(jpg|jpeg|png|gif|webp|svg|heic|heif)$/i;
 
 /* ----------------- MIDDLEWARE ----------------- */
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: "10mb" })); // allow reasonable JSON payloads
+app.use(express.urlencoded({ extended: true }));
 app.use(express.static(PUBLIC_DIR));
 app.use("/images", express.static(IMAGES_DIR));
 
@@ -57,7 +61,7 @@ async function ensureFolders() {
         await fsp.writeFile(PRODUCTS_JSON, JSON.stringify([], null, 2));
     }
 }
-ensureFolders();
+ensureFolders().catch(err => console.error("ensureFolders error", err));
 
 /* ----------------- MULTER ----------------- */
 const upload = multer({
@@ -190,15 +194,74 @@ app.post("/upload", requireAdmin, upload.array("images", 20), async (req, res) =
     res.json({ uploaded: results });
 });
 
-/* Delete image (gallery only) */
+/* Delete image(s) (gallery only) — supports { filename } or { files: [...] } */
 app.post("/images/delete", requireAdmin, async (req, res) => {
-    const { filename } = req.body;
-    if (!filename || filename.includes("/") || filename.includes("..")) return res.status(400).json({ error: "Invalid filename" });
     try {
-        await fsp.unlink(path.join(IMAGES_DIR, filename));
-        res.json({ success: true });
-    } catch {
-        res.status(404).json({ error: "File not found" });
+        // Accept either single filename or array named files
+        let files = [];
+        if (Array.isArray(req.body.files)) files = req.body.files.slice();
+        else if (req.body.filename) files = [req.body.filename];
+        else if (typeof req.body === "string") {
+            // in case body parser received raw string (unlikely), try parse
+            try { const parsed = JSON.parse(req.body); if (Array.isArray(parsed.files)) files = parsed.files; } catch {}
+        }
+
+        if (!Array.isArray(files) || files.length === 0) {
+            return res.status(400).json({ error: "No files provided" });
+        }
+
+        const deleted = [];
+        const errors = [];
+
+        for (let raw of files) {
+            try {
+                if (!raw) { errors.push({ file: raw, error: "Empty filename" }); continue; }
+                let filename = String(raw).trim();
+
+                // Normalize input:
+                // remove any leading slash(es), and remove a leading "images/" if present,
+                // but keep subfolders like "products/..."
+                filename = filename.replace(/^\/+/, "");
+                filename = filename.replace(/^images\//, "");
+
+                // Disallow directory traversal (../)
+                if (filename.includes("..")) {
+                    errors.push({ file: raw, error: "Invalid filename (traversal)" });
+                    continue;
+                }
+
+                // Build absolute path and ensure it's inside IMAGES_DIR
+                const fullPath = path.resolve(IMAGES_DIR, filename);
+                const rel = path.relative(IMAGES_DIR, fullPath).replace(/\\/g, "/");
+
+                if (rel.startsWith("..") || path.isAbsolute(rel) && rel.includes("..")) {
+                    errors.push({ file: raw, error: "Invalid filename (outside images directory)" });
+                    continue;
+                }
+
+                // Ensure extension allowed (extra safety)
+                if (!ALLOWED.test(path.extname(fullPath))) {
+                    errors.push({ file: raw, error: "Invalid file type" });
+                    continue;
+                }
+
+                // Attempt unlink (file might not exist)
+                try {
+                    await fsp.unlink(fullPath);
+                    deleted.push(filename);
+                } catch (err) {
+                    // If file not found or other error
+                    errors.push({ file: raw, error: err.code === "ENOENT" ? "File not found" : err.message });
+                }
+            } catch (err) {
+                errors.push({ file: raw, error: err.message || "Failed" });
+            }
+        }
+
+        res.json({ deleted, errors });
+    } catch (err) {
+        console.error("images/delete error", err);
+        res.status(500).json({ error: "Failed" });
     }
 });
 
@@ -214,26 +277,6 @@ app.get("/products/list", async (req, res) => {
     res.json(list);
 });
 
-/*app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (req, res) => {
-    try {
-        const { name, description, price } = req.body;
-        if (!name?.trim()) return res.status(400).json({ error: "Name required" });
-        let imageUrl = "/images/products/default-sample.png";
-        if (req.file) {
-            const tmp = req.file.path; const buffer = await fsp.readFile(tmp);
-            const safe = path.basename(req.file.originalname, path.extname(req.file.originalname)).replace(/\s+/g, "-").replace(/[^a-zA-Z0-9-_]/g, "");
-            const id = uuidv4(); const finalName = `${safe}-${id}.jpg`; const finalPath = path.join(PRODUCTS_IMG_DIR, finalName);
-            await sharp(buffer).jpeg({ quality: 85 }).resize({ width: 1600, withoutEnlargement: true }).toFile(finalPath);
-            await fsp.unlink(tmp); imageUrl = "/images/products/" + finalName;
-        }
-        const list = await readProducts();
-        const newProd = { id: uuidv4(), name: name.trim(), description: (description||"").trim(), price: price || "", image: imageUrl, createdAt: new Date().toISOString() };
-        list.push(newProd); await writeProducts(list);
-        res.json({ success: true, product: newProd });
-    } catch (err) {
-        console.error('add product error', err); res.status(500).json({ error: 'Failed' });
-    }
-});*/
 app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (req, res) => {
     try {
         const { name, description, price, category } = req.body;   // ← category added
@@ -268,13 +311,13 @@ app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (r
 
         const list = await readProducts();
 
-        // ✔ FIX: save category
+        // ✔ save category
         const newProd = {
             id: uuidv4(),
             name: name.trim(),
             description: (description || "").trim(),
             price: price || "",
-            category: category || "Uncategorized",   // ← ADDED HERE
+            category: category || "Uncategorized",
             image: imageUrl,
             createdAt: new Date().toISOString()
         };
@@ -290,13 +333,15 @@ app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (r
     }
 });
 
-
 app.post("/products/delete", requireAdmin, async (req, res) => {
     const { id } = req.body;
     let list = await readProducts(); const idx = list.findIndex(p => p.id === id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
     const removed = list.splice(idx, 1)[0]; await writeProducts(list);
-    if (removed.image?.startsWith("/images/products/")) fsp.unlink(path.join(PRODUCTS_IMG_DIR, removed.image.replace("/images/products/", ""))).catch(()=>{});
+    if (removed.image?.startsWith("/images/products/")) {
+        const imgName = removed.image.replace("/images/products/", "");
+        fsp.unlink(path.join(PRODUCTS_IMG_DIR, imgName)).catch(()=>{});
+    }
     res.json({ success: true });
 });
 

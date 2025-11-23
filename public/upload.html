@@ -1,536 +1,584 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Dory's Bakehouse — Upload & Manage Images</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Dory's Bakehouse — Upload & Manage Images</title>
 
-<!-- Fonts & HEIC converter -->
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-<script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
+    <!-- Fonts & HEIC converter -->
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/heic2any/dist/heic2any.min.js"></script>
 
-<style>
-:root{
-  --bg:#faebe3;
-  --accent:#563e30;
-  --card:rgba(253,239,193,0.45);
-  --muted:#6e5a52;
-}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:'Poppins',system-ui;
-  background:var(--bg);
-  color:var(--accent);
-  -webkit-font-smoothing:antialiased;
-}
-header{
-  width:100%;
-  background:#fff;
-  box-shadow:0 2px 8px rgba(0,0,0,0.08);
-  padding:14px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-.header-left{display:flex;align-items:center;gap:12px}
-.logo{height:56px;border-radius:8px;object-fit:contain}
-.brand-title{font-family:'Great Vibes';font-size:26px;margin:0;color:var(--accent)}
+    <style>
+        :root{
+            --bg:#faebe3;
+            --accent:#563e30;
+            --card:rgba(253,239,193,0.45);
+            --muted:#6e5a52;
+        }
+        *{box-sizing:border-box}
+        body{
+            margin:0;
+            font-family:'Poppins',system-ui;
+            background:var(--bg);
+            color:var(--accent);
+            -webkit-font-smoothing:antialiased;
+        }
+        header{
+            width:100%;
+            background:#fff;
+            box-shadow:0 2px 8px rgba(0,0,0,0.08);
+            padding:14px 20px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            position:sticky;
+            top:0;
+            z-index:1000;
+        }
+        .header-left{display:flex;align-items:center;gap:12px}
+        .logo{height:56px;border-radius:8px;object-fit:contain}
+        .brand-title{font-family:'Great Vibes';font-size:26px;margin:0;color:var(--accent)}
 
-.actions a, .actions button{
-  background:var(--accent);
-  color:#fff;
-  padding:8px 12px;
-  border-radius:8px;
-  text-decoration:none;
-  border:0;
-  cursor:pointer;
-  font-weight:600;
-  margin-left:8px;
-}
+        .actions a, .actions button{
+            background:var(--accent);
+            color:#fff;
+            padding:8px 12px;
+            border-radius:8px;
+            text-decoration:none;
+            border:0;
+            cursor:pointer;
+            font-weight:600;
+            margin-left:8px;
+        }
 
-.container{max-width:1200px;margin:22px auto;padding:0 16px}
+        .container{max-width:1200px;margin:22px auto;padding:0 16px}
 
-/* layout */
-.grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}
-@media(max-width:980px){ .grid{grid-template-columns:1fr} }
+        /* layout */
+        .grid{display:grid;grid-template-columns:2fr 1fr;gap:18px}
+        @media(max-width:980px){ .grid{grid-template-columns:1fr} }
 
-/* main card */
-.card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,0.06)}
+        /* main card */
+        .card{background:var(--card);padding:18px;border-radius:12px;box-shadow:0 8px 26px rgba(0,0,0,0.06)}
 
-.dropzone{
-  background:#fff;border:2px dashed rgba(86,62,48,0.12);border-radius:12px;padding:28px;text-align:center;cursor:pointer;
-  transition:all .12s;
-}
-.dropzone.drag{border-color:var(--accent);transform:translateY(-3px)}
-.dropzone h3{margin:0;color:var(--accent);font-size:20px}
-.small-muted{font-size:13px;color:var(--muted)}
+        .dropzone{
+            background:#fff;border:2px dashed rgba(86,62,48,0.12);border-radius:12px;padding:28px;text-align:center;cursor:pointer;
+            transition:all .12s;
+        }
+        .dropzone.drag{border-color:var(--accent);transform:translateY(-3px)}
+        .dropzone h3{margin:0;color:var(--accent);font-size:20px}
+        .small-muted{font-size:13px;color:var(--muted)}
 
-.controls{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+        .controls{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
 
-.preview-grid{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
-.thumb{background:#fff;border-radius:10px;padding:8px;text-align:center;position:relative;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-.thumb img{width:100%;height:96px;object-fit:cover;border-radius:8px;display:block}
-.thumb .meta{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.thumb .progress{height:8px;background:#eee;border-radius:6px;margin-top:8px;overflow:hidden}
-.thumb .progress > i{display:block;height:100%;width:0%;background:var(--accent)}
-.thumb .trash-btn{position:absolute;top:8px;right:8px;background:rgba(224,75,75,0.95);color:#fff;border:0;padding:6px 8px;border-radius:8px;cursor:pointer;display:none}
-.thumb:hover .trash-btn{display:block}
+        .preview-grid{margin-top:16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+        .thumb{background:#fff;border-radius:10px;padding:8px;text-align:center;position:relative;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+        .thumb img{width:100%;height:96px;object-fit:cover;border-radius:8px;display:block}
+        .thumb .meta{font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+        .thumb .progress{height:8px;background:#eee;border-radius:6px;margin-top:8px;overflow:hidden}
+        .thumb .progress > i{display:block;height:100%;width:0%;background:var(--accent)}
+        .thumb .trash-btn{position:absolute;top:8px;right:8px;background:rgba(224,75,75,0.95);color:#fff;border:0;padding:6px 8px;border-radius:8px;cursor:pointer;display:none}
+        .thumb:hover .trash-btn{display:block}
 
-/* gallery full (below uploader) */
-.gallery-full{margin-top:18px;background:#fff;padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
-.gallery-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.select-all{display:flex;align-items:center;gap:8px}
-.batch-actions{display:flex;gap:8px;align-items:center}
+        /* gallery full (below uploader) */
+        .gallery-full{margin-top:18px;background:#fff;padding:12px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.04)}
+        .gallery-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+        .select-all{display:flex;align-items:center;gap:8px}
+        .batch-actions{display:flex;gap:8px;align-items:center}
 
-/* right side */
-.side{display:flex;flex-direction:column;gap:12px}
-.stat{background:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
-.disk-bar{height:12px;background:#f0e0c8;border-radius:8px;overflow:hidden}
-.disk-bar > b{display:block;height:100%;width:0%;background:var(--accent)}
-.history{max-height:320px;overflow:auto;margin-top:8px}
-.history-item{display:flex;justify-content:space-between;padding:8px;border-bottom:1px dashed rgba(0,0,0,0.04);font-size:13px}
+        /* right side */
+        .side{display:flex;flex-direction:column;gap:12px}
+        .stat{background:#fff;padding:12px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+        .disk-bar{height:12px;background:#f0e0c8;border-radius:8px;overflow:hidden}
+        .disk-bar > b{display:block;height:100%;width:0%;background:var(--accent)}
+        .history{max-height:320px;overflow:auto;margin-top:8px}
+        .history-item{display:flex;justify-content:space-between;padding:8px;border-bottom:1px dashed rgba(0,0,0,0.04);font-size:13px}
 
-/* modal preview */
-.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:3000}
-.modal .box{max-width:90%;max-height:90%;background:#fff;padding:12px;border-radius:10px}
-.modal img{max-width:100%;max-height:80vh;border-radius:8px}
+        /* modal preview */
+        .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,0.7);z-index:3000}
+        .modal .box{max-width:90%;max-height:90%;background:#fff;padding:12px;border-radius:10px}
+        .modal img{max-width:100%;max-height:80vh;border-radius:8px}
 
-/* footer */
-.footer-note{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}
-</style>
+        /* footer */
+        .footer-note{font-size:13px;color:var(--muted);text-align:center;margin-top:14px}
+    </style>
 </head>
 <body>
 
 <header>
-  <div class="header-left">
-    <!-- developer: use uploaded local path as logo -->
-    <img src="/logo/dorys.PNG" class="logo" alt="logo">
-    <div>
-      <div class="brand-title">Dory's Bakehouse</div>
-      <div class="small-muted">Upload & Manage Images</div>
+    <div class="header-left">
+        <!-- developer: use uploaded local path as logo -->
+        <img src="/logo/dorys.PNG" class="logo" alt="logo">
+        <div>
+            <div class="brand-title">Dory's Bakehouse</div>
+            <div class="small-muted">Upload & Manage Images</div>
+        </div>
     </div>
-  </div>
-  <div class="actions">
-    <a href="/" style="background:transparent;color:var(--accent);border:1px solid rgba(86,62,48,0.08)">Open site</a>
-    <a href="/admin-products.html">Manage Products</a>
-    <button id="logoutBtn" style="background:#b23a3a">Logout</button>
-  </div>
+    <div class="actions">
+        <a href="/" style="background:transparent;color:var(--accent);border:1px solid rgba(86,62,48,0.08)">Open site</a>
+        <a href="/admin-products.html">Manage Products</a>
+        <button id="logoutBtn" style="background:#b23a3a">Logout</button>
+    </div>
 </header>
 
 <div class="container">
-  <h2 style="text-align:center;font-family:'Great Vibes';margin:12px 0 18px;color:var(--accent)">Upload Images</h2>
+    <h2 style="text-align:center;font-family:'Great Vibes';margin:12px 0 18px;color:var(--accent)">Upload Images</h2>
 
-  <div class="grid">
-    <!-- LEFT: uploader + full gallery -->
-    <div>
+    <div class="grid">
+        <!-- LEFT: uploader + full gallery -->
+        <div>
 
-      <div class="card">
-        <div id="dropzone" class="dropzone" role="button" aria-label="Drop images here">
-          <h3>Click or drag images here to upload</h3>
-          <p class="small-muted">Supports .heic .heif .jpg .jpeg .png .webp — HEIC auto-converts to JPG in your browser</p>
-          <input id="fileInput" type="file" accept="image/*" multiple style="display:none">
+            <div class="card">
+                <div id="dropzone" class="dropzone" role="button" aria-label="Drop images here">
+                    <h3>Click or drag images here to upload</h3>
+                    <p class="small-muted">Supports .heic .heif .jpg .jpeg .png .webp — HEIC auto-converts to JPG in your browser</p>
+                    <input id="fileInput" type="file" accept="image/*" multiple style="display:none">
+                </div>
+
+                <div class="controls">
+                    <button id="startBtn" class="actions-btn">Upload</button>
+                    <button id="clearBtn" class="actions-btn" style="background:#999;color:#fff;border-radius:8px;padding:8px 12px;border:0">Clear Queue</button>
+                    <div class="small-muted" id="queueCount">0 files queued</div>
+
+                    <!-- batch delete zone (acts on full gallery below) -->
+                    <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
+                        <label style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px">
+                            <input type="checkbox" id="selectAllGallery"> Select all gallery
+                        </label>
+                        <button id="deleteSelected" style="background:#e04b4b;color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Delete selected</button>
+                    </div>
+                </div>
+
+                <!-- upload preview queue -->
+                <div id="previewGrid" class="preview-grid" aria-live="polite"></div>
+
+            </div>
+
+            <!-- FULL GALLERY (shows all images, selectable, trash on hover) -->
+            <div class="gallery-full" id="galleryFull">
+                <div class="gallery-header">
+                    <div style="font-weight:700">Gallery (All images)</div>
+                    <div class="small-muted" id="galleryCount">Loading...</div>
+                </div>
+                <div id="galleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div>
+            </div>
+
         </div>
 
-        <div class="controls">
-          <button id="startBtn" class="actions-btn">Upload</button>
-          <button id="clearBtn" class="actions-btn" style="background:#999;color:#fff;border-radius:8px;padding:8px 12px;border:0">Clear Queue</button>
-          <div class="small-muted" id="queueCount">0 files queued</div>
+        <!-- RIGHT: side — disk + recent + batch controls -->
+        <aside class="side">
+            <div class="stat">
+                <div style="font-weight:700">Disk Usage</div>
+                <div class="disk-bar" style="margin-top:8px"><b id="diskFill"></b></div>
+                <div class="small-muted" id="diskText" style="margin-top:8px">Loading...</div>
+            </div>
 
-          <!-- batch delete zone (acts on full gallery below) -->
-          <div style="margin-left:auto;display:flex;gap:8px;align-items:center">
-            <label style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px">
-              <input type="checkbox" id="selectAllGallery"> Select all gallery
-            </label>
-            <button id="deleteSelected" style="background:#e04b4b;color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Delete selected</button>
-          </div>
-        </div>
+            <div class="stat">
+                <div style="font-weight:700">Recent Uploads</div>
+                <div class="history" id="historyList"><div class="small-muted">Loading...</div></div>
+                <div style="margin-top:8px;display:flex;gap:8px">
+                    <button id="refreshBtn" style="padding:8px 10px;border-radius:8px;border:0;background:var(--accent);color:#fff">Refresh</button>
+                    <button id="deleteRecentSelected" style="padding:8px 10px;border-radius:8px;border:0;background:#e04b4b;color:#fff">Delete selected</button>
+                </div>
+            </div>
 
-        <!-- upload preview queue -->
-        <div id="previewGrid" class="preview-grid" aria-live="polite"></div>
-
-      </div>
-
-      <!-- FULL GALLERY (shows all images, selectable, trash on hover) -->
-      <div class="gallery-full" id="galleryFull">
-        <div class="gallery-header">
-          <div style="font-weight:700">Gallery (All images)</div>
-          <div class="small-muted" id="galleryCount">Loading...</div>
-        </div>
-        <div id="galleryGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px"></div>
-      </div>
-
+            <div class="stat">
+                <div style="font-weight:700">Quick Actions</div>
+                <div style="margin-top:8px;display:flex;gap:8px;flex-direction:column">
+                    <a href="/admin-products.html" class="small-muted" style="text-decoration:none;color:var(--accent)">Manage Products</a>
+                    <a href="/admin-gallery.html" class="small-muted" style="text-decoration:none;color:var(--accent)">Open Gallery Manager</a>
+                </div>
+            </div>
+        </aside>
     </div>
 
-    <!-- RIGHT: side — disk + recent + batch controls -->
-    <aside class="side">
-      <div class="stat">
-        <div style="font-weight:700">Disk Usage</div>
-        <div class="disk-bar" style="margin-top:8px"><b id="diskFill"></b></div>
-        <div class="small-muted" id="diskText" style="margin-top:8px">Loading...</div>
-      </div>
-
-      <div class="stat">
-        <div style="font-weight:700">Recent Uploads</div>
-        <div class="history" id="historyList"><div class="small-muted">Loading...</div></div>
-        <div style="margin-top:8px;display:flex;gap:8px">
-          <button id="refreshBtn" style="padding:8px 10px;border-radius:8px;border:0;background:var(--accent);color:#fff">Refresh</button>
-          <button id="deleteRecentSelected" style="padding:8px 10px;border-radius:8px;border:0;background:#e04b4b;color:#fff">Delete selected</button>
-        </div>
-      </div>
-
-      <div class="stat">
-        <div style="font-weight:700">Quick Actions</div>
-        <div style="margin-top:8px;display:flex;gap:8px;flex-direction:column">
-          <a href="/admin-products.html" class="small-muted" style="text-decoration:none;color:var(--accent)">Manage Products</a>
-          <a href="/admin-gallery.html" class="small-muted" style="text-decoration:none;color:var(--accent)">Open Gallery Manager</a>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  <div class="footer-note">Admin PIN required to access admin pages. Deletions are permanent.</div>
+    <div class="footer-note">Admin PIN required to access admin pages. Deletions are permanent.</div>
 </div>
 
 <!-- image preview modal -->
 <div id="modal" class="modal" aria-hidden="true" onclick="closeModal()">
-  <div class="box" onclick="event.stopPropagation()">
-    <img id="modalImg" src="" alt="preview">
-    <div style="text-align:right;margin-top:8px"><button onclick="closeModal()" style="padding:8px 12px;border-radius:8px;border:0;background:#ccc;cursor:pointer">Close</button></div>
-  </div>
+    <div class="box" onclick="event.stopPropagation()">
+        <img id="modalImg" src="" alt="preview">
+        <div style="text-align:right;margin-top:8px"><button onclick="closeModal()" style="padding:8px 12px;border-radius:8px;border:0;background:#ccc;cursor:pointer">Close</button></div>
+    </div>
 </div>
 
 <script>
-/* ========== ADMIN PIN ========== */
-function readCookie(name){
-  const c = document.cookie.split('; ').find(x=>x.startsWith(name+"="));
-  return c ? decodeURIComponent(c.split('=')[1]) : null;
-}
-function setCookie(name,val){ document.cookie = name + "=" + encodeURIComponent(val) + "; path=/"; }
-function deleteCookie(name){ document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"; }
+    /* ========== ADMIN PIN ========== */
+    function readCookie(name){
+        const c = document.cookie.split('; ').find(x=>x.startsWith(name+"="));
+        return c ? decodeURIComponent(c.split('=')[1]) : null;
+    }
+    function setCookie(name,val){ document.cookie = name + "=" + encodeURIComponent(val) + "; path=/"; }
+    function deleteCookie(name){ document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/"; }
 
-if(readCookie('admin') !== '4321'){
-  const pin = prompt('Enter admin PIN:');
-  if(pin === '4321') setCookie('admin','4321');
-  else { alert('Wrong PIN'); location.href = '/'; }
-}
-document.getElementById('logoutBtn').addEventListener('click', ()=>{
-  deleteCookie('admin'); location.href='/';
-});
+    if(readCookie('admin') !== '4321'){
+        const pin = prompt('Enter admin PIN:');
+        if(pin === '4321') setCookie('admin','4321');
+        else { alert('Wrong PIN'); location.href = '/'; }
+    }
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+        deleteCookie('admin'); location.href='/';
+    });
 
-/* ========== ELEMENTS ========== */
-const fileInput = document.getElementById('fileInput');
-const dropzone = document.getElementById('dropzone');
-const previewGrid = document.getElementById('previewGrid');
-const startBtn = document.getElementById('startBtn');
-const clearBtn = document.getElementById('clearBtn');
-const queueCount = document.getElementById('queueCount');
+    /* ========== ELEMENTS ========== */
+    const fileInput = document.getElementById('fileInput');
+    const dropzone = document.getElementById('dropzone');
+    const previewGrid = document.getElementById('previewGrid');
+    const startBtn = document.getElementById('startBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const queueCount = document.getElementById('queueCount');
 
-const galleryGrid = document.getElementById('galleryGrid');
-const galleryCount = document.getElementById('galleryCount');
-const selectAllGallery = document.getElementById('selectAllGallery');
-const deleteSelected = document.getElementById('deleteSelected');
+    const galleryGrid = document.getElementById('galleryGrid');
+    const galleryCount = document.getElementById('galleryCount');
+    const selectAllGallery = document.getElementById('selectAllGallery');
+    const deleteSelected = document.getElementById('deleteSelected');
 
-const historyList = document.getElementById('historyList');
-const deleteRecentSelected = document.getElementById('deleteRecentSelected');
-const refreshBtn = document.getElementById('refreshBtn');
+    const historyList = document.getElementById('historyList');
+    const deleteRecentSelected = document.getElementById('deleteRecentSelected');
+    const refreshBtn = document.getElementById('refreshBtn');
 
-const diskFill = document.getElementById('diskFill');
-const diskText = document.getElementById('diskText');
+    const diskFill = document.getElementById('diskFill');
+    const diskText = document.getElementById('diskText');
 
-const modal = document.getElementById('modal');
-const modalImg = document.getElementById('modalImg');
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modalImg');
 
-let queue = []; // {id, origFile, uploadFile, thumbEl, progEl, statusEl}
-let galleryFiles = []; // {file, size, mtime, selected}
+    let queue = []; // {id, origFile, uploadFile, thumbEl, progEl, statusEl}
+    let galleryFiles = []; // {file, size, mtime, selected}
 
-/* ========== HELPERS ========== */
-function isHeic(file){
-  const n = file.name||'';
-  const t = file.type||'';
-  return /\.heic$|\.heif$/i.test(n) || t==='image/heic' || t==='image/heif';
-}
-function id(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
-function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+    /* ========== HELPERS ========== */
+    function isHeic(file){
+        const n = file.name||'';
+        const t = file.type||'';
+        return /\.heic$|\.heif$/i.test(n) || t==='image/heic' || t==='image/heif';
+    }
+    function id(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,6); }
+    function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* ========== FILE ADD / UI ========== */
-dropzone.addEventListener('click', ()=> fileInput.click());
-dropzone.addEventListener('dragover', (e)=>{ e.preventDefault(); dropzone.classList.add('drag'); });
-dropzone.addEventListener('dragleave', ()=> dropzone.classList.remove('drag'));
-dropzone.addEventListener('drop', (e)=>{ e.preventDefault(); dropzone.classList.remove('drag'); addFiles(e.dataTransfer.files); });
-fileInput.addEventListener('change', e => addFiles(e.target.files));
+    /* encode file path to URL by encoding each segment (keeps slashes) */
+    function buildImageUrl(relPath){
+        // relPath examples: "products/abc.jpg" or "abc.jpg"
+        return '/images/' + relPath.split('/').map(encodeURIComponent).join('/');
+    }
 
-function addFiles(files){
-  for(const f of Array.from(files)){
-    const uid = id();
-    const thumb = document.createElement('div'); thumb.className = 'thumb';
-    thumb.innerHTML = `
+    /* ========== FILE ADD / UI ========== */
+    dropzone.addEventListener('click', ()=> fileInput.click());
+    dropzone.addEventListener('dragover', (e)=>{ e.preventDefault(); dropzone.classList.add('drag'); });
+    dropzone.addEventListener('dragleave', ()=> dropzone.classList.remove('drag'));
+    dropzone.addEventListener('drop', (e)=>{ e.preventDefault(); dropzone.classList.remove('drag'); addFiles(e.dataTransfer.files); });
+    fileInput.addEventListener('change', e => addFiles(e.target.files));
+
+    function addFiles(files){
+        for(const f of Array.from(files)){
+            const uid = id();
+            const thumb = document.createElement('div'); thumb.className = 'thumb';
+            thumb.innerHTML = `
       <button class="trash-btn" title="Remove from queue">Remove</button>
       <img src="${URL.createObjectURL(f)}" alt="${escapeHtml(f.name)}">
       <div class="meta">${escapeHtml(f.name)}</div>
       <div class="progress"><i></i></div>
       <div id="st-${uid}" class="small-muted" style="margin-top:6px">Queued</div>
     `;
-    previewGrid.appendChild(thumb);
+            previewGrid.appendChild(thumb);
 
-    const btn = thumb.querySelector('.trash-btn');
-    const prog = thumb.querySelector('.progress i');
-    const statusEl = document.getElementById('st-'+uid);
+            const btn = thumb.querySelector('.trash-btn');
+            const prog = thumb.querySelector('.progress i');
+            const statusEl = document.getElementById('st-'+uid);
 
-    const item = { id:uid, origFile:f, uploadFile:null, thumbEl:thumb, progEl:prog, statusEl };
-    queue.push(item);
+            const item = { id:uid, origFile:f, uploadFile:null, thumbEl:thumb, progEl:prog, statusEl };
+            queue.push(item);
 
-    btn.addEventListener('click', ()=>{
-      // remove from queue
-      previewGrid.removeChild(thumb);
-      queue = queue.filter(q => q.id !== uid);
-      updateQueueCount();
-    });
+            btn.addEventListener('click', ()=>{
+                // remove from queue
+                previewGrid.removeChild(thumb);
+                queue = queue.filter(q => q.id !== uid);
+                updateQueueCount();
+            });
 
-    // click image to preview larger
-    thumb.querySelector('img').addEventListener('click', ()=>{
-      openModal(URL.createObjectURL(f));
-    });
-  }
-  updateQueueCount();
-}
-
-function updateQueueCount(){ queueCount.textContent = `${queue.length} file${queue.length===1?'':'s'} queued`; }
-
-/* ========== HEIC conversion (browser) ========== */
-async function convertHeic(file){
-  if(typeof heic2any === 'undefined') throw new Error('heic2any missing');
-  const blob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.92 });
-  const base = (file.name||'image').replace(/\.[^/.]+$/,'');
-  return new File([blob], base + '.jpg', { type: 'image/jpeg' });
-}
-
-/* ========== UPLOAD ITEM ========== */
-function prepareItem(item){
-  if(item.uploadFile) return Promise.resolve(item.uploadFile);
-  const f = item.origFile;
-  if(isHeic(f)){
-    item.statusEl.textContent = 'Converting...';
-    return convertHeic(f).then(conv => { item.uploadFile = conv; item.statusEl.textContent = 'Ready'; return conv; })
-      .catch(err => { item.statusEl.textContent = 'Convert failed'; throw err; });
-  } else {
-    item.uploadFile = f;
-    item.statusEl.textContent = 'Ready';
-    return Promise.resolve(f);
-  }
-}
-
-function uploadItem(item){
-  return new Promise(async (resolve,reject)=>{
-    try { await prepareItem(item); } catch(e){ return reject(e); }
-    const fd = new FormData();
-    fd.append('images', item.uploadFile, item.uploadFile.name || item.origFile.name);
-
-    const xhr = new XMLHttpRequest();
-    xhr.open('POST','/upload', true);
-    xhr.withCredentials = true;
-
-    xhr.upload.onprogress = (e)=> {
-      if(e.lengthComputable){ const pct = Math.round((e.loaded/e.total)*100); item.progEl.style.width = pct+'%'; }
-    };
-
-    xhr.onload = ()=> {
-      if(xhr.status>=200 && xhr.status<300){ item.progEl.style.width = '100%'; item.statusEl.textContent = 'Uploaded'; resolve(JSON.parse(xhr.response||'{}')); }
-      else if(xhr.status===403){ alert('Admin auth required. Re-login.'); deleteCookie('admin'); location.reload(); reject(new Error('auth')); }
-      else { item.statusEl.textContent = 'Upload failed'; reject(new Error('upload')); }
-    };
-
-    xhr.onerror = ()=> { item.statusEl.textContent = 'Network error'; reject(new Error('network')); };
-    xhr.send(fd);
-  });
-}
-
-/* ========== QUEUE UPLOAD SEQ ========== */
-startBtn.addEventListener('click', async ()=>{
-  if(queue.length===0) return alert('No files queued');
-  startBtn.disabled = true; clearBtn.disabled = true;
-  for(const item of Array.from(queue)){
-    item.statusEl.textContent = 'Preparing...';
-    try { await uploadItem(item); } catch(err){ console.error(err); }
-    await new Promise(r=>setTimeout(r,150));
-  }
-  // cleanup
-  queue = []; previewGrid.innerHTML = '';
-  updateQueueCount();
-  await refreshDiskAndGallery();
-  startBtn.disabled = false; clearBtn.disabled = false;
-});
-
-/* clear queue */
-clearBtn.addEventListener('click', ()=>{ if(!confirm('Clear queue?')) return; queue=[]; previewGrid.innerHTML=''; updateQueueCount(); });
-
-/* ========== GALLERY (full) ========== */
-async function loadGallery(){
-  galleryGrid.innerHTML = 'Loading...';
-  try {
-    const res = await fetch('/images/history', { cache:'no-cache' });
-    if(!res.ok) throw new Error('failed');
-    const arr = await res.json();
-    // arr items: {file, size, mtime}
-    galleryFiles = arr;
-    renderGallery();
-  } catch(err){
-    console.error(err);
-    galleryGrid.innerHTML = '<div class="small-muted">Could not load gallery</div>';
-  }
-}
-
-function renderGallery(){
-  galleryGrid.innerHTML = '';
-  if(!galleryFiles.length){ galleryGrid.innerHTML = '<div class="small-muted">No images</div>'; galleryCount.textContent = '0'; return; }
-  galleryCount.textContent = galleryFiles.length + ' images';
-  galleryFiles.forEach((it, idx)=>{
-    const cell = document.createElement('div'); cell.style.position='relative';
-    const box = document.createElement('div'); box.className='thumb'; box.style.padding='6px';
-    // checkbox
-    const cb = document.createElement('input'); cb.type='checkbox'; cb.style.position='absolute'; cb.style.left='10px'; cb.style.top='10px';
-    cb.dataset.file = it.file;
-    cb.addEventListener('change', ()=> updateSelectedCounts());
-    // image
-    const img = document.createElement('img'); img.src = '/images/' + encodeURIComponent(it.file); img.alt = it.file; img.loading='lazy';
-    img.style.cursor='pointer';
-    img.addEventListener('click', ()=> openModal(img.src));
-    // meta + trash button
-    const meta = document.createElement('div'); meta.className='meta'; meta.textContent = it.file;
-    const trash = document.createElement('button'); trash.className='trash-btn'; trash.textContent='Delete';
-    trash.style.position='absolute'; trash.style.right='8px'; trash.style.top='8px'; trash.style.display='none';
-    trash.addEventListener('click', async ()=> {
-      if(!confirm('Delete '+it.file+' ?')) return;
-      trash.disabled = true; trash.textContent = 'Deleting...';
-      await deleteFiles([it.file]);
-    });
-    cell.appendChild(cb);
-    box.appendChild(img);
-    box.appendChild(meta);
-    box.appendChild(trash);
-    cell.appendChild(box);
-    cell.addEventListener('mouseenter', ()=> trash.style.display='block');
-    cell.addEventListener('mouseleave', ()=> trash.style.display='none');
-    galleryGrid.appendChild(cell);
-  });
-  updateSelectedCounts();
-}
-
-function updateSelectedCounts(){
-  const checked = galleryGrid.querySelectorAll('input[type=checkbox]:checked').length;
-  deleteSelected.textContent = checked ? `Delete selected (${checked})` : 'Delete selected';
-}
-
-/* select all gallery checkbox */
-selectAllGallery.addEventListener('change', ()=>{
-  const all = galleryGrid.querySelectorAll('input[type=checkbox]');
-  all.forEach(cb=> cb.checked = selectAllGallery.checked);
-  updateSelectedCounts();
-});
-
-/* delete selected in gallery */
-deleteSelected.addEventListener('click', async ()=>{
-  const checked = Array.from(galleryGrid.querySelectorAll('input[type=checkbox]:checked')).map(cb=>cb.dataset.file);
-  if(!checked.length) return alert('No images selected');
-  if(!confirm(`Delete ${checked.length} image(s) permanently?`)) return;
-  await deleteFiles(checked);
-});
-
-/* ========== RECENT (right side) ========= */
-async function loadRecent(){
-  historyList.innerHTML = '<div class="small-muted">Loading...</div>';
-  try {
-    const res = await fetch('/images/history', { cache:'no-cache' });
-    if(!res.ok) throw new Error('fail');
-    const arr = await res.json();
-    historyList.innerHTML = '';
-    // top 12
-    arr.slice(0,12).forEach(it=>{
-      const row = document.createElement('div'); row.className='history-item';
-      const left = document.createElement('div'); left.textContent = it.file;
-      const right = document.createElement('div'); right.style.display='flex'; right.style.gap='8px'; right.style.alignItems='center';
-      const cb = document.createElement('input'); cb.type='checkbox'; cb.dataset.file = it.file;
-      right.appendChild(cb);
-      const del = document.createElement('button'); del.textContent='Delete'; del.style.background='#e04b4b'; del.style.color='#fff'; del.style.border='0'; del.style.padding='6px 8px'; del.style.borderRadius='6px';
-      del.addEventListener('click', async ()=> {
-        if(!confirm('Delete '+it.file+' ?')) return;
-        del.disabled = true; del.textContent='Deleting...';
-        await deleteFiles([it.file]);
-      });
-      right.appendChild(del);
-      row.appendChild(left); row.appendChild(right);
-      historyList.appendChild(row);
-    });
-  } catch(err){ console.error(err); historyList.innerHTML = '<div class="small-muted">Error</div>'; }
-}
-
-/* delete selected in recent list */
-deleteRecentSelected.addEventListener('click', async ()=>{
-  const checked = Array.from(historyList.querySelectorAll('input[type=checkbox]:checked')).map(cb=>cb.dataset.file);
-  if(!checked.length) return alert('No recent images selected');
-  if(!confirm(`Delete ${checked.length} image(s) permanently?`)) return;
-  await deleteFiles(checked);
-});
-
-/* refresh button */
-refreshBtn.addEventListener('click', async ()=>{ await refreshDiskAndGallery(); });
-
-/* ========== DELETE FILES (single & batch) ========== */
-async function deleteFiles(filesArray){
-  try {
-    const res = await fetch('/images/delete', {
-      method:'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({ files: filesArray })
-    });
-    const j = await res.json();
-    if(res.ok){
-      alert((j.deleted?.length||0) + ' deleted, errors: ' + (j.errors?.length||0));
-    } else {
-      alert('Delete failed: ' + (j.error || res.status));
+            // click image to preview larger
+            thumb.querySelector('img').addEventListener('click', ()=>{
+                openModal(URL.createObjectURL(f));
+            });
+        }
+        updateQueueCount();
     }
-  } catch(err){
-    console.error(err); alert('Delete request failed');
-  } finally {
-    await refreshDiskAndGallery();
-  }
-}
 
-/* ========== DISK INFO & REFRESH ========== */
-async function loadDisk(){
-  try {
-    const r = await fetch('/admin/disk-info', { cache:'no-cache' });
-    if(!r.ok) return;
-    const j = await r.json();
-    diskFill.style.width = (j.usedPct||0) + '%';
-    diskText.textContent = `${(j.usedBytes/1024/1024).toFixed(1)} MB used of ${j.totalBytes/1024/1024/1024} GB (${j.usedPct}%)`;
-  } catch(err){ console.error(err); }
-}
+    function updateQueueCount(){ queueCount.textContent = `${queue.length} file${queue.length===1?'':'s'} queued`; }
 
-async function refreshDiskAndGallery(){
-  await Promise.all([ loadDisk(), loadRecent(), loadGallery() ]);
-}
+    /* ========== HEIC conversion (browser) ========== */
+    async function convertHeic(file){
+        if(typeof heic2any === 'undefined') throw new Error('heic2any missing');
+        const blob = await heic2any({ blob: file, toType: 'image/jpeg', quality: 0.92 });
+        const base = (file.name||'image').replace(/\.[^/.]+$/,'');
+        return new File([blob], base + '.jpg', { type: 'image/jpeg' });
+    }
 
-/* ========== MODAL ========== */
-function openModal(src){
-  modalImg.src = src;
-  modal.style.display = 'flex';
-  modal.setAttribute('aria-hidden','false');
-}
-function closeModal(){
-  modal.style.display = 'none';
-  modal.setAttribute('aria-hidden','true');
-  modalImg.src = '';
-}
+    /* ========== UPLOAD ITEM ========== */
+    function prepareItem(item){
+        if(item.uploadFile) return Promise.resolve(item.uploadFile);
+        const f = item.origFile;
+        if(isHeic(f)){
+            item.statusEl.textContent = 'Converting...';
+            return convertHeic(f).then(conv => { item.uploadFile = conv; item.statusEl.textContent = 'Ready'; return conv; })
+                .catch(err => { item.statusEl.textContent = 'Convert failed'; throw err; });
+        } else {
+            item.uploadFile = f;
+            item.statusEl.textContent = 'Ready';
+            return Promise.resolve(f);
+        }
+    }
 
-/* ========== INITIAL LOAD ========= */
-refreshDiskAndGallery();
+    function uploadItem(item){
+        return new Promise(async (resolve,reject)=>{
+            try { await prepareItem(item); } catch(e){ return reject(e); }
+            const fd = new FormData();
+            fd.append('images', item.uploadFile, item.uploadFile.name || item.origFile.name);
 
-/* ========== UTILITY: cookie delete ========== */
-function deleteCookie(name){ document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/'; }
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST','/upload', true);
+            xhr.withCredentials = true;
+
+            xhr.upload.onprogress = (e)=> {
+                if(e.lengthComputable){ const pct = Math.round((e.loaded/e.total)*100); item.progEl.style.width = pct+'%'; }
+            };
+
+            xhr.onload = ()=> {
+                if(xhr.status>=200 && xhr.status<300){ item.progEl.style.width = '100%'; item.statusEl.textContent = 'Uploaded'; resolve(JSON.parse(xhr.response||'{}')); }
+                else if(xhr.status===403){ alert('Admin auth required. Re-login.'); deleteCookie('admin'); location.reload(); reject(new Error('auth')); }
+                else { item.statusEl.textContent = 'Upload failed'; reject(new Error('upload')); }
+            };
+
+            xhr.onerror = ()=> { item.statusEl.textContent = 'Network error'; reject(new Error('network')); };
+            xhr.send(fd);
+        });
+    }
+
+    /* ========== QUEUE UPLOAD SEQ ========== */
+    startBtn.addEventListener('click', async ()=>{
+        if(queue.length===0) return alert('No files queued');
+        startBtn.disabled = true; clearBtn.disabled = true;
+        for(const item of Array.from(queue)){
+            item.statusEl.textContent = 'Preparing...';
+            try { await uploadItem(item); } catch(err){ console.error(err); }
+            await new Promise(r=>setTimeout(r,150));
+        }
+        // cleanup
+        queue = []; previewGrid.innerHTML = '';
+        updateQueueCount();
+        await refreshDiskAndGallery();
+        startBtn.disabled = false; clearBtn.disabled = false;
+    });
+
+    /* clear queue */
+    clearBtn.addEventListener('click', ()=>{ if(!confirm('Clear queue?')) return; queue=[]; previewGrid.innerHTML=''; updateQueueCount(); });
+
+    /* ========== GALLERY (full) ========== */
+    async function loadGallery(){
+        galleryGrid.innerHTML = 'Loading...';
+        try {
+            const res = await fetch('/images/history', { cache:'no-cache' });
+            if(!res.ok) throw new Error('failed');
+            const arr = await res.json();
+            // arr items: {file, size, mtime}
+            galleryFiles = arr;
+            renderGallery();
+        } catch(err){
+            console.error(err);
+            galleryGrid.innerHTML = '<div class="small-muted">Could not load gallery</div>';
+        }
+    }
+
+    function renderGallery(){
+        galleryGrid.innerHTML = '';
+        if(!galleryFiles.length){ galleryGrid.innerHTML = '<div class="small-muted">No images</div>'; galleryCount.textContent = '0'; return; }
+        galleryCount.textContent = galleryFiles.length + ' images';
+        galleryFiles.forEach((it, idx)=>{
+            const cell = document.createElement('div'); cell.style.position='relative';
+            const box = document.createElement('div'); box.className='thumb'; box.style.padding='6px';
+            // checkbox
+            const cb = document.createElement('input'); cb.type='checkbox'; cb.style.position='absolute'; cb.style.left='10px'; cb.style.top='10px';
+            cb.dataset.file = it.file;
+            cb.addEventListener('change', ()=> updateSelectedCounts());
+            // image — build safe URL (encode segments)
+            const img = document.createElement('img');
+            img.src = buildImageUrl(it.file);
+            img.alt = it.file; img.loading='lazy';
+            img.style.cursor='pointer';
+            img.addEventListener('click', ()=> openModal(buildImageUrl(it.file)));
+            // meta + trash button
+            const meta = document.createElement('div'); meta.className='meta'; meta.textContent = it.file;
+            const trash = document.createElement('button'); trash.className='trash-btn'; trash.textContent='Delete';
+            trash.style.position='absolute'; trash.style.right='8px'; trash.style.top='8px'; trash.style.display='none';
+            trash.addEventListener('click', async ()=> {
+                if(!confirm('Delete '+it.file+' ?')) return;
+                trash.disabled = true; trash.textContent = 'Deleting...';
+                await deleteFiles([it.file]);
+            });
+            cell.appendChild(cb);
+            box.appendChild(img);
+            box.appendChild(meta);
+            box.appendChild(trash);
+            cell.appendChild(box);
+            cell.addEventListener('mouseenter', ()=> trash.style.display='block');
+            cell.addEventListener('mouseleave', ()=> trash.style.display='none');
+            galleryGrid.appendChild(cell);
+        });
+        updateSelectedCounts();
+    }
+
+    function updateSelectedCounts(){
+        const checked = galleryGrid.querySelectorAll('input[type=checkbox]:checked').length;
+        deleteSelected.textContent = checked ? `Delete selected (${checked})` : 'Delete selected';
+    }
+
+    /* select all gallery checkbox */
+    selectAllGallery.addEventListener('change', ()=>{
+        const all = galleryGrid.querySelectorAll('input[type=checkbox]');
+        all.forEach(cb=> cb.checked = selectAllGallery.checked);
+        updateSelectedCounts();
+    });
+
+    /* delete selected in gallery */
+    deleteSelected.addEventListener('click', async ()=>{
+        const checked = Array.from(galleryGrid.querySelectorAll('input[type=checkbox]:checked')).map(cb=>cb.dataset.file);
+        if(!checked.length) return alert('No images selected');
+        if(!confirm(`Delete ${checked.length} image(s) permanently?`)) return;
+        await deleteFiles(checked);
+    });
+
+    /* ========== RECENT (right side) ========= */
+    async function loadRecent(){
+        historyList.innerHTML = '<div class="small-muted">Loading...</div>';
+        try {
+            const res = await fetch('/images/history', { cache:'no-cache' });
+            if(!res.ok) throw new Error('fail');
+            const arr = await res.json();
+            historyList.innerHTML = '';
+            // top 12
+            arr.slice(0,12).forEach(it=>{
+                const row = document.createElement('div'); row.className='history-item';
+                const left = document.createElement('div'); left.textContent = it.file;
+                const right = document.createElement('div'); right.style.display='flex'; right.style.gap='8px'; right.style.alignItems='center';
+                const cb = document.createElement('input'); cb.type='checkbox'; cb.dataset.file = it.file;
+                right.appendChild(cb);
+                const del = document.createElement('button'); del.textContent='Delete'; del.style.background='#e04b4b'; del.style.color='#fff'; del.style.border='0'; del.style.padding='6px 8px'; del.style.borderRadius='6px';
+                del.addEventListener('click', async ()=> {
+                    if(!confirm('Delete '+it.file+' ?')) return;
+                    del.disabled = true; del.textContent='Deleting...';
+                    await deleteFiles([it.file]);
+                });
+                right.appendChild(del);
+                row.appendChild(left); row.appendChild(right);
+                historyList.appendChild(row);
+            });
+        } catch(err){ console.error(err); historyList.innerHTML = '<div class="small-muted">Error</div>'; }
+    }
+
+    /* delete selected in recent list */
+    deleteRecentSelected.addEventListener('click', async ()=>{
+        const checked = Array.from(historyList.querySelectorAll('input[type=checkbox]:checked')).map(cb=>cb.dataset.file);
+        if(!checked.length) return alert('No recent images selected');
+        if(!confirm(`Delete ${checked.length} image(s) permanently?`)) return;
+        await deleteFiles(checked);
+    });
+
+    /* refresh button */
+    refreshBtn.addEventListener('click', async ()=>{ await refreshDiskAndGallery(); });
+
+    /* ========== DELETE FILES (single & batch) ========== */
+    /*async function deleteFiles(filesArray){
+        // ensure array and clean filenames (strip leading /images/ or leading slash)
+        const cleaned = (filesArray||[]).map(f=> {
+            if(!f) return f;
+            let s = f.toString();
+            if(s.startsWith('/')) s = s.slice(1);
+            if(s.startsWith('images/')) s = s.replace(/^images\//, '');
+            return s;
+        }).filter(Boolean);
+
+        if(cleaned.length === 0) return alert('No files to delete');
+
+        try {
+            // Ask server to delete (server expects { files: [...] })
+            const res = await fetch('/images/delete', {
+                method:'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify({ files: cleaned })
+            });
+
+            const j = await res.json();
+            if(res.ok){
+                const delCount = (j.deleted?.length||0);
+                const errCount = (j.errors?.length||0);
+                alert(`${delCount} deleted, errors: ${errCount}`);
+            } else {
+                alert('Delete failed: ' + (j.error || res.status));
+            }
+        } catch(err){
+            console.error(err); alert('Delete request failed');
+        } finally {
+            await refreshDiskAndGallery();
+        }
+    }
+*/
+    async function deleteFiles(filesArray){
+        const cleaned = (filesArray||[]).map(f=> {
+            let s = f.toString().trim();
+            // remove ONLY leading /images/ or images/, keep folder like products/
+            s = s.replace(/^\/?images\//, '');
+            return s;
+        }).filter(Boolean);
+
+        try {
+            const res = await fetch('/images/delete', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({ files: cleaned })
+            });
+            const j = await res.json();
+            if(res.ok){
+                alert(`${j.deleted.length} deleted, ${j.errors.length} errors`);
+            } else {
+                alert('Delete failed: ' + (j.error || res.status));
+            }
+        } catch(err){
+            alert('Delete request failed');
+            console.error(err);
+        } finally {
+            refreshDiskAndGallery();
+        }
+    }
+
+    /* ========== DISK INFO & REFRESH ========== */
+    async function loadDisk(){
+        try {
+            const r = await fetch('/admin/disk-info', { cache:'no-cache' });
+            if(!r.ok) return;
+            const j = await r.json();
+            diskFill.style.width = (j.usedPct||0) + '%';
+            diskText.textContent = `${(j.usedBytes/1024/1024).toFixed(1)} MB used of ${(j.totalBytes/1024/1024/1024)} GB (${j.usedPct}%)`;
+        } catch(err){ console.error(err); }
+    }
+
+    async function refreshDiskAndGallery(){
+        await Promise.all([ loadDisk(), loadRecent(), loadGallery() ]);
+    }
+
+    /* ========== MODAL ========== */
+    function openModal(src){
+        modalImg.src = src;
+        modal.style.display = 'flex';
+        modal.setAttribute('aria-hidden','false');
+    }
+    function closeModal(){
+        modal.style.display = 'none';
+        modal.setAttribute('aria-hidden','true');
+        modalImg.src = '';
+    }
+
+    /* ========== INITIAL LOAD ========= */
+    refreshDiskAndGallery();
 </script>
 
 </body>

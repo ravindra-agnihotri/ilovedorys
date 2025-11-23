@@ -1,86 +1,11 @@
 [
   {
-    "id": "7dd3569f-4ce2-40fe-bf1b-e2eec18b014a",
-    "name": "first cake",
-    "description": "I am first",
-    "price": "324324",
-    "image": "/images/products/IMG_2082-af601574-df80-415f-9855-a001e41fdb37.jpg",
-    "createdAt": "2025-11-23T08:59:45.626Z"
-  },
-  {
-    "id": "2d1d0ea1-6c40-41ad-9b4d-26185fffaa6a",
-    "name": "cupcake",
-    "description": "what?",
-    "price": "23324",
-    "image": "/images/products/IMG_5863-ff76999c-7563-4060-9764-f34f3185a837.jpg",
-    "createdAt": "2025-11-23T09:01:18.851Z"
-  },
-  {
-    "id": "eb1a6abd-3e90-4984-864f-ca5ff79af904",
-    "name": "sadad",
-    "description": "adad",
-    "price": "223424",
-    "image": "/images/products/IMG_3471-66413c4c-61b0-4f74-b8bf-001fa6f27439.jpg",
-    "createdAt": "2025-11-23T09:05:11.649Z"
-  },
-  {
-    "id": "71f01831-ad9e-4d13-9b9f-de4edba39109",
-    "name": "asdasd",
-    "description": "asdasd",
-    "price": "2132134",
-    "image": "/images/products/IMG_8014-edb7b42b-1481-441e-b99c-07c68bbfb8ee.jpg",
-    "createdAt": "2025-11-23T09:06:57.280Z"
-  },
-  {
-    "id": "321b7b68-43d7-4f5a-a54e-c6451f21a240",
-    "name": "firer",
-    "description": "asda",
-    "price": "43234",
-    "image": "/images/products/IMG_8020-b0b97f62-cf72-4ae5-9122-c94fc7ed86d7.jpg",
-    "createdAt": "2025-11-23T09:33:42.401Z"
-  },
-  {
-    "id": "4cde29fd-7a76-4185-9bfe-292a1f8072ca",
-    "name": "sdfsf",
-    "description": "sdfsf",
-    "price": "2234",
-    "image": "/images/products/IMG_2082-a2b4f40d-f8de-4b1d-9724-b4e4196e7ab8.jpg",
-    "createdAt": "2025-11-23T09:41:52.783Z"
-  },
-  {
-    "id": "1f626c9f-af18-4b2b-9aa2-d7fba8f21ff4",
-    "name": "ravi",
-    "description": "kasturi",
-    "price": "234234",
+    "id": "e68034dc-a79f-4ef5-b626-da377f89f50c",
+    "name": "first",
+    "description": "try",
+    "price": "2424",
     "category": "Cakes",
-    "image": "/images/products/vanilla-7017cf0c-4e63-46e1-96b7-a2178436d7c7.jpg",
-    "createdAt": "2025-11-23T09:48:17.261Z"
-  },
-  {
-    "id": "a2571179-ad2e-46b7-9bc5-0e99b2edb75a",
-    "name": "Rushika",
-    "description": "cake",
-    "price": "23423424",
-    "category": "Cupcakes",
-    "image": "/images/products/IMG_8872-073a324f-4256-48b9-82cc-dfea7efd91e2.jpg",
-    "createdAt": "2025-11-23T09:48:56.739Z"
-  },
-  {
-    "id": "8a2cae4b-b68e-40c4-b8bc-3d296a71eea6",
-    "name": "one test",
-    "description": "tets",
-    "price": "3232424",
-    "category": "Cookies",
-    "image": "/images/products/100DD84C-E56F-403F-BE26-522AE04E6D23-f2c6855f-105a-4a78-b4b5-de1e3a7d59ae.jpg",
-    "createdAt": "2025-11-23T09:50:04.188Z"
-  },
-  {
-    "id": "e8e912a0-286a-4226-a395-7aa880db6354",
-    "name": "last test",
-    "description": "haha",
-    "price": "335345",
-    "category": "Cupcakes",
-    "image": "/images/products/5426C5C3-9890-4592-87F1-D8D068E94052-a9f5bd64-101e-4ba5-aa63-ebde25e3aac1.jpg",
-    "createdAt": "2025-11-23T10:01:26.516Z"
+    "image": "/images/products/81C7415F-A5A6-478C-926D-A2A0531BEA9F-7d351da7-6bd0-46ff-80bf-1384a4592b4f.jpg",
+    "createdAt": "2025-11-23T10:58:50.898Z"
   }
 ]
