@@ -2,318 +2,403 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Dory's Bakehouse — Products</title>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Our Products — Dory's Bakehouse</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
 :root{
-  --bg: rgba(255,243,207,0.45);
+  --bg:#faebe3;
   --accent:#563e30;
-  --accent-2:#ff7f7f;
+  --accent-dark:#472a20;
   --text:#563e30;
   --muted:#6e5a52;
   --card:rgba(253,239,193,0.45);
 }
 *{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
-
-/* header */
+html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
 header{
-  width:100%; background:#fff; padding:14px 20px; box-shadow:0 2px 8px rgba(0,0,0,0.08);
-  position:sticky; top:0; z-index:1000; display:flex; align-items:center; justify-content:center; position:relative;
+  width:100%;
+  background:#fff;
+  box-shadow:0 2px 8px rgba(0,0,0,0.08);
+  padding:12px 20px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:sticky;
+  top:0;
+  z-index:1000;
 }
-.home-btn{position:absolute; left:18px; background:var(--accent); color:#fff; padding:8px 12px; border-radius:10px; text-decoration:none; font-weight:600}
-.logo-img{height:64px; width:auto}
-.contact-btn{position:absolute; right:18px; background:var(--accent); color:#fff; padding:8px 12px; border-radius:8px; cursor:pointer}
+.header-left{position:absolute;left:18px;display:flex;align-items:center;gap:12px}
+.home-btn{
+  background:var(--accent);
+  color:#fff;
+  padding:8px 12px;
+  border-radius:10px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 3px 8px rgba(0,0,0,0.12);
+}
+.logo-img{height:64px;width:auto;border-radius:8px}
+.header-actions{position:absolute;right:28px}
+.contact-btn{
+  background:var(--accent);
+  color:#fff;
+  padding:10px 14px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  box-shadow:0 2px 6px rgba(0,0,0,0.12);
+  cursor:pointer;
+}
 
-/* title */
-h1.page-title{margin:18px 0 8px; text-align:center; font-family:'Great Vibes', cursive; font-size:40px}
+/* filter centered under header */
+.filter-bar{
+  max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;justify-content:center;gap:10px;align-items:center;
+}
+.filter-btn{
+  background:#fff;border:1px solid rgba(86,62,48,0.08);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--accent);
+  box-shadow:0 6px 18px rgba(0,0,0,0.03);
+}
+.filter-btn.active{background:var(--accent);color:#fff;box-shadow:0 8px 26px rgba(86,62,48,0.12)}
 
-/* search */
-.search-wrap{max-width:1100px;margin:12px auto;padding:0 16px}
-.search-box{display:flex;gap:10px}
-.search-input{flex:1;padding:12px;border-radius:10px;border:1px solid rgba(0,0,0,0.06);background:#fff}
+/* page title */
+.title{font-family:'Great Vibes',cursive;text-align:center;font-size:36px;margin:10px 0;color:var(--text)}
 
 /* grid */
-.grid{max-width:1200px;margin:18px auto 120px;padding:0 16px;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:16px}
+.container{max-width:1200px;margin:12px auto;padding:0 16px}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:14px}
+@media(max-width:880px){ .products-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))} }
 
 /* card */
-.card{background:var(--card);border-radius:12px;padding:10px;box-shadow:0 6px 18px rgba(0,0,0,0.06);position:relative}
-.img-wrap{height:160px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
+.card{
+  background:var(--card);
+  padding:12px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible;
+}
+.card .img-wrap{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
 .card img{width:100%;height:100%;object-fit:cover}
-.name{font-weight:700;margin-top:8px}
-.cat{color:var(--muted);font-size:13px;margin-top:4px}
-.price{font-weight:700;margin-top:6px}
+.card .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.name{font-weight:700;font-size:18px}
+.cat{font-size:13px;color:var(--muted);background:rgba(86,62,48,0.06);padding:6px 10px;border-radius:999px}
+.price{font-weight:700;color:var(--accent-dark)}
+.desc{font-size:14px;color:#5e4e46;min-height:36px}
 
-/* enquire overlay */
-.overlay{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
-.cta{pointer-events:auto;margin:12px;background:linear-gradient(180deg, #ff7f7f, #563e30);color:#fff;padding:10px 14px;border-radius:999px;border:0;opacity:0;transform:translateY(8px);transition:all .15s}
-.card:hover .cta{opacity:1;transform:translateY(0)}
+/* rating */
+.stars{display:flex;gap:4px;align-items:center}
+.star{color:#e6b422;font-size:16px}
+.star.gray{color:#ddd}
 
-/* enquiry popup */
-.enq-popup{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:92%;max-width:420px;background:#fff;border-radius:12px;padding:14px;box-shadow:0 20px 48px rgba(0,0,0,0.3);display:none;z-index:4000}
-.enq-popup .close-x{position:absolute;right:10px;top:8px;font-size:20px;cursor:pointer}
-.enq-popup img{width:90px;height:90px;object-fit:cover;border-radius:8px}
-.enq-popup textarea{width:100%;height:80px;border-radius:8px;padding:8px;border:1px solid #ddd;margin-top:8px}
-.enq-popup .send{background:#25D366;color:#fff;padding:10px;border-radius:8px;border:0;width:100%;margin-top:10px;cursor:pointer}
+/* Enquire overlay (visible on hover or tap) */
+.enquire-overlay{
+  position:absolute;left:12px;right:12px;bottom:14px;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,235,227,0.95));display:flex;justify-content:center;align-items:center;opacity:0;transform:translateY(8px);transition:all .18s;
+  pointer-events:none;
+}
+.card:hover .enquire-overlay, .card.enquire-active .enquire-overlay{ opacity:1; transform:translateY(0); pointer-events:auto; }
+.enquire-btn{
+  background:var(--accent);color:#fff;padding:8px 12px;border-radius:999px;border:0;cursor:pointer;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.12)
+}
 
-/* floating chat/wa */
-.floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:3000}
-.floating .btn{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.15);cursor:pointer;border:0}
-.wh{background:#25D366}
-.chat{background:var(--accent-2)}
+/* mini popup above card */
+.enquire-popup{
+  position:absolute; left:50%; transform:translateX(-50%); bottom:calc(100% + 12px); z-index:500; width:280px; max-width:calc(100% - 24px);
+  background:#fff;border-radius:10px;padding:10px;box-shadow:0 12px 36px rgba(0,0,0,0.25); display:none;
+}
+.enquire-popup.active{ display:block; }
+.enquire-popup .thumb{height:72px;width:72px;object-fit:cover;border-radius:8px}
+.enquire-popup .row{display:flex;gap:8px;align-items:center}
+.enquire-popup textarea{width:100%;min-height:70px;padding:8px;border-radius:8px;border:1px solid #eee}
 
-/* hammer admin btn */
-#adminLoginBtn{position:fixed;left:18px;bottom:100px;width:50px;height:50px;border-radius:12px;background:#fff;border:2px solid var(--accent);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,0.18);cursor:pointer;z-index:3200}
-#adminLoginBtn img{width:26px;height:26px}
+/* floating buttons & manage */
+.floating {
+  position:fixed; right:18px; bottom:18px; display:flex;flex-direction:column;gap:12px; z-index:4000;
+}
+.btn-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.18);cursor:pointer;border:0}
+.whatsapp{background:#25D366}
+.chat{background:#ff7f7f}
+.floating img{width:28px;height:28px}
 
-/* manage button (admin only) */
-#manageFloating{position:fixed;left:18px;bottom:18px;background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;display:none;text-decoration:none;font-weight:700;z-index:3200}
-
-/* admin options modal (simple) */
-.admin-modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:4500}
-.admin-modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.45)}
-.admin-modal{position:relative;width:92%;max-width:420px;background:#fff;border-radius:12px;padding:18px;box-shadow:0 20px 60px rgba(0,0,0,0.3);z-index:10}
-.admin-modal h3{margin:0 0 12px;color:var(--text)}
-.admin-actions{display:flex;flex-direction:column;gap:10px}
-.admin-actions a{display:block;padding:10px 12px;border-radius:8px;text-align:center;background:var(--accent);color:#fff;text-decoration:none;font-weight:700}
+/* Manage products floating (bottom-left) */
+.manage-floating{
+  position:fixed; left:18px; bottom:18px; z-index:4000;
+}
+.manage-floating .manage-btn{
+  background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.18)
+}
 
 /* contact popup */
-.popup-overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:5000}
-.popup-box{background:#faebe3;padding:22px;border-radius:14px;text-align:center}
-.popup-box h3{margin:0}
-.close-btn{margin-top:14px;background:var(--accent);color:#fff;padding:10px;border-radius:8px;cursor:pointer}
+.popup-overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:3000;padding:20px;box-sizing:border-box}
+.popup-box{background:#faebe3;padding:22px;border-radius:14px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 34px rgba(0,0,0,0.18)}
+.popup-box h3{margin:0;font-size:20px;color:var(--accent)}
+.popup-box p{margin:10px 0;color:#444;font-weight:600}
+.close-btn{margin-top:12px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer}
 
-/* responsive tweaks */
-@media (max-width:640px){
-  .img-wrap{height:140px}
-  .grid{gap:12px}
-}
+/* small text */
+.small-muted{font-size:13px;color:var(--muted)}
 </style>
 </head>
 <body>
 
 <header>
-  <a class="home-btn" href="/index.html">Home</a>
-  <!-- logo local path (will be transformed by your host) -->
-  <img class="logo-img" src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" alt="Dory's Bakehouse">
-  <div class="contact-btn" onclick="openContact()">Contact</div>
+  <div class="header-left">
+    <a class="home-btn" href="/">Home</a>
+  </div>
+
+  <!-- centered logo (developer-provided local path used here) -->
+  <img src="/mnt/data/5426C5C3-9890-4592-87F1-D8D068E94052.PNG" class="logo-img" alt="Dory's Bakehouse">
+
+  <div class="header-actions">
+    <a class="contact-btn" id="openContact">Contact</a>
+  </div>
 </header>
 
-<h1 class="page-title">Our Products</h1>
-
-<!-- SEARCH BAR -->
-<div class="search-wrap">
-  <div class="search-box">
-    <input id="searchInput" class="search-input" placeholder="Search products by name, category or description...">
-  </div>
+<!-- filter centered under header -->
+<div class="filter-bar" role="tablist" aria-label="category filters">
+  <button class="filter-btn active" data-cat="All">All</button>
+  <button class="filter-btn" data-cat="Cakes">Cakes</button>
+  <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
+  <button class="filter-btn" data-cat="Pastries">Pastries</button>
 </div>
 
-<!-- PRODUCT GRID -->
-<div id="grid" class="grid" aria-live="polite">Loading…</div>
+<div class="title">Our Products</div>
 
-<!-- FLOATING CHAT + WA -->
+<div class="container">
+  <div id="countInfo" class="small-muted" style="text-align:center;margin-bottom:8px">Loading products...</div>
+  <div id="grid" class="products-grid" aria-live="polite">Loading...</div>
+</div>
+
+<!-- Floating WhatsApp / Chat -->
 <div class="floating" aria-hidden="false">
-  <button class="btn chat" onclick="openContact()" title="Chat">
-    <img src="https://cdn-icons-png.flaticon.com/512/134/134914.png" width="26" alt="chat">
+  <button class="btn-circle chat" id="chatBtn" title="Chat with us">
+    <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="chat">
   </button>
-  <a class="btn wh" id="waFloat" target="_blank" rel="noreferrer" title="WhatsApp">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" width="26" alt="wa">
+  <a class="btn-circle whatsapp" id="waBtn" title="WhatsApp" target="_blank" rel="noreferrer">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whatsapp">
   </a>
 </div>
 
-<!-- HAMMER admin button (always visible) -->
-<div id="adminLoginBtn" title="Admin" onclick="openAdminLogin()">
-  <img src="https://cdn-icons-png.flaticon.com/512/753/753244.png" alt="admin">
+<!-- Manage Products floating (bottom-left) -->
+<div class="manage-floating">
+  <button class="manage-btn" id="manageBtn">Manage Products</button>
 </div>
 
-<!-- MANAGE PRODUCTS (admin only) -->
-<a id="manageFloating" href="#" title="Manage Products">Manage Products</a>
-
-<!-- ADMIN OPTIONS MODAL (opens when Manage clicked) -->
-<div id="adminModal" class="admin-modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="admin-modal-backdrop" onclick="closeAdminModal()"></div>
-  <div class="admin-modal" role="document">
-    <div style="display:flex;justify-content:space-between;align-items:center">
-      <h3>Admin Options</h3>
-      <button onclick="closeAdminModal()" style="background:transparent;border:0;font-size:18px;cursor:pointer">×</button>
-    </div>
-    <div class="admin-actions">
-      <a href="/upload.html" onclick="closeAdminModal()">Upload Images</a>
-      <a href="/admin-products.html" onclick="closeAdminModal()">Manage Products</a>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- ENQUIRY POPUP -->
-
-
-<div id="enqPopup" class="enq-popup" role="dialog" aria-modal="true" aria-hidden="true">
-  <div class="close-x" onclick="closeEnq()">×</div>
-  <div style="display:flex;gap:12px;align-items:center">
-    <img id="enqImg" style="width:90px;height:90px;border-radius:8px" alt="">
-    <div>
-      <h3 id="enqName" style="margin:0"></h3>
-      <p id="enqCat" style="margin:6px 0;color:var(--muted)"></p>
-      <p id="enqPrice" style="margin:0 0 6px"></p>
-    </div>
-  </div>
-  <textarea id="enqMsg" placeholder="Your message (delivery date, quantity...)"></textarea>
-  <button class="send" onclick="sendEnquiry()">Send on WhatsApp</button>
-</div>
-
-<!-- CONTACT POPUP -->
+<!-- Contact popup identical to index -->
 <div id="contactPopup" class="popup-overlay" aria-hidden="true">
-  <div class="popup-box">
-    <h3>Contact Us</h3>
-    <p>📞 <a href="tel:+917972032790" style="color:var(--text);text-decoration:none;font-weight:700">+91 7972032790</a></p>
+  <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+    <h3 id="contactTitle">Contact Us</h3>
+    <p>📞 <a id="telLink" href="tel:+919168445014" style="color:var(--accent);text-decoration:none;font-weight:700">+91 9168445014</a></p>
     <p>📍 Dory's Bakehouse, Pune</p>
-    <div class="close-btn" onclick="closeContact()">Close</div>
+    <button class="close-btn" id="closeContact">Close</button>
   </div>
 </div>
 
 <script>
-/* config */
-const WA_NUMBER = "919168445014";
-document.getElementById('waFloat').href = "https://wa.me/" + WA_NUMBER;
+/* ================= CONFIG ================= */
+const WA_NUMBER = '919168445014'; // country code + number
+const WA_BASE = `https://wa.me/${WA_NUMBER}`;
+const WA_MESSAGE_DEFAULT = encodeURIComponent('Hi, I want to order');
+const WA_URL_DEFAULT = `${WA_BASE}?text=${WA_MESSAGE_DEFAULT}`;
 
-/* cookie helper */
-function readCookie(name){
-  const c = document.cookie.split('; ').find(r=>r.trim().startsWith(name+'='));
-  return c ? decodeURIComponent(c.split('=')[1]) : null;
-}
+/* ============ Contact popup ============= */
+const contactPopup = document.getElementById('contactPopup');
+document.getElementById('openContact').addEventListener('click', ()=> {
+  contactPopup.style.display = 'flex';
+  contactPopup.setAttribute('aria-hidden','false');
+});
+document.getElementById('closeContact').addEventListener('click', ()=> {
+  contactPopup.style.display = 'none';
+  contactPopup.setAttribute('aria-hidden','true');
+});
+contactPopup.addEventListener('click', (e)=> { if(e.target === contactPopup){ contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); } });
 
-/* admin UI update */
-function updateAdminUI(){
-  if(readCookie('admin') === '4321'){
-    document.getElementById('manageFloating').style.display = 'block';
-    document.getElementById('adminLoginBtn').style.display = 'none';
-  } else {
-    document.getElementById('manageFloating').style.display = 'none';
-    document.getElementById('adminLoginBtn').style.display = 'flex';
-  }
-}
-
-/* hammer admin button */
-function openAdminLogin(){
-  if(readCookie('admin') === '4321'){
-    window.location.href = '/upload.html';
-    return;
-  }
-  const pin = prompt("Enter Admin PIN:");
-  if(pin === '4321'){
-    document.cookie = 'admin=4321; path=/; max-age=86400;';
-    updateAdminUI();
-    window.location.href = '/upload.html';
-  } else if(pin !== null){
-    alert('Incorrect PIN');
-  }
-}
-
-/* Manage button opens admin modal (only if admin) */
-document.getElementById('manageFloating').addEventListener('click', function(e){
-  e.preventDefault();
-  if(readCookie('admin') === '4321'){
-    openAdminModal();
-  } else {
-    openAdminLogin();
-  }
+/* ============ Floating Buttons ============ */
+document.getElementById('waBtn').href = WA_URL_DEFAULT;
+document.getElementById('chatBtn').addEventListener('click', ()=> {
+  // Chat opens WhatsApp with default message
+  window.open(WA_URL_DEFAULT, '_blank');
 });
 
-function openAdminModal(){
-  document.getElementById('adminModal').style.display = 'flex';
-  document.getElementById('adminModal').setAttribute('aria-hidden','false');
-}
-function closeAdminModal(){
-  document.getElementById('adminModal').style.display = 'none';
-  document.getElementById('adminModal').setAttribute('aria-hidden','true');
-}
+/* ============ Manage Products button ============ */
+document.getElementById('manageBtn').addEventListener('click', ()=>{
+  // go to admin products page
+  location.href = '/admin-products.html';
+});
 
-/* contact popup */
-function openContact(){ document.getElementById('contactPopup').style.display='flex'; document.getElementById('contactPopup').setAttribute('aria-hidden','false'); }
-function closeContact(){ document.getElementById('contactPopup').style.display='none'; document.getElementById('contactPopup').setAttribute('aria-hidden','true'); }
-
-/* enquiry popup */
-let currentProduct = null;
-function openEnquiry(product){
-  currentProduct = product;
-  document.getElementById('enqImg').src = product.image || '/images/products/default-sample.png';
-  document.getElementById('enqName').textContent = product.name || '';
-  document.getElementById('enqCat').textContent = product.category || '';
-  document.getElementById('enqPrice').textContent = product.price ? '₹ ' + product.price : '';
-  document.getElementById('enqPopup').style.display = 'block';
-  document.getElementById('enqPopup').setAttribute('aria-hidden','false');
-}
-function closeEnq(){
-  document.getElementById('enqPopup').style.display = 'none';
-  document.getElementById('enqPopup').setAttribute('aria-hidden','true');
-}
-function sendEnquiry(){
-  const msg = document.getElementById('enqMsg').value || '';
-  if(!currentProduct) return;
-  const text = `Product Enquiry:%0AName: ${currentProduct.name}%0ACategory: ${currentProduct.category || ''}%0APrice: ${currentProduct.price || ''}%0A%0AMessage:%0A${encodeURIComponent(msg)}`;
-  window.open(`https://wa.me/${WA_NUMBER}?text=${text}`, '_blank');
-  closeEnq();
-}
-
-/* products load/render */
-let products = [];
+/* ============ Products loading & rendering ============ */
 const grid = document.getElementById('grid');
+const countInfo = document.getElementById('countInfo');
+let products = [];
+let activeCategory = 'All';
 
+// fetch list from server
 async function loadProducts(){
-  try{
-    const res = await fetch('/products/list', {cache: 'no-cache'});
+  try {
+    const res = await fetch('/products/list', { cache:'no-cache' });
+    if(!res.ok) throw new Error('fetch failed');
     products = await res.json();
-  }catch(e){
-    console.error('Failed to load products', e);
+  } catch(err){
+    console.error(err);
     products = [];
   }
   render();
 }
 
-function render(){
-  const q = (document.getElementById('searchInput')?.value || '').trim().toLowerCase();
-  let list = products.filter(p=>{
-    const text = ((p.name||'') + ' ' + (p.category||'') + ' ' + (p.description||'')).toLowerCase();
-    return !q || text.includes(q);
-  });
+function renderStars(value){
+  const v = Math.max(0, Math.min(5, Number(value) || 0));
+  const full = Math.floor(v);
+  let out = '';
+  for(let i=0;i<full;i++) out += '<span class="star">★</span>';
+  for(let i=full;i<5;i++) out += '<span class="star gray">★</span>';
+  out += ` <span style="font-size:13px;color:var(--muted);margin-left:6px">${v.toFixed(1)}</span>`;
+  return out;
+}
 
+function render(){
+  const list = products.filter(p => activeCategory === 'All' || (p.category || '').toLowerCase() === activeCategory.toLowerCase());
   grid.innerHTML = '';
-  if(!list.length){
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:36px">No products found.</div>`;
+  countInfo.textContent = `${list.length} product${list.length===1?'':'s'} shown`;
+
+  if(list.length === 0){
+    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No products in this category.</div>`;
     return;
   }
 
-  list.forEach(p=>{
-    const card = document.createElement('div');
-    card.className = 'card';
+  list.forEach((p, idx) => {
+    const name = p.name || 'Untitled';
+    const desc = p.description || '';
+    const price = p.price ? `₹ ${p.price}` : '—';
+    const category = p.category || 'Uncategorized';
+    const rating = (typeof p.rating !== 'undefined') ? Number(p.rating) : 4.5;
+    const img = (p.image && p.image.startsWith('/')) ? p.image : (p.image || '/images/products/default-sample.png');
+
+    // create card
+    const card = document.createElement('div'); card.className = 'card';
     card.innerHTML = `
-      <div class="img-wrap"><img src="${p.image || '/images/products/default-sample.png'}" alt="${escapeHtml(p.name)}"></div>
-      <div class="name">${escapeHtml(p.name)}</div>
-      <div class="cat">${escapeHtml(p.category)}</div>
-      <div class="price">₹ ${escapeHtml(p.price)}</div>
-      <div class="overlay"><button class="cta">Enquire Now</button></div>
+      <div class="img-wrap"><img src="${img}" alt="${escapeHtml(name)}"></div>
+      <div class="meta">
+        <div>
+          <div class="name">${escapeHtml(name)}</div>
+          <div class="desc">${escapeHtml(desc)}</div>
+        </div>
+        <div style="text-align:right">
+          <div class="cat">${escapeHtml(category)}</div>
+          <div style="margin-top:6px" class="price">${escapeHtml(price)}</div>
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div class="stars">${renderStars(rating)}</div>
+        <div>
+          <button class="contact-mini" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Order</button>
+        </div>
+      </div>
+
+      <div class="enquire-overlay">
+        <button class="enquire-btn">Enquire Now</button>
+      </div>
+
+      <div class="enquire-popup" role="dialog" aria-hidden="true">
+        <div class="row" style="align-items:center">
+          <img class="thumb" src="${img}" alt="${escapeHtml(name)}">
+          <div style="flex:1">
+            <div style="font-weight:700">${escapeHtml(name)}</div>
+            <div style="color:var(--muted);font-size:13px">${escapeHtml(category)} · ${escapeHtml(price)}</div>
+          </div>
+        </div>
+        <div style="margin-top:8px">
+          <textarea placeholder="Your message (eg: I want 1 kg, delivery date...)" class="enquire-text"></textarea>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+          <button class="enquire-send" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Send on WhatsApp</button>
+          <button class="enquire-cancel" style="background:#ccc;color:#222;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Cancel</button>
+        </div>
+      </div>
     `;
-    card.querySelector('.cta').addEventListener('click', ()=> openEnquiry(p));
+
+    // Order button -> whatsapp prefilled simple
+    card.querySelector('.contact-mini').addEventListener('click', () => {
+      const msg = `Hi, I want to order: ${name}`;
+      window.open(`${WA_BASE}?text=${encodeURIComponent(msg)}`, '_blank');
+    });
+
+    // Enquire overlay: show on hover (handled by CSS), also enable touch click
+    const enquireBtn = card.querySelector('.enquire-btn');
+    const enquirePopup = card.querySelector('.enquire-popup');
+    const enquireSend = card.querySelector('.enquire-send');
+    const enquireCancel = card.querySelector('.enquire-cancel');
+    const enquireText = card.querySelector('.enquire-text');
+
+    // show popup when enquire clicked
+    enquireBtn.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      closeAllPopups();
+      enquirePopup.classList.add('active');
+      enquirePopup.setAttribute('aria-hidden','false');
+      card.classList.add('enquire-active');
+    });
+
+    // Cancel
+    enquireCancel.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      enquirePopup.classList.remove('active');
+      enquirePopup.setAttribute('aria-hidden','true');
+      card.classList.remove('enquire-active');
+    });
+
+    // Send -> open WhatsApp with prefilled message containing product details + user message
+    enquireSend.addEventListener('click', (ev) => {
+      ev.stopPropagation();
+      const userMsg = (enquireText.value || '').trim();
+      let fullMsg = `Product Enquiry:%0AName: ${name}%0ACategory: ${category}%0APrice: ${price}%0A`;
+      if(userMsg) fullMsg += `%0AUser Message:%0A${encodeURIComponent(userMsg)}`;
+      // open whatsapp
+      window.open(`${WA_BASE}?text=${encodeURIComponent(decodeURIComponent(fullMsg))}`, '_blank');
+      // close popup
+      enquirePopup.classList.remove('active');
+      enquirePopup.setAttribute('aria-hidden','true');
+      card.classList.remove('enquire-active');
+      enquireText.value = '';
+    });
+
+    // close popup when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!card.contains(e.target)) {
+        enquirePopup.classList.remove('active');
+        enquirePopup.setAttribute('aria-hidden','true');
+        card.classList.remove('enquire-active');
+      }
+    });
+
+    // append
     grid.appendChild(card);
   });
 }
+
+/* helper escape */
 function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 
-/* search handler */
-document.getElementById('searchInput').addEventListener('input', render);
+/* close any open enquire popups */
+function closeAllPopups(){
+  document.querySelectorAll('.enquire-popup.active').forEach(p => {
+    p.classList.remove('active'); p.setAttribute('aria-hidden','true');
+  });
+  document.querySelectorAll('.card.enquire-active').forEach(c => c.classList.remove('enquire-active'));
+}
 
-/* show admin UI & init */
-window.addEventListener('DOMContentLoaded', ()=>{
-  updateAdminUI();
-  loadProducts();
-  // refresh periodically so new uploads appear
-  setInterval(loadProducts, 90000);
+/* filter buttons */
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCategory = btn.getAttribute('data-cat') || 'All';
+    render();
+  });
 });
+
+/* initial load */
+loadProducts();
+
+/* periodic refresh */
+setInterval(loadProducts, 90_000);
 </script>
 </body>
 </html>
