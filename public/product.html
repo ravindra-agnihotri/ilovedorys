@@ -437,7 +437,7 @@
                         if(!rating){ alert('Please select a rating'); return; }
                         const review = { rating, text, when: new Date().toISOString(), author, status: 'pending' };
                         await postReviewToServer(prod, review);
-                        alert('Thanks — your review has been submitted for admin approval.');
+                        alert('Thanks — your review has been submitted.');
                         const rb = document.getElementById('reviewBackdrop'); if(rb) rb.style.display='none';
                         const viewBack = document.getElementById('viewReviewsBackdrop');
                         if(viewBack && viewBack.style.display === 'flex' && document.getElementById('viewReviewsTitle').textContent === prod){ showViewReviewsModal(prod); }
