@@ -1,464 +1,485 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Our Products — Dory's Bakehouse</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width,initial-scale=1"/>
+    <title>Our Products — Dory's Bakehouse</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-<style>
-:root{
-  --bg:#faebe3;
-  --accent:#563e30;
-  --accent-dark:#472a20;
-  --text:#563e30;
-  --muted:#6e5a52;
-  --card:rgba(253,239,193,0.45);
-}
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
-header{
-  width:100%;
-  background:#fff;
-  box-shadow:0 2px 8px rgba(0,0,0,0.08);
-  padding:12px 20px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:sticky;
-  top:0;
-  z-index:1000;
-}
-.header-left{position:absolute;left:18px;display:flex;align-items:center;gap:12px}
-.home-btn{
-  background:var(--accent);
-  color:#fff;
-  padding:8px 12px;
-  border-radius:10px;
-  text-decoration:none;
-  font-weight:600;
-  box-shadow:0 3px 8px rgba(0,0,0,0.12);
-}
-.logo-img{height:64px;width:auto;border-radius:8px}
-.header-actions{position:absolute;right:28px}
-.contact-btn{
-  background:var(--accent);
-  color:#fff;
-  padding:10px 14px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:600;
-  box-shadow:0 2px 6px rgba(0,0,0,0.12);
-  cursor:pointer;
-}
+    <style>
+        :root{
+            --bg:#FAF0DE; --accent:#563e30; --accent-dark:#472a20; --text:#563e30; --muted:#6e5a52; --card:rgba(253,239,193,0.45);
+        }
+        *{box-sizing:border-box}
+        html,body{height:100%;margin:0;font-family:'Poppins',system-ui;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+        header{width:100%;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);padding:12px 20px;display:flex;align-items:center;justify-content:center;position:sticky;top:0;z-index:1000}
+        .header-left{position:absolute;left:18px;display:flex;align-items:center;gap:12px}
+        .home-btn{background:var(--accent);color:#fff;padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600;box-shadow:0 3px 8px rgba(0,0,0,0.12)}
+        .logo-img{height:64px;width:auto;border-radius:8px}
+        .header-actions{position:absolute;right:28px}
+        .contact-btn{background:var(--accent);color:#fff;padding:10px 14px;border-radius:8px;text-decoration:none;font-weight:600;box-shadow:0 2px 6px rgba(0,0,0,0.12);cursor:pointer}
 
-/* filter centered under header */
-.filter-bar{
-  max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;justify-content:center;gap:10px;align-items:center;
-}
-.filter-btn{
-  background:#fff;border:1px solid rgba(86,62,48,0.08);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--accent);
-  box-shadow:0 6px 18px rgba(0,0,0,0.03);
-}
-.filter-btn.active{background:var(--accent);color:#fff;box-shadow:0 8px 26px rgba(86,62,48,0.12)}
+        .filter-bar{max-width:1100px;margin:18px auto 6px;padding:0 16px;display:flex;justify-content:center;gap:10px;align-items:center}
+        .filter-btn{background:#fff;border:1px solid rgba(86,62,48,0.08);padding:8px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--accent);box-shadow:0 6px 18px rgba(0,0,0,0.03)}
+        .filter-btn.active{background:var(--accent);color:#fff;box-shadow:0 8px 26px rgba(86,62,48,0.12)}
 
-/* page title */
-.title{font-family:'Great Vibes',cursive;text-align:center;font-size:36px;margin:10px 0;color:var(--text)}
+        .title{font-family:'Great Vibes',cursive;text-align:center;font-size:36px;margin:10px 0;color:var(--text)}
+        .container{max-width:1200px;margin:12px auto;padding:0 16px}
+        .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:14px}
+        @media(max-width:880px){ .products-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))} }
 
-/* grid */
-.container{max-width:1200px;margin:12px auto;padding:0 16px}
-.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px;margin-top:14px}
-@media(max-width:880px){ .products-grid{grid-template-columns:repeat(auto-fill,minmax(200px,1fr))} }
+        .card{background:var(--card);padding:12px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible}
+        .card .img-wrap{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center;position:relative}
+        .card img{width:100%;height:100%;object-fit:cover;display:block}
+        .card .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
+        .name{font-weight:700;font-size:18px}
+        .cat{font-size:13px;color:var(--muted);background:rgba(86,62,48,0.06);padding:6px 10px;border-radius:999px}
+        .price{font-weight:700;color:var(--accent-dark)}
+        .desc{font-size:14px;color:#5e4e46;min-height:36px}
+        .stars{display:flex;gap:4px;align-items:center}
+        .star{color:#e6b422;font-size:16px}
+        .star.gray{color:#ddd}
 
-/* card */
-.card{
-  background:var(--card);
-  padding:12px;border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,0.06);display:flex;flex-direction:column;gap:10px;position:relative;overflow:visible;
-}
-.card .img-wrap{width:100%;height:180px;border-radius:10px;overflow:hidden;background:#fff;display:flex;align-items:center;justify-content:center}
-.card img{width:100%;height:100%;object-fit:cover}
-.card .meta{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.name{font-weight:700;font-size:18px}
-.cat{font-size:13px;color:var(--muted);background:rgba(86,62,48,0.06);padding:6px 10px;border-radius:999px}
-.price{font-weight:700;color:var(--accent-dark)}
-.desc{font-size:14px;color:#5e4e46;min-height:36px}
+        .img-wrap .enquire-overlay{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-decoration:none;cursor:pointer;background:linear-gradient(180deg,rgba(0,0,0,0.00),rgba(0,0,0,0.18));color:#fff;opacity:0;transition:opacity .18s ease;border-radius:10px;pointer-events:none}
+        .img-wrap:hover .enquire-overlay,.img-wrap:focus-within .enquire-overlay{opacity:1;pointer-events:auto}
+        .img-wrap .enquire-overlay .enquire-inner{background:rgba(255,255,255,0.12);padding:.5rem 1rem;border-radius:999px;font-weight:700}
 
-/* rating */
-.stars{display:flex;gap:4px;align-items:center}
-.star{color:#e6b422;font-size:16px}
-.star.gray{color:#ddd}
+        .enquire-popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:5000;width:90%;max-width:350px;background:#fff;border-radius:12px;padding:16px;box-shadow:0 12px 36px rgba(0,0,0,0.25);display:none}
+        .enquire-popup.active{display:block}
+        .enquire-popup .thumb{height:72px;width:72px;object-fit:cover;border-radius:8px}
 
-/* Enquire overlay (visible on hover or tap) */
-.enquire-overlay{
-  position:absolute;left:12px;right:12px;bottom:14px;padding:10px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.95),rgba(250,235,227,0.95));display:flex;justify-content:center;align-items:center;opacity:0;transform:translateY(8px);transition:all .18s;
-  pointer-events:none;
-}
-.card:hover .enquire-overlay, .card.enquire-active .enquire-overlay{ opacity:1; transform:translateY(0); pointer-events:auto; }
-.enquire-btn{
-  background:var(--accent);color:#fff;padding:8px 12px;border-radius:999px;border:0;cursor:pointer;font-weight:700;box-shadow:0 6px 18px rgba(0,0,0,0.12)
-}
+        .floating{position:fixed;right:18px;bottom:18px;display:flex;flex-direction:column;gap:12px;z-index:4000}
+        .btn-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.18);cursor:pointer;border:0}
+        .whatsapp{background:#25D366}
+        .chat{background:#ff7f7f}
+        .floating img{width:28px;height:28px}
 
-/* mini popup above card */
-.enquire-popup{
-  position:absolute; left:50%; transform:translateX(-50%); bottom:calc(100% + 12px); z-index:500; width:280px; max-width:calc(100% - 24px);
-  background:#fff;border-radius:10px;padding:10px;box-shadow:0 12px 36px rgba(0,0,0,0.25); display:none;
-}
-.enquire-popup.active{ display:block; }
-.enquire-popup .thumb{height:72px;width:72px;object-fit:cover;border-radius:8px}
-.enquire-popup .row{display:flex;gap:8px;align-items:center}
-.enquire-popup textarea{width:100%;min-height:70px;padding:8px;border-radius:8px;border:1px solid #eee}
+        .manage-floating{position:fixed;left:18px;bottom:18px;z-index:4000}
+        .manage-floating .manage-btn{background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.18)}
 
-/* floating buttons & manage */
-.floating {
-  position:fixed; right:18px; bottom:18px; display:flex;flex-direction:column;gap:12px; z-index:4000;
-}
-.btn-circle{width:56px;height:56px;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 24px rgba(0,0,0,0.18);cursor:pointer;border:0}
-.whatsapp{background:#25D366}
-.chat{background:#ff7f7f}
-.floating img{width:28px;height:28px}
-
-/* Manage products floating (bottom-left) */
-.manage-floating{
-  position:fixed; left:18px; bottom:18px; z-index:4000;
-}
-.manage-floating .manage-btn{
-  background:var(--accent);color:#fff;padding:12px 16px;border-radius:10px;border:0;cursor:pointer;font-weight:700;box-shadow:0 8px 24px rgba(0,0,0,0.18)
-}
-
-/* contact popup */
-.popup-overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:3000;padding:20px;box-sizing:border-box}
-.popup-box{background:#faebe3;padding:22px;border-radius:14px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 34px rgba(0,0,0,0.18)}
-.popup-box h3{margin:0;font-size:20px;color:var(--accent)}
-.popup-box p{margin:10px 0;color:#444;font-weight:600}
-.close-btn{margin-top:12px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer}
-
-/* small text */
-.small-muted{font-size:13px;color:var(--muted)}
-</style>
+        .popup-overlay{position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:3000;padding:20px;box-sizing:border-box}
+        .popup-box{background:#faebe3;padding:22px;border-radius:14px;max-width:420px;width:100%;text-align:center;box-shadow:0 8px 34px rgba(0,0,0,0.18)}
+        .popup-box h3{margin:0;font-size:20px;color:var(--accent)}
+        .popup-box p{margin:10px 0;color:#444;font-weight:600}
+        .close-btn{margin-top:12px;background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;cursor:pointer}
+        .small-muted{font-size:13px;color:var(--muted)}
+    </style>
 </head>
 <body>
 
 <header>
-  <div class="header-left">
-    <a class="home-btn" href="/">Home</a>
-  </div>
-
-  <!-- centered logo (developer-provided local path used here) -->
-  <img src="logo/dorys.PNG" class="logo-img" alt="Dory's Bakehouse">
-
-  <div class="header-actions">
-    <a class="contact-btn" id="openContact">Contact</a>
-  </div>
+    <div class="header-left"><a class="home-btn" href="/">Home</a></div>
+    <img src="logo/dorys.PNG" class="logo-img" alt="Dory's Bakehouse">
+    <div class="header-actions"><a class="contact-btn" id="openContact">Contact</a></div>
 </header>
 
-<!-- filter centered under header -->
 <div class="filter-bar" role="tablist" aria-label="category filters">
-  <button class="filter-btn active" data-cat="All">All</button>
-  <button class="filter-btn" data-cat="Cakes">Cakes</button>
-  <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
-  <button class="filter-btn" data-cat="Pastries">Pastries</button>
+    <button class="filter-btn active" data-cat="All">All</button>
+    <button class="filter-btn" data-cat="Cakes">Cakes</button>
+    <button class="filter-btn" data-cat="Cupcakes">Cupcakes</button>
+    <button class="filter-btn" data-cat="Pastries">Pastries</button>
 </div>
 
 <div class="title">Our Products</div>
 
 <div class="container">
-  <div id="countInfo" class="small-muted" style="text-align:center;margin-bottom:8px">Loading products...</div>
-  <div id="grid" class="products-grid" aria-live="polite">Loading...</div>
+    <div id="countInfo" class="small-muted" style="text-align:center;margin-bottom:8px">Loading products...</div>
+    <div id="grid" class="products-grid" aria-live="polite">Loading...</div>
 </div>
 
-<!-- Floating WhatsApp / Chat -->
 <div class="floating" aria-hidden="false">
-  <button class="btn-circle chat" id="chatBtn" title="Chat with us">
-    <img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="chat">
-  </button>
-  <a class="btn-circle whatsapp" id="waBtn" title="WhatsApp" target="_blank" rel="noreferrer">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whatsapp">
-  </a>
+    <button class="btn-circle chat" id="chatBtn" title="Chat with us"><img src="https://cdn-icons-png.flaticon.com/512/2462/2462719.png" alt="chat"></button>
+    <a class="btn-circle whatsapp" id="waBtn" title="WhatsApp" target="_blank" rel="noreferrer"><img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="whatsapp"></a>
 </div>
 
-<!-- Manage Products floating (bottom-left) -->
-<div class="manage-floating">
-  <button class="manage-btn" id="manageBtn">Manage Products</button>
-</div>
+<div class="manage-floating"><button class="manage-btn" id="manageBtn">Manage Products</button></div>
 
-<!-- Contact popup identical to index -->
 <div id="contactPopup" class="popup-overlay" aria-hidden="true">
-  <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
-    <h3 id="contactTitle">Contact Us</h3>
-    <p>📞 <a id="telLink" href="tel:+919168445014" style="color:var(--accent);text-decoration:none;font-weight:700">+91 9168445014</a></p>
-    <p>📍 Dory's Bakehouse, Pune</p>
-    <button class="close-btn" id="closeContact">Close</button>
-  </div>
+    <div class="popup-box" role="dialog" aria-modal="true" aria-labelledby="contactTitle">
+        <h3 id="contactTitle">Contact Us</h3>
+        <p>📞 <a id="telLink" href="tel:+919168445014" style="color:var(--accent);text-decoration:none;font-weight:700">+91 9168445014</a></p>
+        <p>📍 Dory's Bakehouse, Pune</p>
+        <button class="close-btn" id="closeContact">Close</button>
+    </div>
 </div>
 
-<script>
-/* ================= CONFIG ================= */
-const WA_NUMBER = '919168445014'; // country code + number
-const WA_BASE = `https://wa.me/${WA_NUMBER}`;
-const WA_MESSAGE_DEFAULT = encodeURIComponent('Hi, I want to order');
-const WA_URL_DEFAULT = `${WA_BASE}?text=${WA_MESSAGE_DEFAULT}`;
-
-/* ============ Contact popup ============= */
-const contactPopup = document.getElementById('contactPopup');
-document.getElementById('openContact').addEventListener('click', ()=> {
-  contactPopup.style.display = 'flex';
-  contactPopup.setAttribute('aria-hidden','false');
-});
-document.getElementById('closeContact').addEventListener('click', ()=> {
-  contactPopup.style.display = 'none';
-  contactPopup.setAttribute('aria-hidden','true');
-});
-contactPopup.addEventListener('click', (e)=> { if(e.target === contactPopup){ contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); } });
-
-/* ============ Floating Buttons ============ */
-document.getElementById('waBtn').href = WA_URL_DEFAULT;
-document.getElementById('chatBtn').addEventListener('click', ()=> {
-  // Chat opens WhatsApp with default message
-  window.open(WA_URL_DEFAULT, '_blank');
-});
-
-/* ============ Manage Products button ============ */
-document.getElementById('manageBtn').addEventListener('click', ()=>{
-  // go to admin products page
-  location.href = '/admin-products.html';
-});
-
-/* ============ Products loading & rendering ============ */
-const grid = document.getElementById('grid');
-const countInfo = document.getElementById('countInfo');
-let products = [];
-let activeCategory = 'All';
-
-// fetch list from server
-async function loadProducts(){
-  try {
-    const res = await fetch('/products/list', { cache:'no-cache' });
-    if(!res.ok) throw new Error('fetch failed');
-    products = await res.json();
-  } catch(err){
-    console.error(err);
-    products = [];
-  }
-  render();
-}
-
-function renderStars(value){
-  const v = Math.max(0, Math.min(5, Number(value) || 0));
-  const full = Math.floor(v);
-  let out = '';
-  for(let i=0;i<full;i++) out += '<span class="star">★</span>';
-  for(let i=full;i<5;i++) out += '<span class="star gray">★</span>';
-  out += ` <span style="font-size:13px;color:var(--muted);margin-left:6px">${v.toFixed(1)}</span>`;
-  return out;
-}
-
-function render(){
-  const list = products.filter(p => activeCategory === 'All' || (p.category || '').toLowerCase() === activeCategory.toLowerCase());
-  grid.innerHTML = '';
-  countInfo.textContent = `${list.length} product${list.length===1?'':'s'} shown`;
-
-  if(list.length === 0){
-    grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No products in this category.</div>`;
-    return;
-  }
-
-  list.forEach((p, idx) => {
-    const name = p.name || 'Untitled';
-    const desc = p.description || '';
-    const price = p.price ? `₹ ${p.price}` : '—';
-    const category = p.category || 'Uncategorized';
-    const rating = (typeof p.rating !== 'undefined') ? Number(p.rating) : 4.5;
-    const img = (p.image && p.image.startsWith('/')) ? p.image : (p.image || '/images/products/default-sample.png');
-
-    // create card
-    const card = document.createElement('div'); card.className = 'card';
-    card.innerHTML = `
-      <div class="img-wrap"><img src="${img}" alt="${escapeHtml(name)}"></div>
-      <div class="meta">
-        <div>
-          <div class="name">${escapeHtml(name)}</div>
-          <div class="desc">${escapeHtml(desc)}</div>
+<!-- Review modals -->
+<div id="reviewBackdrop" style="position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:6000;padding:16px;box-sizing:border-box">
+    <div id="reviewModal" style="background:#fff;border-radius:12px;max-width:420px;width:100%;padding:16px;box-shadow:0 12px 36px rgba(0,0,0,0.25)">
+        <h3 style="margin-top:0;color:var(--accent)">Add a Review</h3>
+        <div style="margin-bottom:8px;color:var(--muted);font-weight:600" id="reviewProductTitle">Product</div>
+        <label style="display:block;margin-bottom:6px;font-weight:600">Your rating</label>
+        <div id="reviewStarsInput" style="display:flex;gap:6px;margin-bottom:10px">
+            <button class="star-input" data-value="1">★</button>
+            <button class="star-input" data-value="2">★</button>
+            <button class="star-input" data-value="3">★</button>
+            <button class="star-input" data-value="4">★</button>
+            <button class="star-input" data-value="5">★</button>
         </div>
-        <div style="text-align:right">
-          <div class="cat">${escapeHtml(category)}</div>
-          <div style="margin-top:6px" class="price">${escapeHtml(price)}</div>
-        </div>
-      </div>
-      <div style="display:flex;justify-content:space-between;align-items:center">
-        <div class="stars">${renderStars(rating)}</div>
-        <div>
-          <button class="contact-mini" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Order</button>
-        </div>
-      </div>
-
-      <div class="enquire-overlay">
-        <button class="enquire-btn">Enquire Now</button>
-      </div>
-
-      <div class="enquire-popup" role="dialog" aria-hidden="true">
-        <div class="row" style="align-items:center">
-          <img class="thumb" src="${img}" alt="${escapeHtml(name)}">
-          <div style="flex:1">
-            <div style="font-weight:700">${escapeHtml(name)}</div>
-            <div style="color:var(--muted);font-size:13px">${escapeHtml(category)} · ${escapeHtml(price)}</div>
-          </div>
-        </div>
-        <div style="margin-top:8px">
-          <textarea placeholder="Your message (eg: I want 1 kg, delivery date...)" class="enquire-text"></textarea>
-        </div>
-        <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
-          <button class="enquire-send" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Send on WhatsApp</button>
-          <button class="enquire-cancel" style="background:#ccc;color:#222;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Cancel</button>
-        </div>
-      </div>
-    `;
-
-    // Order button -> whatsapp prefilled simple
-    card.querySelector('.contact-mini').addEventListener('click', () => {
-      const msg = `Hi, I want to order: ${name}`;
-      window.open(`${WA_BASE}?text=${encodeURIComponent(msg)}`, '_blank');
-    });
-
-    // Enquire overlay: show on hover (handled by CSS), also enable touch click
-    const enquireBtn = card.querySelector('.enquire-btn');
-    const enquirePopup = card.querySelector('.enquire-popup');
-    const enquireSend = card.querySelector('.enquire-send');
-    const enquireCancel = card.querySelector('.enquire-cancel');
-    const enquireText = card.querySelector('.enquire-text');
-
-    // show popup when enquire clicked
-    enquireBtn.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      closeAllPopups();
-      enquirePopup.classList.add('active');
-      enquirePopup.setAttribute('aria-hidden','false');
-      card.classList.add('enquire-active');
-    });
-
-    // Cancel
-    enquireCancel.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      enquirePopup.classList.remove('active');
-      enquirePopup.setAttribute('aria-hidden','true');
-      card.classList.remove('enquire-active');
-    });
-
-    // Send -> open WhatsApp with prefilled message containing product details + user message
-    enquireSend.addEventListener('click', (ev) => {
-      ev.stopPropagation();
-      const userMsg = (enquireText.value || '').trim();
-      let fullMsg = `Product Enquiry:%0AName: ${name}%0ACategory: ${category}%0APrice: ${price}%0A`;
-      if(userMsg) fullMsg += `%0AUser Message:%0A${encodeURIComponent(userMsg)}`;
-      // open whatsapp
-      window.open(`${WA_BASE}?text=${encodeURIComponent(decodeURIComponent(fullMsg))}`, '_blank');
-      // close popup
-      enquirePopup.classList.remove('active');
-      enquirePopup.setAttribute('aria-hidden','true');
-      card.classList.remove('enquire-active');
-      enquireText.value = '';
-    });
-
-    // close popup when clicking outside
-    document.addEventListener('click', (e) => {
-      if (!card.contains(e.target)) {
-        enquirePopup.classList.remove('active');
-        enquirePopup.setAttribute('aria-hidden','true');
-        card.classList.remove('enquire-active');
-      }
-    });
-
-    // append
-    grid.appendChild(card);
-  });
-}
-
-/* helper escape */
-function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
-
-/* close any open enquire popups */
-function closeAllPopups(){
-  document.querySelectorAll('.enquire-popup.active').forEach(p => {
-    p.classList.remove('active'); p.setAttribute('aria-hidden','true');
-  });
-  document.querySelectorAll('.card.enquire-active').forEach(c => c.classList.remove('enquire-active'));
-}
-
-/* filter buttons */
-document.querySelectorAll('.filter-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeCategory = btn.getAttribute('data-cat') || 'All';
-    render();
-  });
-});
-
-/* initial load */
-loadProducts();
-
-/* periodic refresh */
-setInterval(loadProducts, 90_000);
-function openAdminLogin() {
-    document.getElementById("adminPopup").style.display = "flex";
-    document.getElementById("adminPinInput").value = "";
-    document.getElementById("adminError").style.display = "none";
-}
-
-function checkAdminPin() {
-    const pin = document.getElementById("adminPinInput").value;
-
-    if (pin === "4321") {
-        // set cookie so admin page stays unlocked
-        document.cookie = "admin=4321; path=/; max-age=604800";
-        window.location.href = "/admin-products.html";
-    } else {
-        document.getElementById("adminError").style.display = "block";
-    }
-}
-
-document.getElementById("adminPopup").addEventListener("click", e => {
-    if (e.target.id === "adminPopup") {
-        document.getElementById("adminPopup").style.display = "none";
-    }
-});
-
-</script>
-<!-- ADMIN LOGIN POPUP -->
-<div id="adminPopup" style="
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,0.45);
-    display:none;
-    justify-content:center;
-    align-items:center;
-    z-index:5000;
-">
-    <div class="box" style="
-        background:#faebe3;
-        padding:25px;
-        border-radius:12px;
-        width:90%;
-        max-width:330px;
-        text-align:center;
-        box-shadow:0 6px 22px rgba(0,0,0,0.14);
-    ">
-        <h3 style="margin:0;color:#563e30">Enter Admin PIN</h3>
-
-        <input id="adminPinInput" type="password" maxlength="6"
-               style="margin-top:14px;width:100%;padding:10px;border-radius:8px;
-            border:1px solid #ccc;font-size:16px;text-align:center;">
-
-        <button onclick="checkAdminPin()" style="
-            margin-top:14px;background:#563e30;color:#fff;border:none;
-            padding:10px 18px;border-radius:8px;cursor:pointer;">
-            Submit
-        </button>
-
-        <div id="adminError" style="color:red;font-size:14px;margin-top:8px;display:none;">
-            Incorrect PIN
+        <textarea id="reviewText" placeholder="Write your review" style="width:100%;min-height:80px;padding:8px;border-radius:8px;border:1px solid #eee;margin-bottom:10px"></textarea>
+        <div style="display:flex;gap:8px;justify-content:flex-end">
+            <button id="submitReview" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Submit</button>
+            <button id="cancelReview" style="background:#ccc;color:#222;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Cancel</button>
         </div>
     </div>
 </div>
 
+<div id="viewReviewsBackdrop" style="position:fixed;inset:0;display:none;justify-content:center;align-items:center;background:rgba(0,0,0,0.45);z-index:6000;padding:16px;box-sizing:border-box">
+    <div id="viewReviewsModal" style="background:#fff;border-radius:12px;max-width:520px;width:100%;padding:16px;box-shadow:0 12px 36px rgba(0,0,0,0.25);max-height:80vh;overflow:auto">
+        <h3 style="margin-top:0;color:var(--accent)">Reviews for <span id="viewReviewsTitle">Product</span></h3>
+        <div id="viewReviewsList" style="display:flex;flex-direction:column;gap:10px;margin-top:8px"></div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:12px">
+            <button id="closeViewReviews" style="background:#ccc;color:#222;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Close</button>
+        </div>
+    </div>
+</div>
+<script>
+    (() => {
+        'use strict';
+
+        // defensive error reporter - shows on page + console
+        function reportFatal(msg, err) {
+            console.error('[PRODUCTS PAGE] ' + msg, err);
+            const cnt = document.getElementById('grid');
+            const info = document.getElementById('countInfo');
+            if(info) info.textContent = 'Error loading products — see console.';
+            if(cnt) cnt.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:crimson;padding:24px">
+      <strong>Error:</strong> ${String(msg).replace(/</g,'&lt;')}. Open console for details.
+    </div>`;
+        }
+
+        try {
+            /* ================= CONFIG & DOM REFS ================= */
+            const WA_NUMBER = '919168445014';
+            const WA_BASE = `https://wa.me/${WA_NUMBER}`;
+            const WA_MESSAGE_DEFAULT = encodeURIComponent('Hi, I want to order');
+            const WA_URL_DEFAULT = `${WA_BASE}?text=${WA_MESSAGE_DEFAULT}`;
+
+            const grid = document.getElementById('grid');
+            const countInfo = document.getElementById('countInfo');
+            const contactPopup = document.getElementById('contactPopup');
+
+            if(!grid || !countInfo) throw new Error('Missing required DOM elements (#grid or #countInfo)');
+
+            // attach simple handlers (guard in case buttons missing)
+            try { document.getElementById('openContact').addEventListener('click', ()=> { contactPopup.style.display='flex'; contactPopup.setAttribute('aria-hidden','false'); }); } catch(e){}
+            try { document.getElementById('closeContact').addEventListener('click', ()=> { contactPopup.style.display='none'; contactPopup.setAttribute('aria-hidden','true'); }); } catch(e){}
+            try { document.getElementById('waBtn').href = WA_URL_DEFAULT; } catch(e){}
+            try { document.getElementById('chatBtn').addEventListener('click', ()=> window.open(WA_URL_DEFAULT, '_blank')); } catch(e){}
+            try { document.getElementById('manageBtn').addEventListener('click', ()=> location.href = '/admin-products.html'); } catch(e){}
+
+            /* ================= Helpers ================= */
+            function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+            function renderStars(value){
+                const v = Math.max(0, Math.min(5, Number(value) || 0));
+                const full = Math.floor(v);
+                let out = '';
+                for(let i=0;i<full;i++) out += '<span class="star">★</span>';
+                for(let i=full;i<5;i++) out += '<span class="star gray">★</span>';
+                out += ` <span style="font-size:13px;color:var(--muted);margin-left:6px">${v.toFixed(1)}</span>`;
+                return out;
+            }
+
+            /* local cache helpers (safe) */
+            function _getAllReviews(){ try{ return JSON.parse(localStorage.getItem('dory_reviews')||'{}'); }catch(e){return{}} }
+            function _saveAllReviews(obj){ try{ localStorage.setItem('dory_reviews', JSON.stringify(obj)); }catch(e){} }
+            function getReviewsFor(id){ const all=_getAllReviews(); return all[id] || []; }
+            function saveReviewFor(id, review){ const all=_getAllReviews(); all[id]=all[id]||[]; all[id].unshift(review); _saveAllReviews(all); }
+            function computeAverage(reviews){ if(!reviews||reviews.length===0) return 0; return reviews.reduce((s,r)=>s+Number(r.rating||0),0)/reviews.length; }
+
+            /* ================= Server wrappers (defensive) ================= */
+            async function fetchReviewsFromServer(productId){
+                try{
+                    const res = await fetch(`/products/${encodeURIComponent(productId)}/reviews`, { cache:'no-cache' });
+                    if(!res.ok) { console.warn('fetchReviewsFromServer non-ok', res.status); return getReviewsFor(productId); }
+                    const data = await res.json();
+                    return Array.isArray(data) ? data : getReviewsFor(productId);
+                } catch(e){
+                    console.warn('fetchReviewsFromServer failed', e);
+                    return getReviewsFor(productId);
+                }
+            }
+            async function postReviewToServer(productId, review){
+                try{
+                    const res = await fetch(`/products/${encodeURIComponent(productId)}/reviews`, {
+                        method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(review)
+                    });
+                    if(!res.ok) { console.warn('postReviewToServer non-ok', res.status); saveReviewFor(productId, review); return review; }
+                    const saved = await res.json(); return saved;
+                }catch(e){
+                    console.warn('postReviewToServer failed', e);
+                    saveReviewFor(productId, review);
+                    return review;
+                }
+            }
+
+            /* ================= Products loader + renderer ================= */
+            let products = [];
+            let activeCategory = 'All';
+
+            async function loadProducts(){
+                try {
+                    console.log('Fetching /products/list ...');
+                    const res = await fetch('/products/list', { cache: 'no-store' });
+                    if(!res.ok && res.status !== 304) throw new Error('Network error: ' + res.status + ' ' + res.statusText);
+                    const ct = (res.headers.get('content-type') || '').toLowerCase();
+                    if(res.status === 304 || !ct.includes('application/json')){
+                        console.warn('Server returned 304 or non-JSON. Trying local cache...');
+                        const cached = localStorage.getItem('dory_products_cache');
+                        if(cached){ products = JSON.parse(cached); console.log('Loaded products from local cache, count=', products.length); }
+                        else { const txt = await res.text(); console.error('Expected JSON but server returned:', txt.slice(0,200)); throw new Error('Server did not return JSON for /products/list'); }
+                    } else {
+                        products = await res.json();
+                        try{ localStorage.setItem('dory_products_cache', JSON.stringify(products)); }catch(e){}
+                    }
+                    if(!Array.isArray(products)) products = [];
+                    await render(); // render will catch per-product errors
+                } catch(err){
+                    reportFatal('loadProducts failed', err);
+                }
+            }
+
+            async function render(){
+                try {
+                    const list = products.filter(p => activeCategory === 'All' || (p.category || '').toLowerCase() === activeCategory.toLowerCase());
+                    grid.innerHTML = '';
+                    countInfo.textContent = `${list.length} product${list.length===1?'':'s'} shown`;
+                    if(list.length === 0){
+                        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:40px">No products in this category.</div>`;
+                        return;
+                    }
+
+                    for(const p of list){
+                        try {
+                            const idKey = (p && (p.id || p.slug || p.name)) || ('product-' + Math.random().toString(36).slice(2,8));
+                            const name = p && p.name ? p.name : 'Untitled';
+                            const desc = p && p.description ? p.description : '';
+                            const price = p && p.price ? `₹ ${p.price}` : '—';
+                            const category = p && p.category ? p.category : 'Uncategorized';
+                            const img = p && p.image ? (String(p.image).startsWith('/') ? p.image : p.image) : '/images/products/default-sample.png';
+
+                            // fetch approved reviews (defensive)
+                            const reviews = await fetchReviewsFromServer(idKey);
+                            const rating = computeAverage(reviews) || 0;
+
+                            const card = document.createElement('div'); card.className = 'card';
+                            card.innerHTML = `
+              <div class="img-wrap">
+                <img src="${escapeHtml(img)}" alt="${escapeHtml(name)}">
+                <a href="/contact.html?product=${encodeURIComponent(name)}" class="enquire-overlay" title="Enquire about ${escapeHtml(name)}"><span class="enquire-inner">Enquire Now</span></a>
+              </div>
+              <div class="meta">
+                <div>
+                  <div class="name">${escapeHtml(name)}</div>
+                  <div class="desc">${escapeHtml(desc)}</div>
+                </div>
+                <div style="text-align:right">
+                  <div class="cat">${escapeHtml(category)}</div>
+                  <div style="margin-top:6px" class="price">${escapeHtml(price)}</div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <div class="stars">${renderStars(rating)}</div>
+                <div style="display:flex;gap:6px;align-items:center">
+                  <button class="view-reviews-btn" data-pid="${escapeHtml(idKey)}" style="background:transparent;border:1px solid rgba(86,62,48,0.08);padding:6px 10px;border-radius:8px;cursor:pointer">View Reviews</button>
+                  <button class="add-review-btn" data-pid="${escapeHtml(idKey)}" style="background:var(--accent);color:#fff;padding:6px 10px;border-radius:8px;border:0;cursor:pointer">Add Review</button>
+                </div>
+              </div>
+
+              <div class="enquire-popup" role="dialog" aria-hidden="true">
+                <div class="row" style="align-items:center">
+                  <img class="thumb" src="${escapeHtml(img)}" alt="${escapeHtml(name)}">
+                  <div style="flex:1">
+                    <div style="font-weight:700">${escapeHtml(name)}</div>
+                    <div style="color:var(--muted);font-size:13px">${escapeHtml(category)} · ${escapeHtml(price)}</div>
+                  </div>
+                </div>
+                <div style="margin-top:8px">
+                  <textarea placeholder="Your message (eg: I want 1 kg, delivery date...)" class="enquire-text"></textarea>
+                </div>
+                <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+                  <button class="enquire-send" style="background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Send on WhatsApp</button>
+                  <button class="enquire-cancel" style="background:#ccc;color:#222;padding:8px 12px;border-radius:8px;border:0;cursor:pointer">Cancel</button>
+                </div>
+              </div>
+            `;
+
+                            // attach enquire handlers safely
+                            try {
+                                const enquireLink = card.querySelector('.enquire-overlay');
+                                const enquirePopup = card.querySelector('.enquire-popup');
+                                const enquireSend = card.querySelector('.enquire-send');
+                                const enquireCancel = card.querySelector('.enquire-cancel');
+                                const enquireText = card.querySelector('.enquire-text');
+
+                                enquireLink.addEventListener('click', (ev) => {
+                                    if (ev.ctrlKey || ev.metaKey || ev.shiftKey) return; ev.preventDefault(); ev.stopPropagation();
+                                    closeAllPopups();
+                                    enquirePopup.classList.add('active');
+                                    enquirePopup.setAttribute('aria-hidden','false');
+                                    card.classList.add('enquire-active');
+                                });
+                                enquireCancel.addEventListener('click', (ev) => { ev.stopPropagation(); enquirePopup.classList.remove('active'); enquirePopup.setAttribute('aria-hidden','true'); card.classList.remove('enquire-active'); });
+                                enquireSend.addEventListener('click', (ev) => {
+                                    ev.stopPropagation();
+                                    const userMsg = (enquireText.value || '').trim();
+                                    let fullMsg = `Product Enquiry:\nName: ${name}\nCategory: ${category}\nPrice: ${price}\n`;
+                                    if(userMsg) fullMsg += `\nUser Message:\n${userMsg}`;
+                                    window.open(`${WA_BASE}?text=${encodeURIComponent(fullMsg)}`, '_blank');
+                                    enquirePopup.classList.remove('active');
+                                    enquirePopup.setAttribute('aria-hidden','true');
+                                    card.classList.remove('enquire-active');
+                                    enquireText.value = '';
+                                });
+                            } catch(e){ console.warn('enquire handlers failed for product', idKey, e); }
+
+                            // view/add review buttons
+                            try {
+                                const viewBtn = card.querySelector('.view-reviews-btn');
+                                const addBtn = card.querySelector('.add-review-btn');
+                                if(viewBtn) viewBtn.addEventListener('click', (e)=> showViewReviewsModal(e.currentTarget.dataset.pid));
+                                if(addBtn) addBtn.addEventListener('click', (e)=> showReviewModal(e.currentTarget.dataset.pid));
+                            } catch(e){ console.warn('review button handlers failed', e); }
+
+                            grid.appendChild(card);
+
+                        } catch(productErr){
+                            console.error('Error rendering product', p, productErr);
+                        }
+                    } // for loop
+                } catch(renderErr){
+                    reportFatal('render failed', renderErr);
+                }
+            }
+
+            /* ============ View Reviews modal ============= */
+            async function showViewReviewsModal(productId){
+                try{
+                    const backdrop = document.getElementById('viewReviewsBackdrop');
+                    const list = document.getElementById('viewReviewsList');
+                    const title = document.getElementById('viewReviewsTitle');
+                    if(!list || !title || !backdrop) return;
+                    // lookup product
+                    let productName = productId, productImg='', productPrice='', productCategory='';
+                    const p = products.find(x => (x && (x.id || x.slug || x.name)) === productId);
+                    if(p){ productName = p.name || productId; productImg = p.image || ''; productPrice = p.price ? `₹ ${p.price}` : ''; productCategory = p.category || ''; }
+                    title.textContent = productName;
+                    list.innerHTML = '';
+
+                    // header + sort + summary
+                    const header = document.createElement('div'); header.style.display='flex'; header.style.gap='12px'; header.style.alignItems='center'; header.style.marginBottom='10px';
+                    if(productImg){ const img = document.createElement('img'); img.src = productImg; img.alt = productName; img.style.height='64px'; img.style.width='64px'; img.style.objectFit='cover'; img.style.borderRadius='8px'; img.style.boxShadow='0 6px 18px rgba(0,0,0,0.12)'; header.appendChild(img); }
+                    const meta = document.createElement('div'); meta.style.flex='1'; const metaTitle = document.createElement('div'); metaTitle.style.fontWeight='700'; metaTitle.textContent = productName; meta.appendChild(metaTitle);
+                    const metaSub = document.createElement('div'); metaSub.style.color='var(--muted)'; metaSub.style.fontSize='13px'; metaSub.textContent = [productCategory, productPrice].filter(Boolean).join(' • '); meta.appendChild(metaSub); header.appendChild(meta);
+                    const summary = document.createElement('div'); summary.style.textAlign='right'; summary.style.minWidth='140px'; header.appendChild(summary);
+                    const sortWrap = document.createElement('div'); sortWrap.style.marginTop='8px'; sortWrap.style.display='flex'; sortWrap.style.gap='8px';
+                    const sortLabel = document.createElement('label'); sortLabel.textContent='Sort:'; sortLabel.style.fontSize='13px'; sortLabel.style.color='var(--muted)'; sortLabel.style.marginRight='6px';
+                    const sortSelect = document.createElement('select'); sortSelect.innerHTML = '<option value=\"newest\">Newest</option><option value=\"highest\">Highest Rated</option><option value=\"lowest\">Lowest Rated</option>';
+                    sortSelect.style.padding='6px'; sortSelect.style.borderRadius='6px'; sortSelect.style.border='1px solid #eee';
+                    sortWrap.appendChild(sortLabel); sortWrap.appendChild(sortSelect);
+
+                    list.appendChild(header); list.appendChild(sortWrap);
+
+                    let reviews = await fetchReviewsFromServer(productId) || [];
+                    const avg = computeAverage(reviews) || 0; const count = reviews.length || 0;
+                    summary.innerHTML = `<div style="font-weight:700">${count? avg.toFixed(1) + ' ★' : '— ★'}</div><div style="font-size:12px;color:var(--muted)">${count} review${count===1?'':'s'}</div>`;
+
+                    function renderList(){
+                        while(list.children.length > 2) list.removeChild(list.lastChild);
+                        let sorted = Array.from(reviews);
+                        const mode = sortSelect.value;
+                        if(mode === 'newest') sorted.sort((a,b)=> new Date(b.when) - new Date(a.when));
+                        if(mode === 'highest') sorted.sort((a,b)=> (b.rating||0) - (a.rating||0));
+                        if(mode === 'lowest') sorted.sort((a,b)=> (a.rating||0) - (b.rating||0));
+                        if(sorted.length === 0){ const no = document.createElement('div'); no.style.color='var(--muted)'; no.textContent = 'No reviews yet.'; list.appendChild(no); return; }
+                        sorted.forEach(r=>{
+                            const el = document.createElement('div'); el.style.padding='10px'; el.style.borderRadius='8px'; el.style.background='rgba(255,255,255,0.95)'; el.style.marginTop='10px';
+                            el.innerHTML = `<div style="display:flex;justify-content:space-between;align-items:center"><div style="font-weight:700">${escapeHtml(r.author||'Anonymous')}</div><div style="color:#e6b422;font-weight:700">${r.rating}★</div></div><div style="margin-top:6px;color:#333">${escapeHtml(r.text||'')}</div><div style="font-size:12px;color:var(--muted);margin-top:8px">${new Date(r.when).toLocaleString()}</div>`;
+                            list.appendChild(el);
+                        });
+                    }
+                    sortSelect.addEventListener('change', renderList);
+                    renderList();
+                    backdrop.style.display='flex';
+                }catch(e){ console.error('showViewReviewsModal failed', e); }
+            }
+            try { document.getElementById('closeViewReviews').addEventListener('click', ()=>{ document.getElementById('viewReviewsBackdrop').style.display='none'; }); } catch(e){}
+
+            /* ============ Add Review modal (with name) ============= */
+            function showReviewModal(productId){
+                try{
+                    const b=document.getElementById('reviewBackdrop');
+                    if(!b) return;
+                    b.style.display='flex';
+                    b.dataset.currentProduct = productId;
+                    document.getElementById('reviewProductTitle').textContent = productId;
+                    document.getElementById('reviewText').value = '';
+                    if(!document.getElementById('reviewAuthor')){
+                        const inp = document.createElement('input'); inp.id='reviewAuthor'; inp.placeholder='Your name (optional)'; inp.style.cssText='width:100%;padding:8px;border-radius:8px;border:1px solid #eee;margin-bottom:8px';
+                        const modal = document.getElementById('reviewModal'); if(modal) modal.insertBefore(inp, modal.querySelector('#reviewStarsInput'));
+                    }
+                    document.querySelectorAll('#reviewStarsInput .star-input').forEach(but=>but.style.opacity='0.45');
+                    document.getElementById('submitReview').dataset.product = productId;
+                }catch(e){ console.error('showReviewModal failed', e); }
+            }
+            function closeReviewModal(){ const b=document.getElementById('reviewBackdrop'); if(b) { b.style.display='none'; delete b.dataset.currentProduct; } }
+
+            document.addEventListener('click', async function(e){
+                try{
+                    if(e.target && e.target.matches('.star-input')){ const v = Number(e.target.dataset.value||0); document.querySelectorAll('#reviewStarsInput .star-input').forEach(b=>{ const val=Number(b.dataset.value); b.style.opacity = val<=v? '1':'0.45'; }); return; }
+                    if(e.target && e.target.id === 'cancelReview'){ closeReviewModal(); return; }
+                    if(e.target && e.target.id === 'submitReview'){
+                        const prod = e.target.dataset.product || document.getElementById('reviewBackdrop').dataset.currentProduct;
+                        let rating = 0; document.querySelectorAll('#reviewStarsInput .star-input').forEach(b=>{ if(b.style.opacity==='1'){ rating = Math.max(rating, Number(b.dataset.value||0)); } });
+                        const text = (document.getElementById('reviewText') && document.getElementById('reviewText').value.trim()) || '';
+                        const author = (document.getElementById('reviewAuthor') && document.getElementById('reviewAuthor').value.trim()) || 'Guest';
+                        if(!rating){ alert('Please select a rating'); return; }
+                        const review = { rating, text, when: new Date().toISOString(), author, status: 'pending' };
+                        await postReviewToServer(prod, review);
+                        alert('Thanks — your review has been submitted for admin approval.');
+                        const rb = document.getElementById('reviewBackdrop'); if(rb) rb.style.display='none';
+                        const viewBack = document.getElementById('viewReviewsBackdrop');
+                        if(viewBack && viewBack.style.display === 'flex' && document.getElementById('viewReviewsTitle').textContent === prod){ showViewReviewsModal(prod); }
+                        return;
+                    }
+                }catch(e){ console.error('review submit handler error', e); }
+            });
+
+            /* close enquire popups when clicking outside */
+            function closeAllPopups(){ document.querySelectorAll('.enquire-popup.active').forEach(p => { p.classList.remove('active'); p.setAttribute('aria-hidden','true'); }); document.querySelectorAll('.card.enquire-active').forEach(c => c.classList.remove('enquire-active')); }
+            document.addEventListener('click', (e)=>{ document.querySelectorAll('.card').forEach(card=>{ try{ if(!card.contains(e.target)){ const p = card.querySelector('.enquire-popup'); if(p){ p.classList.remove('active'); p.setAttribute('aria-hidden','true'); card.classList.remove('enquire-active'); } } }catch(_){} }); });
+
+            /* filters */
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeCategory = btn.getAttribute('data-cat') || 'All';
+                    loadProducts(); // reload so reviews re-evaluated
+                });
+            });
+
+            /* startup */
+            loadProducts();
+            setInterval(loadProducts, 90_000);
+
+        } catch(topErr){
+            reportFatal('Top-level initialization failed', topErr);
+        }
+    })();
+</script>
+
+
+<!-- ADMIN LOGIN POPUP -->
+<div id="adminPopup" style="position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;justify-content:center;align-items:center;z-index:5000;">
+    <div class="box" style="background:#faebe3;padding:25px;border-radius:12px;width:90%;max-width:330px;text-align:center;box-shadow:0 6px 22px rgba(0,0,0,0.14);">
+        <h3 style="margin:0;color:#563e30">Enter Admin PIN</h3>
+        <input id="adminPinInput" type="password" maxlength="6" style="margin-top:14px;width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;font-size:16px;text-align:center;">
+        <button onclick="checkAdminPin()" style="margin-top:14px;background:#563e30;color:#fff;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;">Submit</button>
+        <div id="adminError" style="color:red;font-size:14px;margin-top:8px;display:none;">Incorrect PIN</div>
+    </div>
+</div>
+
+</body>
 </html>

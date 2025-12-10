@@ -7,6 +7,8 @@
 
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
 
+
+
     <style>
         :root {
             --bg: #FAF0DE;
@@ -34,6 +36,17 @@
             align-items: center;
             justify-content: center;
             position: relative;
+
+            /* Rating on cards */
+            .card .rating-wrap{display:flex;align-items:center;gap:8px}
+            .card .rating-stars{display:flex;gap:4px;align-items:center}
+            .card .rating-stars .star{color:#e6b422;font-size:14px}
+            .card .rating-stars .star.gray{color:#ddd}
+            .card .rating-count{font-size:13px;color:var(--muted)}
+
+
+
+
         }
         header img.logo {
             height: 64px;
@@ -45,7 +58,7 @@
             position: absolute;
             background: var(--accent);
             color: #fff;
-            padding: 10px 15px;
+            padding: 10px 20px;
             border-radius: 8px;
             text-decoration: none;
             font-size: 15px;
@@ -54,7 +67,7 @@
             box-shadow: 0 2px 6px rgba(0,0,0,0.15);
         }
         .products-btn { left: 25px; }
-        .contact-btn  { right: 35px; }
+        .contact-btn  { right: 65px; }
 
         h2 {
             text-align: center;
@@ -182,6 +195,14 @@
         .chat-btn { background: #ff7f7f; }
         .floating-buttons img { width: 28px; height: 28px; }
 
+
+        /* Client-side watermark overlay (non-destructive) */
+        .img-wrap { position: relative; overflow: hidden; }
+        .img-wrap img { display:block; width:100%; height:100%; object-fit:cover; }
+
+
+
+
     </style>
 </head>
 
@@ -253,6 +274,80 @@
         card.appendChild(img);
         return card;
     }
+
+    //---
+    /* ====== Ratings helpers (index page) ====== */
+
+    /* local fallback storage (same as product page) */
+    function _getAllReviews(){ try{ return JSON.parse(localStorage.getItem('dory_reviews')||'{}'); }catch(e){return{}} }
+    function getReviewsFor(id){ const all=_getAllReviews(); return all[id] || []; }
+    function computeAverage(reviews){ if(!reviews||reviews.length===0) return 0; return reviews.reduce((s,r)=>s+Number(r.rating||0),0)/reviews.length; }
+
+    /* fetch approved reviews for a productId (server with fallback) */
+    async function fetchReviewsForIndex(productId){
+        try{
+            const res = await fetch(`/products/${encodeURIComponent(productId)}/reviews`, { cache:'no-cache' });
+            if(!res.ok) throw new Error('network ' + res.status);
+            const data = await res.json();
+            if(!Array.isArray(data)) return getReviewsFor(productId);
+            return data;
+        }catch(e){
+            console.warn('fetchReviewsForIndex failed, using local cache for', productId, e);
+            return getReviewsFor(productId);
+        }
+    }
+
+    /*
+      Call this AFTER your index page has rendered all product cards into the DOM.
+      It will find cards that have a data attribute with the product id and append rating.
+      - `selector` is CSS selector for the card container element
+      - Each card must have attribute `data-product-id` (set when rendering cards), e.g.
+          <div class="card" data-product-id="1b3003...">...</div>
+    */
+    async function decorateCardsWithRatings({ selector = '.product-card', idAttr = 'data-product-id' } = {}){
+        const cards = Array.from(document.querySelectorAll(selector));
+        if(!cards.length) return;
+
+        // for each card fetch reviews and update UI (do not block rendering)
+        for(const card of cards){
+            (async () => {
+                try{
+                    const pid = card.getAttribute(idAttr) || card.dataset.productId || card.dataset.pid;
+                    if(!pid) return;
+                    // create container if missing
+                    let ratingWrap = card.querySelector('.rating-wrap');
+                    if(!ratingWrap){
+                        // insert rating area at top of card meta (adjust insertion point as needed)
+                        ratingWrap = document.createElement('div'); ratingWrap.className = 'rating-wrap';
+                        // attempt to put it after product title if exists
+                        const title = card.querySelector('.name') || card.querySelector('.product-title');
+                        if(title && title.parentNode) title.parentNode.insertBefore(ratingWrap, title.nextSibling);
+                        else card.insertBefore(ratingWrap, card.firstChild);
+                    }
+
+                    // placeholder while loading
+                    ratingWrap.innerHTML = `<div class="rating-stars"><span class="star gray">★</span><span class="star gray">★</span><span class="star gray">★</span><span class="star gray">★</span><span class="star gray">★</span></div><div class="rating-count" style="opacity:.6">…</div>`;
+
+                    const reviews = await fetchReviewsForIndex(pid);
+                    const avg = computeAverage(reviews);
+                    const count = reviews.length || 0;
+
+                    // build stars html (rounded down to full stars)
+                    const full = Math.floor(avg || 0);
+                    let starsHtml = '';
+                    for(let i=0;i<full;i++) starsHtml += '<span class="star">★</span>';
+                    for(let i=full;i<5;i++) starsHtml += '<span class="star gray">★</span>';
+
+                    ratingWrap.innerHTML = `<div class="rating-stars">${starsHtml}</div><div class="rating-count">${count? `${avg.toFixed(1)} (${count})` : 'No reviews'}</div>`;
+
+                }catch(err){
+                    console.error('decorateCardsWithRatings error', err);
+                }
+            })();
+        }
+    }
+
+    //---
 
     async function loadMore(){
         if(index >= files.length){

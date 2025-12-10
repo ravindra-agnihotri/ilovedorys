@@ -1,9 +1,14 @@
 /**
- * server.js (updated & patched)
+ * server.js (updated & fixed)
  *
- * - preserves original handlers (images, uploads, products)
- * - adds robust reviews-with-image support (public + admin)
+ * - GET /images/list
+ * - GET /images/history
+ * - GET /admin/disk-info
+ * - POST /upload
+ * - POST /images/delete   <- fixed / hardened (supports single or multiple files)
+ * - Products endpoints (list/add/delete)
  *
+ * Disk size (GB) set from admin input (user gave 5)
  */
 
 const express = require("express");
@@ -22,22 +27,15 @@ const PORT = process.env.PORT || 3000;
 // disk size in GB (user provided)
 const DISK_SIZE_GB = 5;
 
-const ROOT_DIR = __dirname;
-const PUBLIC_DIR = path.join(ROOT_DIR, "public");
+const PUBLIC_DIR = path.join(__dirname, "public");
 const IMAGES_DIR = path.join(PUBLIC_DIR, "images");
-const TMP_DIR = path.join(ROOT_DIR, "tmp_uploads");
+const TMP_DIR = path.join(__dirname, "tmp_uploads");
 const PRODUCTS_IMG_DIR = path.join(IMAGES_DIR, "products");
-const DATA_DIR = path.join(PUBLIC_DIR, "data"); // you already used public/data for products
+const DATA_DIR = path.join(PUBLIC_DIR, "data");
 const PRODUCTS_JSON = path.join(DATA_DIR, "products.json");
 
-// reviews file (kept outside public for safety)
-const REVIEWS_DATA_DIR = path.join(ROOT_DIR, "data");
-const REVIEWS_FILE = path.join(REVIEWS_DATA_DIR, "reviews.json");
-
-// uploads folder for review images (publicly served via /uploads)
-const UPLOADS_DIR = path.join(PUBLIC_DIR, "uploads", "reviews");
-
 const ALLOWED = /\.(jpg|jpeg|png|gif|webp|svg|heic|heif)$/i;
+
 
 /* ----------------- MIDDLEWARE ----------------- */
 app.use(cors());
@@ -45,17 +43,23 @@ app.use(express.json({ limit: "10mb" })); // allow reasonable JSON payloads
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(PUBLIC_DIR));
 app.use("/images", express.static(IMAGES_DIR));
-// serve uploaded files (review images etc.)
-app.use("/uploads", express.static(path.join(PUBLIC_DIR, "uploads")));
-
+//added
+app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
+//
 function requireAdmin(req, res, next) {
     const cookie = req.headers.cookie || "";
     if (cookie.includes("admin=4321")) return next();
     return res.status(403).json({ error: "Admin authentication required" });
 }
+//-------
+// Add this to server.js (adjust __dirname if needed)
 
-/* ----------------- HELPERS: reviews file ----------------- */
-function readReviewsFileSafe(){
+
+const { randomBytes } = require('crypto');
+
+const REVIEWS_FILE = path.join(__dirname, 'data', 'reviews.json');
+
+function readReviewsFile(){
     try {
         if(!fs.existsSync(REVIEWS_FILE)) return {};
         return JSON.parse(fs.readFileSync(REVIEWS_FILE, 'utf8') || '{}');
@@ -64,7 +68,7 @@ function readReviewsFileSafe(){
         return {};
     }
 }
-function writeReviewsFileSafe(obj){
+function writeReviewsFile(obj){
     try {
         fs.mkdirSync(path.dirname(REVIEWS_FILE), { recursive: true });
         fs.writeFileSync(REVIEWS_FILE, JSON.stringify(obj, null, 2), 'utf8');
@@ -74,34 +78,134 @@ function writeReviewsFileSafe(obj){
         return false;
     }
 }
+function makeId(){
+    return Date.now().toString(36) + '-' + randomBytes(4).toString('hex');
+}
 
-/* ----------------- INIT FOLDERS (ensure required dirs exist) ----------------- */
+// PUBLIC: return approved reviews for product (used by product page)
+app.get('/products/:id/reviews', (req, res) => {
+    const id = req.params.id;
+    const all = readReviewsFile();
+    const list = (all[id] || []).filter(r => r.status === 'approved');
+    res.json(list);
+});
+
+// PUBLIC: accept a review (will be saved as 'pending')
+app.post('/products/:id/reviews', express.json(), (req, res) => {
+    const id = req.params.id;
+    const body = req.body || {};
+    const review = {
+        id: makeId(),
+        rating: Number(body.rating) || 0,
+        text: String(body.text || '').trim(),
+        author: String(body.author || 'Guest').trim() || 'Guest',
+        when: body.when || new Date().toISOString(),
+        status: body.status && body.status === 'approved' ? 'approved' : 'pending'
+    };
+    const all = readReviewsFile();
+    all[id] = all[id] || [];
+    all[id].unshift(review);
+    const ok = writeReviewsFile(all);
+    if(!ok) return res.status(500).json({ error: 'failed to save review' });
+    res.status(201).json(review);
+});
+
+// ADMIN: list pending reviews across all products
+app.get('/admin/reviews', (req, res) => {
+    const all = readReviewsFile();
+    const pending = {};
+    Object.keys(all).forEach(pid => {
+        const arr = all[pid].filter(r => r.status === 'pending');
+        if(arr.length) pending[pid] = arr;
+    });
+    res.json(pending);
+});
+
+// ADMIN: approve a pending review
+app.post('/admin/reviews/:productId/:reviewId/approve', express.json(), (req, res) => {
+    const { productId, reviewId } = req.params;
+    const all = readReviewsFile();
+    const arr = all[productId] || [];
+    const idx = arr.findIndex(r => String(r.id) === String(reviewId));
+    if(idx === -1) return res.status(404).json({ error: 'review not found' });
+    all[productId][idx].status = 'approved';
+    const ok = writeReviewsFile(all);
+    if(!ok) return res.status(500).json({ error: 'failed to update' });
+    res.json(all[productId][idx]);
+});
+
+// ADMIN: reject (delete) a pending review
+app.post('/admin/reviews/:productId/:reviewId/reject', express.json(), (req, res) => {
+    const { productId, reviewId } = req.params;
+    const all = readReviewsFile();
+    const arr = all[productId] || [];
+    const idx = arr.findIndex(r => String(r.id) === String(reviewId));
+    if(idx === -1) return res.status(404).json({ error: 'review not found' });
+    const removed = arr.splice(idx, 1);
+    const ok = writeReviewsFile(all);
+    if(!ok) return res.status(500).json({ error: 'failed to update' });
+    res.json({ removed: removed[0] });
+});
+
+//------
+
+function readReviewsFile(){
+    const file = path.join(__dirname, 'data', 'reviews.json');
+    try {
+        if(!fs.existsSync(file)) return {};
+        return JSON.parse(fs.readFileSync(file, 'utf8') || '{}');
+    } catch(e){ console.error('readReviewsFile error', e); return {}; }
+}
+function writeReviewsFile(obj){
+    const file = path.join(__dirname, 'data', 'reviews.json');
+    try {
+        fs.writeFileSync(file, JSON.stringify(obj, null, 2), 'utf8');
+        return true;
+    } catch(e){ console.error('writeReviewsFile error', e); return false; }
+}
+
+// GET all reviews for a product
+app.get('/products/:id/reviews', (req, res) => {
+    const id = req.params.id;
+    const all = readReviewsFile();
+    const list = all[id] || [];
+    res.json(list);
+});
+
+// POST a review for a product
+app.post('/products/:id/reviews', express.json(), (req, res) => {
+    const id = req.params.id;
+    const body = req.body || {};
+    const review = {
+        rating: Number(body.rating) || 0,
+        text: String(body.text || '').trim(),
+        author: String(body.author || 'Guest').trim() || 'Guest',
+        when: body.when || new Date().toISOString()
+    };
+    const all = readReviewsFile();
+    all[id] = all[id] || [];
+    all[id].unshift(review); // newest first
+    const ok = writeReviewsFile(all);
+    if(!ok) return res.status(500).json({ error: 'failed to save review' });
+    res.status(201).json(review);
+});
+
+
+/* ----------------- INIT FOLDERS ----------------- */
 async function ensureFolders() {
-    // existing folders used by your app
     await fsp.mkdir(IMAGES_DIR, { recursive: true });
     await fsp.mkdir(TMP_DIR, { recursive: true });
     await fsp.mkdir(PRODUCTS_IMG_DIR, { recursive: true });
     await fsp.mkdir(DATA_DIR, { recursive: true });
-    // ensure products.json exists
     try {
         await fsp.access(PRODUCTS_JSON);
     } catch {
         await fsp.writeFile(PRODUCTS_JSON, JSON.stringify([], null, 2));
     }
-    // ensure reviews data folder and file
-    await fsp.mkdir(REVIEWS_DATA_DIR, { recursive: true });
-    try {
-        await fsp.access(REVIEWS_FILE);
-    } catch {
-        await fsp.writeFile(REVIEWS_FILE, JSON.stringify({}, null, 2));
-    }
-    // uploads for reviews
-    await fsp.mkdir(UPLOADS_DIR, { recursive: true });
 }
 ensureFolders().catch(err => console.error("ensureFolders error", err));
 
-/* ----------------- MULTER CONFIG ----------------- */
-// for general uploads (existing handlers) -> uses TMP_DIR
+/* ----------------- MULTER ----------------- */
 const upload = multer({
     storage: multer.diskStorage({
         destination: TMP_DIR,
@@ -115,32 +219,13 @@ const uploadProducts = multer({
     })
 });
 
-// for review image uploads: store directly into UPLOADS_DIR with safe names
-const reviewStorage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, UPLOADS_DIR),
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname).toLowerCase();
-        const safeName = `${Date.now().toString(36)}-${uuidv4().slice(0,8)}${ext}`;
-        cb(null, safeName);
-    }
-});
-const uploadReviews = multer({
-    storage: reviewStorage,
-    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB per image
-    fileFilter: (req, file, cb) => {
-        if (!file.mimetype.startsWith('image/')) return cb(new Error('Only image files are allowed'), false);
-        cb(null, true);
-    }
-});
-
-/* ----------------- HELPERS (images walk etc.) ----------------- */
+/* ----------------- HELPERS ----------------- */
 
 // Recursively walk directory and sum sizes; return array of {file, size, mtime}
 async function walkImages(dir) {
     const results = [];
     async function walk(d) {
-        let items;
-        try { items = await fsp.readdir(d, { withFileTypes: true }); } catch { return; }
+        const items = await fsp.readdir(d, { withFileTypes: true });
         for (const it of items) {
             const full = path.join(d, it.name);
             if (it.isDirectory()) {
@@ -148,6 +233,7 @@ async function walkImages(dir) {
             } else {
                 if (ALLOWED.test(it.name.toLowerCase())) {
                     const s = await fsp.stat(full);
+                    // relative filename to IMAGES_DIR root
                     const rel = path.relative(IMAGES_DIR, full).replace(/\\/g, "/");
                     results.push({ file: rel, size: s.size, mtime: s.mtime.toISOString() });
                 }
@@ -173,6 +259,7 @@ app.get("/images/list", async (req, res) => {
     try {
         const files = await fsp.readdir(IMAGES_DIR);
         const filtered = files.filter(f => ALLOWED.test(f));
+        // only top-level; sort by mtime
         const detailed = await Promise.all(
             filtered.map(async file => {
                 const s = await fsp.stat(path.join(IMAGES_DIR, file));
@@ -252,10 +339,12 @@ app.post("/upload", requireAdmin, upload.array("images", 20), async (req, res) =
 /* Delete image(s) (gallery only) — supports { filename } or { files: [...] } */
 app.post("/images/delete", requireAdmin, async (req, res) => {
     try {
+        // Accept either single filename or array named files
         let files = [];
         if (Array.isArray(req.body.files)) files = req.body.files.slice();
         else if (req.body.filename) files = [req.body.filename];
         else if (typeof req.body === "string") {
+            // in case body parser received raw string (unlikely), try parse
             try { const parsed = JSON.parse(req.body); if (Array.isArray(parsed.files)) files = parsed.files; } catch {}
         }
 
@@ -270,26 +359,40 @@ app.post("/images/delete", requireAdmin, async (req, res) => {
             try {
                 if (!raw) { errors.push({ file: raw, error: "Empty filename" }); continue; }
                 let filename = String(raw).trim();
+
+                // Normalize input:
+                // remove any leading slash(es), and remove a leading "images/" if present,
+                // but keep subfolders like "products/..."
                 filename = filename.replace(/^\/+/, "");
                 filename = filename.replace(/^images\//, "");
+
+                // Disallow directory traversal (../)
                 if (filename.includes("..")) {
                     errors.push({ file: raw, error: "Invalid filename (traversal)" });
                     continue;
                 }
+
+                // Build absolute path and ensure it's inside IMAGES_DIR
                 const fullPath = path.resolve(IMAGES_DIR, filename);
                 const rel = path.relative(IMAGES_DIR, fullPath).replace(/\\/g, "/");
+
                 if (rel.startsWith("..") || path.isAbsolute(rel) && rel.includes("..")) {
                     errors.push({ file: raw, error: "Invalid filename (outside images directory)" });
                     continue;
                 }
+
+                // Ensure extension allowed (extra safety)
                 if (!ALLOWED.test(path.extname(fullPath))) {
                     errors.push({ file: raw, error: "Invalid file type" });
                     continue;
                 }
+
+                // Attempt unlink (file might not exist)
                 try {
                     await fsp.unlink(fullPath);
                     deleted.push(filename);
                 } catch (err) {
+                    // If file not found or other error
                     errors.push({ file: raw, error: err.code === "ENOENT" ? "File not found" : err.message });
                 }
             } catch (err) {
@@ -318,7 +421,7 @@ app.get("/products/list", async (req, res) => {
 
 app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (req, res) => {
     try {
-        const { name, description, price, category } = req.body;
+        const { name, description, price, category } = req.body;   // ← category added
 
         if (!name?.trim())
             return res.status(400).json({ error: "Name required" });
@@ -350,6 +453,7 @@ app.post("/products/add", requireAdmin, uploadProducts.single("image"), async (r
 
         const list = await readProducts();
 
+        // ✔ save category
         const newProd = {
             id: uuidv4(),
             name: name.trim(),
@@ -382,174 +486,6 @@ app.post("/products/delete", requireAdmin, async (req, res) => {
         fsp.unlink(path.join(PRODUCTS_IMG_DIR, imgName)).catch(()=>{});
     }
     res.json({ success: true });
-});
-
-/* ----------------- REVIEWS: public + admin (with image uploads) ----------------- */
-
-/**
- * GET /products/:id/reviews
- * Returns approved reviews for a product (public)
- */
-app.get('/products/:id/reviews', (req, res) => {
-    try {
-        const id = req.params.id;
-        const all = readReviewsFileSafe();
-        const list = (all[id] || []).filter(r => r.status === 'approved');
-        res.json(list);
-    } catch (e) {
-        console.error('GET /products/:id/reviews error', e);
-        res.status(500).json({ error: 'Failed' });
-    }
-});
-
-/**
- * POST /products/:id/reviews
- * Accepts JSON body OR multipart/form-data with up to 3 images (field name 'images')
- * Saves review with status='pending' by default (admin must approve)
- */
-app.post('/products/:id/reviews', (req, res) => {
-    // check content type to decide multipart vs json
-    const ct = (req.headers['content-type'] || '').toLowerCase();
-    if (ct.includes('multipart/form-data')) {
-        // handle with multer (up to 3 files)
-        uploadReviews.array('images', 3)(req, res, (err) => {
-            if (err) {
-                console.error('uploadReviews multer error', err);
-                return res.status(400).json({ error: err.message || 'Upload failed' });
-            }
-            try {
-                const id = req.params.id;
-                const body = req.body || {};
-                const review = {
-                    id: uuidv4(),
-                    rating: Number(body.rating) || 0,
-                    text: String(body.text || '').trim(),
-                    author: String(body.author || 'Guest').trim() || 'Guest',
-                    when: body.when || new Date().toISOString(),
-                    status: 'pending',
-                    images: []
-                };
-                if (Array.isArray(req.files)) {
-                    for (const f of req.files) {
-                        // saved path relative to public: /uploads/reviews/<filename>
-                        review.images.push(`/uploads/reviews/${f.filename}`);
-                    }
-                }
-                const all = readReviewsFileSafe();
-                all[id] = all[id] || [];
-                all[id].unshift(review);
-                const ok = writeReviewsFileSafe(all);
-                if (!ok) return res.status(500).json({ error: 'failed to save review' });
-                return res.status(201).json(review);
-            } catch (e) {
-                console.error('POST multipart save error', e);
-                return res.status(500).json({ error: 'Failed' });
-            }
-        });
-    } else {
-        // JSON post
-        try {
-            const id = req.params.id;
-            const body = req.body || {};
-            const review = {
-                id: uuidv4(),
-                rating: Number(body.rating) || 0,
-                text: String(body.text || '').trim(),
-                author: String(body.author || 'Guest').trim() || 'Guest',
-                when: body.when || new Date().toISOString(),
-                status: 'pending',
-                images: Array.isArray(body.images) ? body.images.slice(0,3) : []
-            };
-            const all = readReviewsFileSafe();
-            all[id] = all[id] || [];
-            all[id].unshift(review);
-            const ok = writeReviewsFileSafe(all);
-            if (!ok) return res.status(500).json({ error: 'failed to save review' });
-            return res.status(201).json(review);
-        } catch (e) {
-            console.error('POST json save error', e);
-            return res.status(500).json({ error: 'Failed' });
-        }
-    }
-});
-
-/**
- * GET /admin/reviews
- * Admin: return pending reviews grouped by product
- */
-app.get('/admin/reviews', requireAdmin, (req, res) => {
-    try {
-        const all = readReviewsFileSafe();
-        const pending = {};
-        Object.keys(all).forEach(pid => {
-            const arr = all[pid].filter(r => r.status === 'pending');
-            if (arr.length) pending[pid] = arr;
-        });
-        res.json(pending);
-    } catch (e) {
-        console.error('GET /admin/reviews error', e);
-        res.status(500).json({ error: 'Failed' });
-    }
-});
-
-/**
- * POST /admin/reviews/:productId/:reviewId/approve
- * Admin: approve a pending review
- */
-app.post('/admin/reviews/:productId/:reviewId/approve', requireAdmin, (req, res) => {
-    try {
-        const { productId, reviewId } = req.params;
-        const all = readReviewsFileSafe();
-        const arr = all[productId] || [];
-        const idx = arr.findIndex(r => String(r.id) === String(reviewId));
-        if (idx === -1) return res.status(404).json({ error: 'review not found' });
-        all[productId][idx].status = 'approved';
-        const ok = writeReviewsFileSafe(all);
-        if (!ok) return res.status(500).json({ error: 'failed to update' });
-        res.json(all[productId][idx]);
-    } catch (e) {
-        console.error('approve review error', e);
-        res.status(500).json({ error: 'Failed' });
-    }
-});
-
-/**
- * POST /admin/reviews/:productId/:reviewId/reject
- * Admin: reject (delete) a pending review and remove associated uploaded images
- */
-app.post('/admin/reviews/:productId/:reviewId/reject', requireAdmin, (req, res) => {
-    try {
-        const { productId, reviewId } = req.params;
-        const all = readReviewsFileSafe();
-        const arr = all[productId] || [];
-        const idx = arr.findIndex(r => String(r.id) === String(reviewId));
-        if (idx === -1) return res.status(404).json({ error: 'review not found' });
-
-        const removed = arr.splice(idx, 1)[0];
-
-        // delete uploaded images associated with this review (if any)
-        if (Array.isArray(removed.images)) {
-            for (const imgPath of removed.images) {
-                try {
-                    // imgPath is like '/uploads/reviews/filename.ext'
-                    const filename = path.basename(imgPath);
-                    const full = path.join(UPLOADS_DIR, filename);
-                    if (fs.existsSync(full)) {
-                        fs.unlinkSync(full);
-                    }
-                } catch (e) {
-                    console.warn('Failed to delete review image', imgPath, e);
-                }
-            }
-        }
-
-        const ok = writeReviewsFileSafe(all);
-        if (!ok) return res.status(500).json({ error: 'failed to update' });
-        res.json({ removed });
-    } catch (e) {
-        console.error('reject review error', e);
-        res.status(500).json({ error: 'Failed' });
-    }
 });
 
 /* ----------------- START ----------------- */

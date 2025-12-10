@@ -1,3 +1,20 @@
 [
-
+  {
+    "id": "1f565325-6c53-4ba7-ae40-c9213308bcd2",
+    "name": "A",
+    "description": "A",
+    "price": "2312",
+    "category": "Cakes",
+    "image": "/images/products/IMG_5566-a7204f89-250b-40b2-9054-1073329424d9.jpg",
+    "createdAt": "2025-12-10T17:11:33.594Z"
+  },
+  {
+    "id": "59b7ac05-4434-4749-8841-90fab71799c5",
+    "name": "B",
+    "description": "B",
+    "price": "324",
+    "category": "Cakes",
+    "image": "/images/products/IMG_4419-85dc6452-de02-4619-88aa-e4b66013dd4e.jpg",
+    "createdAt": "2025-12-10T17:11:49.531Z"
+  }
 ]

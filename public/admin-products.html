@@ -13,7 +13,7 @@
 
 <style>
 :root{
-    --bg: #faebe3;
+    --bg: #FAF0DE;
     --accent: #563e30;
     --card: rgba(253,239,193,0.45);
     --text: #563e30;
@@ -187,6 +187,119 @@ button{
 </head>
 
 <body>
+<!-- ADMIN: Pending Reviews panel (paste into admin-products.html) -->
+<style>
+    /* minimal admin styles — adjust to match your admin UI */
+    .pending-reviews-root { margin-top:18px; padding:12px; border:1px dashed #e3d6cc; border-radius:8px; background:#FAF0DE; }
+    .pending-reviews-root h3{ margin:0 0 8px 0; color:#563e30 }
+    .pending-review { padding:10px; border-radius:8px; background:#fff; margin-bottom:8px; box-shadow:0 2px 6px rgba(0,0,0,0.04); }
+    .pending-review .meta{ font-size:13px; color:#6e5a52; margin-bottom:6px; }
+    .pending-review .text{ color:#333; margin-bottom:8px; }
+    .pending-review button{ margin-right:8px; padding:6px 10px; border-radius:6px; cursor:pointer; }
+    .approve-btn{ background:#2ecc71; color:#fff; border:0; }
+    .reject-btn{ background:#e74c3c; color:#fff; border:0; }
+    .no-pending{ color:#666; font-size:14px }
+</style>
+
+<div id="adminPendingReviewsRoot" class="pending-reviews-root" aria-live="polite">
+    <h3>Pending Reviews</h3>
+    <div id="pendingReviewsContainer">Loading pending reviews…</div>
+</div>
+
+<script>
+    /*
+      Admin: load pending reviews and render per-product
+      Requires the server admin routes:
+       - GET /admin/reviews
+       - POST /admin/reviews/:productId/:reviewId/approve
+       - POST /admin/reviews/:productId/:reviewId/reject
+    */
+    async function loadPendingReviews(){
+        const container = document.getElementById('pendingReviewsContainer');
+        container.innerHTML = 'Loading pending reviews…';
+        try {
+            const res = await fetch('/admin/reviews', { cache: 'no-cache' });
+            if(!res.ok) throw new Error('failed to load pending reviews: ' + res.status);
+            const pending = await res.json(); // { productId: [reviews...] }
+            // clear
+            container.innerHTML = '';
+            const keys = Object.keys(pending);
+            if(keys.length === 0){
+                container.innerHTML = '<div class="no-pending">No pending reviews at the moment.</div>';
+                return;
+            }
+
+            // For each product show pending reviews
+            keys.forEach(pid => {
+                const section = document.createElement('div');
+                const header = document.createElement('div');
+                header.style.display = 'flex';
+                header.style.justifyContent = 'space-between';
+                header.style.alignItems = 'center';
+                header.innerHTML = `<strong>Product:</strong> <span style="font-weight:700">${pid}</span>`;
+                section.appendChild(header);
+
+                pending[pid].forEach(r => {
+                    const card = document.createElement('div');
+                    card.className = 'pending-review';
+                    card.dataset.pid = pid;
+                    card.dataset.rid = r.id;
+                    card.innerHTML = `
+          <div class="meta"><strong>${escapeHtml(r.author || 'Anonymous')}</strong> • ${r.rating} ★ • <span style="color:#888">${new Date(r.when).toLocaleString()}</span></div>
+          <div class="text">${escapeHtml(r.text || '')}</div>
+          <div class="actions">
+            <button class="approve-btn" data-pid="${escapeHtml(pid)}" data-rid="${escapeHtml(r.id)}">Approve</button>
+            <button class="reject-btn" data-pid="${escapeHtml(pid)}" data-rid="${escapeHtml(r.id)}">Reject</button>
+          </div>
+        `;
+                    section.appendChild(card);
+                });
+
+                // spacing
+                section.style.marginBottom = '12px';
+                container.appendChild(section);
+            });
+
+        } catch(err){
+            console.error(err);
+            container.innerHTML = '<div style="color:crimson">Failed to load pending reviews. See console.</div>';
+        }
+    }
+
+    // Approve/reject handlers (event delegation)
+    document.getElementById('adminPendingReviewsRoot').addEventListener('click', async (e) => {
+        const approve = e.target.closest('.approve-btn');
+        const reject = e.target.closest('.reject-btn');
+        if(!approve && !reject) return;
+
+        const pid = (approve || reject).dataset.pid;
+        const rid = (approve || reject).dataset.rid;
+        const action = approve ? 'approve' : 'reject';
+        const url = `/admin/reviews/${encodeURIComponent(pid)}/${encodeURIComponent(rid)}/${action}`;
+        // optimistic UI: disable buttons while waiting
+        (approve || reject).disabled = true;
+        try {
+            const res = await fetch(url, { method: 'POST', headers: {'Content-Type':'application/json'} });
+            if(!res.ok) throw new Error('server returned ' + res.status);
+            // refresh pending list
+            await loadPendingReviews();
+            // optionally log success or show toast
+        } catch(err){
+            console.error('admin action failed', err);
+            alert('Failed to ' + action + ' review. See console.');
+            (approve || reject).disabled = false;
+        }
+    });
+
+    // small helper
+    function escapeHtml(s){ return (s||'').toString().replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    // initial load
+    loadPendingReviews();
+
+    // Optional: if your admin products UI also shows product rows, you can call loadPendingReviews()
+    // after product list loads so admin sees pending reviews as they manage products.
+</script>
 
 <!-- HEADER -->
 <header>
